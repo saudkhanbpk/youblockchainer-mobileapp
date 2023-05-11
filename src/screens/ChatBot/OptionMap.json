@@ -1,0 +1,11 @@
+{
+  "Content type ?": ["Documentary", "Movie,", "Series", "Short film"],
+  "Genre ?": [
+    "Action/Adventure",
+    "Comedy",
+    "Love story",
+    "Thriller",
+    "Science Fiction"
+  ],
+  "Temporality ?": ["Nowadays", "Future", "Past"]
+}
