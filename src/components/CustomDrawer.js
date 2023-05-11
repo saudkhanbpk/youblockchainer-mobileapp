@@ -63,6 +63,10 @@ const CustomDrawerContent = props => {
       label: 'Organizations',
       icon: 'feature-search',
     },
+    Chats: {
+      label: 'Chats',
+      icon: 'chat',
+    },
     Profile: {
       label: 'Profile',
       icon: 'account',

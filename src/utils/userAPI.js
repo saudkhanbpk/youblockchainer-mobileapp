@@ -1,9 +1,9 @@
 import {ToastAndroid} from 'react-native';
-import Web3 from 'web3';
 import API, {ENDPOINTS} from '../api/apiService';
-import {PLATFORM, alchemyApiToken, etherScanApiToken} from '../Constants';
+import {alchemyApiToken, etherScanApiToken} from '../Constants';
 import {USER} from '../storage/StorageKeys';
 import StorageManager from '../storage/StorageManager';
+import {pickPhoto} from './helper';
 
 export const base = `https://eth-goerli.alchemyapi.io/v2/${alchemyApiToken}`;
 
@@ -22,6 +22,16 @@ export const uploadPics = async imgs => {
   } catch (error) {
     console.log(error);
     return [];
+  }
+};
+
+export const uploadImage = async () => {
+  try {
+    let image = await pickPhoto();
+    return (await uploadPics(image))[0];
+  } catch (error) {
+    console.log('Error in image upload');
+    return false;
   }
 };
 

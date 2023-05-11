@@ -29,11 +29,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'flex-start',
   },
-  text: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginLeft: 15,
-  },
+  text: {letterSpacing: 2, fontSize: 18},
 });
 
 export default Header;

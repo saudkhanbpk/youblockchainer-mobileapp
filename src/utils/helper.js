@@ -39,6 +39,12 @@ export const getArrayOfResponses = async arr => {
   return await Promise.all(requests);
 };
 
+export const arraytoQuickReply = arr => {
+  return arr.map(i => {
+    return {title: i, value: i};
+  });
+};
+
 export const backendToGifted = chat => {
   //console.log(chat);
   let temp = {
@@ -126,6 +132,10 @@ export const pickPhoto = async () => {
 export function compare(s1, s2) {
   return s1.toLowerCase() === s2.toLowerCase();
 }
+
+export const isImage = uri => {
+  return uri.match(/\.(jpg|jpeg|png|gif)$/);
+};
 
 export async function checkTx(hash, web3) {
   // Log which tx hash we're checking

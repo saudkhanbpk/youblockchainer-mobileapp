@@ -6,56 +6,58 @@ import {getAllRooms} from '../../utils/chatAPI';
 import Loading from '../../components/Loading';
 import {Subheading, useTheme} from 'react-native-paper';
 import {GlobalContext} from '../../auth/GlobalProvider';
+import ListEmpty from '../../components/ListEmpty';
 
 const RoomsScreen = ({navigation}) => {
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(false);
   const {user} = useContext(GlobalContext);
 
-  useEffect(async () => {
+  const getRooms = async () => {
     setLoading(true);
     setRooms(await getAllRooms());
     setLoading(false);
+  };
+  useEffect(() => {
+    getRooms();
   }, []);
 
   return (
     <View style={styles.container}>
-      <Header title={'Your Messages'} />
       {loading ? (
         <Loading />
       ) : (
         <View>
-          {rooms.length > 0 && (
-            <FlatList
-              data={rooms}
-              keyExtractor={(x, i) => i.toString()}
-              style={{paddingHorizontal: 20}}
-              ListHeaderComponent={() => (
-                <Subheading style={{letterSpacing: 2, fontSize: 18}}>
-                  Personal Chats
-                </Subheading>
-              )}
-              renderItem={({item}) => {
-                let usingP2 = item.p1._id === user._id ? true : false;
-                return (
-                  <TouchableOpacity
-                    onPress={() => navigation.navigate('Chat', {room: item})}>
-                    <RoomCard
-                      name={usingP2 ? item.p2.name : item.p1.name}
-                      image={
-                        usingP2
-                          ? item.p2.profileImages[0]
-                          : item.p1.profileImages[0]
-                      }
-                      description={
-                        usingP2 ? item.p2.description : item.p1.description
-                      }
-                    />
-                  </TouchableOpacity>
-                );
-              }}
-            />
-          )}
+          <FlatList
+            data={rooms}
+            keyExtractor={(x, i) => i.toString()}
+            style={{paddingHorizontal: 20}}
+            ListEmptyComponent={() => <ListEmpty />}
+            ListHeaderComponent={() => (
+              <Subheading style={{letterSpacing: 2, fontSize: 18}}>
+                Personal Chats
+              </Subheading>
+            )}
+            renderItem={({item}) => {
+              let usingP2 = item.p1._id === user._id ? true : false;
+              return (
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('Chat', {room: item})}>
+                  <RoomCard
+                    name={usingP2 ? item.p2.name : item.p1.name}
+                    image={
+                      usingP2
+                        ? item.p2.profileImages[0]
+                        : item.p1.profileImages[0]
+                    }
+                    description={
+                      usingP2 ? item.p2.description : item.p1.description
+                    }
+                  />
+                </TouchableOpacity>
+              );
+            }}
+          />
         </View>
       )}
     </View>

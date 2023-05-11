@@ -12,12 +12,15 @@ import CustomDrawerContent from '../components/CustomDrawer';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import useTabInitializer from '../utils/useTabInitializer';
 import Loading from '../components/Loading';
+import RoomsScreen from '../screens/Chats';
+import ChatScreen from '../screens/Chats/ChatScreen';
 
 const Drawer = createDrawerNavigator();
 const ChatBotStack = createNativeStackNavigator();
 const EntityStack = createNativeStackNavigator();
 const ExpertStack = createNativeStackNavigator();
 const ProfileStack = createNativeStackNavigator();
+const ChatStack = createNativeStackNavigator();
 
 const MainDrawerScreen = props => {
   const {colors} = useTheme();
@@ -93,7 +96,7 @@ const MainDrawerScreen = props => {
         //   ),
         // }}
       />
-
+      <Drawer.Screen name="Chats" component={ChatStackScreen} />
       <Drawer.Screen
         name="Profile"
         component={ProfileStackScreen}
@@ -133,6 +136,15 @@ const ExpertStackScreen = () => {
     <ExpertStack.Navigator screenOptions={{headerShown: false}}>
       <ExpertStack.Screen name="SearchExpert" component={SearchExpert} />
     </ExpertStack.Navigator>
+  );
+};
+
+const ChatStackScreen = () => {
+  return (
+    <ChatStack.Navigator screenOptions={{headerShown: false}}>
+      <ChatStack.Screen name="Rooms" component={RoomsScreen} />
+      <ChatStack.Screen name="Chat" component={ChatScreen} />
+    </ChatStack.Navigator>
   );
 };
 

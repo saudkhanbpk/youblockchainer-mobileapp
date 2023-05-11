@@ -9,16 +9,6 @@ export const getAllRooms = async () => {
   }
 };
 
-export const getAllGroups = async () => {
-  try {
-    let res = await API.get(ENDPOINTS.GROUP_ACTIONS, true);
-    //console.log(res);
-    return res;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
 export const createRoom = async id => {
   try {
     let res = await API.post(ENDPOINTS.ROOM_ACTIONS, {receiver: id}, true);

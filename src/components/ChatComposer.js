@@ -29,7 +29,7 @@ const ChatComposer = ({
           // icon="image"
           // family="Feather"
           placeholderTextColor={colors.textAfter}
-          style={styles.input}
+          style={{...styles.input, color: colors.text}}
           value={value}
           onChangeText={onChangeText}
           multiline

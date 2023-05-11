@@ -1,65 +1,67 @@
 import React, {useContext, useState} from 'react';
-import {View, StyleSheet, Pressable, Modal} from 'react-native';
+import {View, StyleSheet, Pressable} from 'react-native';
 import Header from '../../components/Header';
 import {GiftedChat, Bubble} from 'react-native-gifted-chat';
 import {useTheme} from 'react-native-paper';
-import {AuthContext} from '../../authentication/AuthProvider';
 import {useWebSockets} from '../../utils/useWebSocket';
 import ChatComposer from '../../components/ChatComposer';
-import {uploadImage} from '../../utils/aws';
-import {isImage} from '../../utils/helpers';
 import ImageLoader from '../../components/ImageLoader';
-import {width} from '../../Consts';
+import {width} from '../../Constants';
 import ZoomImage from '../../components/ZoomImage';
+import {GlobalContext} from '../../auth/GlobalProvider';
+import {uploadImage} from '../../utils/userAPI';
 
 const ChatScreen = ({route}) => {
   const {colors} = useTheme();
   const {room, isGroup = false} = route.params;
-  const {currentUser} = useContext(AuthContext);
+  const {user} = useContext(GlobalContext);
   const [text, setText] = useState('');
   const [selected, setSelected] = useState('');
   const [show, setShow] = useState(false);
   const {messages, send} = useWebSockets({
     roomId: room._id,
     enabled: room ? true : false,
-    sender: currentUser._id,
+    sender: user._id,
   });
 
-  const usingP2 = isGroup
-    ? null
-    : room.p1._id === currentUser._id
-    ? true
-    : false;
+  const usingP2 = isGroup ? null : room.p1._id === user._id ? true : false;
 
   // const onSend = useCallback((messages = []) => {
   //   send('Text', messages);
   // }, []);
 
-  // const renderBubble = props => {
-  //   return (
-  //     <Bubble
-  //       {...props}
-  //       wrapperStyle={{
-  //         right: {
-  //           // Here is the color change
-  //           backgroundColor: colors.primary,
-  //           marginVertical: 5,
-  //         },
-  //         left: {
-  //           backgroundColor: '#fff',
-  //         },
-  //       }}
-  //       textStyle={{
-  //         right: {
-  //           color: '#fff',
-  //         },
-  //         left: {
-  //           color: colors.text,
-  //         },
-  //       }}
-  //     />
-  //   );
-  // };
+  const renderBubble = props => {
+    return (
+      <Bubble
+        {...props}
+        wrapperStyle={{
+          right: {
+            // Here is the color change
+            backgroundColor: colors.backgroundLight,
+            marginVertical: 5,
+            borderRadius: 5,
+          },
+          left: {
+            backgroundColor: colors.backgroundLight,
+            borderRadius: 5,
+          },
+        }}
+        textStyle={{
+          right: {
+            color: colors.text,
+            fontFamily: 'Poppins-Regular',
+
+            fontSize: 12,
+          },
+          left: {
+            color: colors.textAfter,
+            fontFamily: 'Poppins-Regular',
+            fontSize: 12,
+          },
+        }}
+      />
+    );
+  };
 
   const renderInputToolbar = props => {
     return (
@@ -72,7 +74,8 @@ const ChatScreen = ({route}) => {
         }}
         onImagePress={async () => {
           let uri = await uploadImage();
-          send(isImage(uri) ? 'Image' : 'Video', uri);
+          if (!uri) return;
+          send('Image', uri);
         }}
         props={props}
       />
@@ -109,9 +112,9 @@ const ChatScreen = ({route}) => {
         //renderInputToolbar={renderInputToolbar}
         renderComposer={renderInputToolbar}
         user={{
-          _id: currentUser._id,
-          name: currentUser.name,
-          avatar: currentUser.profileImages[0],
+          _id: user._id,
+          name: user.name,
+          avatar: user.profileImages[0],
         }}
         renderBubble={renderBubble}
         multiline={true}
