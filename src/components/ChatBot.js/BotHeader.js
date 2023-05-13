@@ -2,11 +2,17 @@ import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Button, IconButton} from 'react-native-paper';
 
-const BotHeader = ({showClear, onClear, downloadDisabled, onDownload}) => {
+const BotHeader = ({
+  showClear,
+  onClear,
+  downloadDisabled,
+  onDownload,
+  generating,
+}) => {
   return (
     <View style={styles.container}>
       <Button mode="contained" disabled={!showClear} onPress={onClear}>
-        Clear Chat
+        {generating ? 'Stop Generation' : 'Clear Chat'}
       </Button>
 
       <IconButton

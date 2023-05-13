@@ -15,8 +15,25 @@ const ChatBot = props => {
   const {user} = useContext(GlobalContext);
   const [text, setText] = useState('');
   const [inputOptions, setInputOptions] = useState([]);
-  const [prompt, setPrompt] = useState('');
   const [loading, setLoading] = useState(false);
+  const [stopped, setStopped] = useState(false);
+  const topics = [
+    'Opening Image',
+    'Theme Stated',
+    'Setup',
+    'Catalyst',
+    'Debate',
+    'Break Into Two',
+    'B Story',
+    'Fun and Games',
+    'Midpoint',
+    'Bad Guys Close In',
+    'All is Lost',
+    'Dark Night of the Soul',
+    'Break Into Three',
+    'Finale',
+    'Final Image',
+  ];
 
   const currentUser = useMemo(() => {
     return !user
@@ -38,6 +55,7 @@ const ChatBot = props => {
     name: 'YBC',
     avatar: appLogo,
   };
+
   const questions = Object.keys(OptionMap);
   const [messages, setMessages] = useState([
     {
@@ -88,6 +106,7 @@ const ChatBot = props => {
 
   const onSelectOption = reply => {
     setLoading(true);
+    setStopped(false);
 
     setMessages(m => [
       {
@@ -102,6 +121,7 @@ const ChatBot = props => {
   };
 
   const clearChat = () => {
+    console.log('---Chat Cleared');
     setMessages([
       {
         _id: 0,
@@ -137,13 +157,15 @@ const ChatBot = props => {
     );
   };
 
-  const initialFire = async () => {
+  const initialFire = async idea => {
+    console.log('Idea:- ', idea);
     let template = `Write title, character profiles for a ${inputOptions[0]} ${
       inputOptions[1]
     } with temporality as ${inputOptions[2]}. ${
-      text && `The idea is ${text}.`
+      !!idea ? `The idea is ${idea}.` : ''
     } Also give the outline for this story using the Save the cat story structure.`;
     setLoading(true);
+    console.log('---Asking:- ' + template);
     let reply = await askGPT(template);
     console.log(reply);
     setMessages(m => [
@@ -155,14 +177,92 @@ const ChatBot = props => {
       },
       ...m,
     ]);
-    setPrompt(template + reply);
+    await askGPTRecursive(0, template + '\n' + reply);
+    // await askGPTinLoop(template + '\n' + reply);
     setLoading(false);
+  };
+
+  const askGPTRecursive = async (index, currentTemplate) => {
+    if (index >= topics.length || stopped) {
+      return;
+    }
+    let temp = currentTemplate;
+    temp += `\nWrite ${topics[index]} in a screenplay format.`;
+    let r = await askGPT(temp);
+    temp += '\n' + r;
+    setMessages(m => [
+      {
+        _id: m.length,
+        text: `**${topics[index]}**\n${r}`,
+        createdAt: new Date(),
+        user: backend,
+      },
+      ...m,
+    ]);
+    return await askGPTRecursive(index + 1, temp);
+  };
+
+  useEffect(() => {
+    console.log(text);
+  }, [text]);
+
+  const askGPTinLoop = async initPrompt => {
+    let temp = initPrompt;
+    await Promise.all(
+      topics.map(async topic => {
+        temp += `\nWrite ${topic} in a screenplay format. The length should be at least one page.`;
+        let r = await askGPT(temp);
+        if (stopped) {
+          clearChat();
+        }
+        console.log('Prompt:- ', temp);
+        console.log('Reply:- ', r);
+        temp += '\n' + r;
+        setMessages(m => [
+          {
+            _id: m.length,
+            text: `**${topic}**\n${r}`,
+            createdAt: new Date(),
+            user: backend,
+          },
+          ...m,
+        ]);
+      }),
+    );
+    // let requests = topics.map(topic => {
+    //   return new Promise((resolve, reject) => {
+    //     temp += `\nWrite ${topic} in a screenplay format. The length should be at least one page.`;
+    //     askGPT(temp)
+    //       .then(r => {
+    //         if (stopped) {
+    //           clearChat();
+    //           reject('Generation Stopped');
+    //         }
+    //         console.log('Prompt:- ', temp);
+    //         console.log('Reply:- ', r);
+    //         temp += '\n' + r;
+    //         setMessages(m => [
+    //           {
+    //             _id: m.length,
+    //             text: `**${topic}**\n${r}`,
+    //             createdAt: new Date(),
+    //             user: backend,
+    //           },
+    //           ...m,
+    //         ]);
+    //         resolve(r);
+    //       })
+    //       .catch(e => reject(e));
+    //   });
+    // });
+
+    // await Promise.all(requests);
   };
 
   useEffect(() => {
     if (inputOptions.length === 4) {
       if (inputOptions[3] === 'NO') initialFire(); //nesting is done so that it does'nt fallback for a Yes
-    } else if (inputOptions.length === 5) initialFire();
+    } else if (inputOptions.length === 5) initialFire(inputOptions.slice(-1));
     else if (inputOptions.length > 0) {
       let current = questions[inputOptions.length];
       let options = OptionMap[current].options;
@@ -192,7 +292,11 @@ const ChatBot = props => {
     <View style={styles.container}>
       <BotHeader
         showClear={messages.length > 1}
-        onClear={clearChat}
+        onClear={() => {
+          setStopped(true);
+          clearChat();
+        }}
+        generating={loading}
         downloadDisabled={true}
       />
       <GiftedChat
