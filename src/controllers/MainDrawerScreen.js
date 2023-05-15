@@ -14,6 +14,7 @@ import useTabInitializer from '../utils/useTabInitializer';
 import Loading from '../components/Loading';
 import RoomsScreen from '../screens/Chats';
 import ChatScreen from '../screens/Chats/ChatScreen';
+import ExpertDetail from '../screens/Experts/ExpertDetail';
 
 const Drawer = createDrawerNavigator();
 const ChatBotStack = createNativeStackNavigator();
@@ -135,6 +136,7 @@ const ExpertStackScreen = () => {
   return (
     <ExpertStack.Navigator screenOptions={{headerShown: false}}>
       <ExpertStack.Screen name="SearchExpert" component={SearchExpert} />
+      <ExpertStack.Screen name="ExpertDetail" component={ExpertDetail} />
     </ExpertStack.Navigator>
   );
 };

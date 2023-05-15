@@ -76,9 +76,20 @@ export const getTransactionHistory = async (address, page, setEnd, num) => {
 
 export const getUsers = async (isExpert, setUsers) => {
   try {
-    let res = await API.get(ENDPOINTS.USER_ACTIONS, {expert: isExpert});
+    let res = await API.get(ENDPOINTS.USER_ACTIONS + `?expert=${isExpert}`);
+    console.log(res);
     setUsers(res);
   } catch (error) {
     console.log('Error in getting users:- ', error.message);
+  }
+};
+
+export const getMyAgreements = async id => {
+  try {
+    let res = await API.get(ENDPOINTS.GET_USER_AGREEMENTS + id);
+    return res;
+  } catch (error) {
+    console.log('Error in getting My Agreement:-', error.message);
+    return [];
   }
 };

@@ -10,6 +10,8 @@ import {width} from '../../Constants';
 import ZoomImage from '../../components/ZoomImage';
 import {GlobalContext} from '../../auth/GlobalProvider';
 import {uploadImage} from '../../utils/userAPI';
+import ChatHeader from '../../components/Chat/ChatHeader';
+import {useMemo} from 'react';
 
 const ChatScreen = ({route}) => {
   const {colors} = useTheme();
@@ -24,7 +26,7 @@ const ChatScreen = ({route}) => {
     sender: user._id,
   });
 
-  const usingP2 = isGroup ? null : room.p1._id === user._id ? true : false;
+  const userIsP1 = useMemo(() => user._id === room.p1._id, [user, room]);
 
   // const onSend = useCallback((messages = []) => {
   //   send('Text', messages);
@@ -99,9 +101,7 @@ const ChatScreen = ({route}) => {
 
   return (
     <View style={styles.container}>
-      <Header
-        title={isGroup ? room.name : usingP2 ? room.p2.name : room.p1.name}
-      />
+      <ChatHeader user={userIsP1 ? room.p2 : room.p1} />
       <GiftedChat
         messages={messages}
         renderMessageImage={renderImage}

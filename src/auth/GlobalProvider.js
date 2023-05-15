@@ -5,10 +5,12 @@ import {ToastAndroid} from 'react-native';
 import API, {ENDPOINTS} from '../api/apiService';
 import Web3 from 'web3';
 import StorageManager from '../storage/StorageManager';
-import {PLATFORM, rpcConfig} from '../Constants';
+import {contractAddress, forwarderAddress, rpcConfig} from '../Constants';
 import {API_TOKEN, ONBOARDED, USER} from '../storage/StorageKeys';
 import {useEffect} from 'react';
 import {getMe, getUserNFTs} from '../utils/userAPI';
+import Forwarder from '../abis/Forwarder.json';
+import AskGPT from '../abis/AskGPT.json';
 
 export const GlobalContext = createContext();
 
@@ -17,14 +19,15 @@ const GlobalProvider = ({children}) => {
   const [chainId, setChainId] = useState(0);
   const [signedIn, setSignedIn] = useState(false);
   const [web3Provider, setWeb3Provider] = useState(null);
-  const [contractAddress, setContractAddress] = useState(null);
   const [web3, setWeb3] = useState(null);
+  const [forwarderC, setForwarderC] = useState(null);
+  const [mainContract, setMainContract] = useState(null);
   const [editProfile, setEditProfile] = useState(false);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const onChainChanged = async chainId => {
-    // console.log(chainId);
+    //console.log(chainId);
     if (!!chainId && chainId !== rpcConfig.chainId) {
       let res = web3Provider;
       if (!res) {
@@ -49,7 +52,7 @@ const GlobalProvider = ({children}) => {
     if (signedIn) {
       // let res = await StorageManager.get(USER);
       // if (res) return setUser(res);
-      console.log('Call User API:- ', address);
+      console.log('---Call User API:- ', address);
       if (address === null || address === undefined) {
         await connector.killSession("Wallet did'nt connect properly");
         throw new Error("Wallet did'nt connect properly");
@@ -58,6 +61,34 @@ const GlobalProvider = ({children}) => {
       return;
     }
     await loginAccount();
+  };
+
+  const executeMetaTx = async (data, targetAddress) => {
+    try {
+      let from = user.walletAddress;
+      const nonce = await forwarderC.methods.getNonce(from).call();
+      const tx = {
+        from,
+        to: targetAddress, // Target contract address (AskGPT or Agreement subcontract)
+        value: 0,
+        nonce,
+        data,
+      };
+      const digest = await forwarderC.methods
+        .getDigest(tx.from, tx.to, tx.value, tx.nonce, tx.data)
+        .call();
+      const signature = await web3.eth.personal.sign(digest, from);
+
+      const res = await API.post(ENDPOINTS.META_TX, {
+        tx,
+        signature,
+      });
+
+      return res.success;
+    } catch (error) {
+      console.log('Meta Tx creation error:- ', error.message);
+      //notifyEVMError(error)
+    }
   };
 
   const initializeWeb3 = async w3 => {
@@ -73,18 +104,21 @@ const GlobalProvider = ({children}) => {
         setWeb3Provider(provider);
         res = new Web3(provider);
         setWeb3(res);
-        console.log('created web3');
+        console.log('---Created Web3');
       }
+      const accounts = await res.eth.getAccounts();
+      console.log('---EthAccounts:-', accounts);
+      let contract1 = new res.eth.Contract(Forwarder, forwarderAddress);
+      setForwarderC(contract1);
+      console.log('---Forwarder Instance Created');
 
-      // const accounts = await res.eth.getAccounts();
-      // console.log('EthAccounts:-', accounts);
+      let contract2 = new res.eth.Contract(AskGPT, contractAddress);
+      setMainContract(contract2);
+      console.log('---MainContract Instance Created');
+
       // let cd = await API.get(ENDPOINTS.GET_LATEST_CONTRACTADDRESS);
       // setContractAddress(cd.contractAddress);
       // console.log(cd);
-      // const contract = new res.eth.Contract(OfferFactory, cd.contractAddress);
-      // // console.log(contract);
-      // setOfferFactory(contract);
-      // console.log('offerfactory setup done');
     } catch (error) {
       console.log(error);
     }
@@ -102,8 +136,7 @@ const GlobalProvider = ({children}) => {
       // provider.on('chainChanged', onChainChanged);
       const res = new Web3(provider);
       setWeb3(res);
-
-      console.log('Web3 signature');
+      initializeWeb3(res);
       //console.log(res);
       let userAddress = connector.accounts[0].toLowerCase();
       let signature = await res.eth.personal.sign(
@@ -167,9 +200,10 @@ const GlobalProvider = ({children}) => {
         setEditProfile,
         loading,
         web3,
-        contractAddress,
         fetchMyNFTs,
         initializeWeb3,
+        mainContract,
+        executeMetaTx,
 
         connect: async () => {
           setLoading(true);

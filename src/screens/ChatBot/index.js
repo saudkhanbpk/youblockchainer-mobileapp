@@ -1,6 +1,6 @@
 import React, {useContext, useState, useMemo, useEffect} from 'react';
-import {View, StyleSheet} from 'react-native';
-import {Text, useTheme} from 'react-native-paper';
+import {View, StyleSheet, Linking} from 'react-native';
+import {useTheme} from 'react-native-paper';
 import {GlobalContext} from '../../auth/GlobalProvider';
 import {GiftedChat, Bubble} from 'react-native-gifted-chat';
 import ChatComposer from '../../components/ChatComposer';
@@ -151,7 +151,7 @@ const ChatBot = props => {
           onSelectOption([{title: text}]);
           setText('');
         }}
-        disabled={!(inputOptions.length === 4 && inputOptions[3] === 'YES')}
+        disabled={!(inputOptions.length === 4 && inputOptions[3] !== 'NO')}
         props={props}
       />
     );
@@ -162,12 +162,13 @@ const ChatBot = props => {
     let template = `Write title, character profiles for a ${inputOptions[0]} ${
       inputOptions[1]
     } with temporality as ${inputOptions[2]}. ${
-      !!idea ? `The idea is ${idea}.` : ''
+      !!idea[0] ? `The idea is ${idea[0]}.` : ''
     } Also give the outline for this story using the Save the cat story structure.`;
     setLoading(true);
     console.log('---Asking:- ' + template);
     let reply = await askGPT(template);
     console.log(reply);
+    if (stopped) return;
     setMessages(m => [
       {
         _id: m.length,
@@ -189,79 +190,81 @@ const ChatBot = props => {
     let temp = currentTemplate;
     temp += `\nWrite ${topics[index]} in a screenplay format.`;
     let r = await askGPT(temp);
-    temp += '\n' + r;
-    setMessages(m => [
-      {
-        _id: m.length,
-        text: `**${topics[index]}**\n${r}`,
-        createdAt: new Date(),
-        user: backend,
-      },
-      ...m,
-    ]);
+    if (!!r) {
+      temp += '\n' + r;
+      setMessages(m => [
+        {
+          _id: m.length,
+          text: `**${topics[index]}**\n${r}`,
+          createdAt: new Date(),
+          user: backend,
+        },
+        ...m,
+      ]);
+    }
+
     return await askGPTRecursive(index + 1, temp);
   };
 
-  useEffect(() => {
-    console.log(text);
-  }, [text]);
+  // const askGPTinLoop = async initPrompt => {
+  //   let temp = initPrompt;
+  //   await Promise.all(
+  //     topics.map(async topic => {
+  //       temp += `\nWrite ${topic} in a screenplay format. The length should be at least one page.`;
+  //       let r = await askGPT(temp);
+  //       if (stopped) {
+  //         clearChat();
+  //       }
+  //       console.log('Prompt:- ', temp);
+  //       console.log('Reply:- ', r);
+  //       temp += '\n' + r;
+  //       setMessages(m => [
+  //         {
+  //           _id: m.length,
+  //           text: `**${topic}**\n${r}`,
+  //           createdAt: new Date(),
+  //           user: backend,
+  //         },
+  //         ...m,
+  //       ]);
+  //     }),
+  //   );
+  //   // let requests = topics.map(topic => {
+  //   //   return new Promise((resolve, reject) => {
+  //   //     temp += `\nWrite ${topic} in a screenplay format. The length should be at least one page.`;
+  //   //     askGPT(temp)
+  //   //       .then(r => {
+  //   //         if (stopped) {
+  //   //           clearChat();
+  //   //           reject('Generation Stopped');
+  //   //         }
+  //   //         console.log('Prompt:- ', temp);
+  //   //         console.log('Reply:- ', r);
+  //   //         temp += '\n' + r;
+  //   //         setMessages(m => [
+  //   //           {
+  //   //             _id: m.length,
+  //   //             text: `**${topic}**\n${r}`,
+  //   //             createdAt: new Date(),
+  //   //             user: backend,
+  //   //           },
+  //   //           ...m,
+  //   //         ]);
+  //   //         resolve(r);
+  //   //       })
+  //   //       .catch(e => reject(e));
+  //   //   });
+  //   // });
 
-  const askGPTinLoop = async initPrompt => {
-    let temp = initPrompt;
-    await Promise.all(
-      topics.map(async topic => {
-        temp += `\nWrite ${topic} in a screenplay format. The length should be at least one page.`;
-        let r = await askGPT(temp);
-        if (stopped) {
-          clearChat();
-        }
-        console.log('Prompt:- ', temp);
-        console.log('Reply:- ', r);
-        temp += '\n' + r;
-        setMessages(m => [
-          {
-            _id: m.length,
-            text: `**${topic}**\n${r}`,
-            createdAt: new Date(),
-            user: backend,
-          },
-          ...m,
-        ]);
-      }),
-    );
-    // let requests = topics.map(topic => {
-    //   return new Promise((resolve, reject) => {
-    //     temp += `\nWrite ${topic} in a screenplay format. The length should be at least one page.`;
-    //     askGPT(temp)
-    //       .then(r => {
-    //         if (stopped) {
-    //           clearChat();
-    //           reject('Generation Stopped');
-    //         }
-    //         console.log('Prompt:- ', temp);
-    //         console.log('Reply:- ', r);
-    //         temp += '\n' + r;
-    //         setMessages(m => [
-    //           {
-    //             _id: m.length,
-    //             text: `**${topic}**\n${r}`,
-    //             createdAt: new Date(),
-    //             user: backend,
-    //           },
-    //           ...m,
-    //         ]);
-    //         resolve(r);
-    //       })
-    //       .catch(e => reject(e));
-    //   });
-    // });
-
-    // await Promise.all(requests);
-  };
+  //   // await Promise.all(requests);
+  // };
 
   useEffect(() => {
     if (inputOptions.length === 4) {
-      if (inputOptions[3] === 'NO') initialFire(); //nesting is done so that it does'nt fallback for a Yes
+      if (inputOptions[3] === 'NO')
+        initialFire(); //nesting is done so that it does'nt fallback for a Yes
+      else if (inputOptions[3] !== 'YES')
+        Linking.openURL('http://www.google.com');
     } else if (inputOptions.length === 5) initialFire(inputOptions.slice(-1));
     else if (inputOptions.length > 0) {
       let current = questions[inputOptions.length];
@@ -294,6 +297,7 @@ const ChatBot = props => {
         showClear={messages.length > 1}
         onClear={() => {
           setStopped(true);
+          setLoading(false);
           clearChat();
         }}
         generating={loading}

@@ -5,6 +5,10 @@ const USER = {
   GET_PAGINATED_USERS: '/user/users/paginated',
   SEARCH_USERS: '/user/users/search',
   TOGGLE_FOLLOW: '/user/toggleFollow/',
+  META_TX: '/user/metatx',
+  GET_USER_AGREEMENTS: '/user/agreements/', //append user id
+  AGREEMENT_ACTION: '/user/agreement/', //append agreement id
+  CREATE_METATX: '/user/metatx',
 };
 
 const IPFS = {
@@ -31,6 +35,4 @@ export const ENDPOINTS = {
   ...BRAND,
   ...CHAT,
   ASK_GPT: '/gpt/ask',
-  AGREEMENT_ACTIONS: '/user/agreement/',
-  CREATE_METATX: '/user/metatx',
 };
