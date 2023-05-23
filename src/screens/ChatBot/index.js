@@ -7,7 +7,7 @@ import ChatComposer from '../../components/ChatComposer';
 import OptionMap from './OptionMap.json';
 import {arraytoQuickReply} from '../../utils/helper';
 import {askGPT} from '../../utils/chatAPI';
-import {appLogo} from '../../Constants';
+import {appLogo, defaultAvatar} from '../../Constants';
 import BotHeader from '../../components/ChatBot.js/BotHeader';
 
 const ChatBot = props => {
@@ -44,9 +44,7 @@ const ChatBot = props => {
       : {
           _id: user._id,
           name: user.name,
-          avatar:
-            user.profileImage ||
-            'https://thumbs.dreamstime.com/b/default-avatar-profile-trendy-style-social-media-user-icon-187599373.jpg',
+          avatar: user.profileImage || defaultAvatar,
         };
   }, [user]);
 

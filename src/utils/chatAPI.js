@@ -21,7 +21,7 @@ export const createRoom = async id => {
 
 export const getAllChats = async id => {
   try {
-    let res = await API.get(ENDPOINTS.ROOM_ACTIONS + '/' + id, true);
+    let res = await API.get(ENDPOINTS.ROOM_ACTIONS + id, true);
     //console.log('Chats:- ', res);
     return res;
   } catch (error) {

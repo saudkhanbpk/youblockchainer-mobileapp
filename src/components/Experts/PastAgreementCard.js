@@ -2,6 +2,7 @@ import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Avatar, Card, Text, useTheme} from 'react-native-paper';
 import StarRating from 'react-native-star-rating';
+import {defaultAvatar} from '../../Constants';
 
 const PastAgreementCard = ({agreement, baseStyle}) => {
   const {user1, name, reviewForU2, ratingForU2} = agreement;
@@ -12,7 +13,10 @@ const PastAgreementCard = ({agreement, baseStyle}) => {
     <Card style={{...baseStyle, ...styles.container}}>
       <View>
         <View style={{flexDirection: 'row', marginVertical: 10}}>
-          <Avatar.Image source={{uri: profileImage}} size={45} />
+          <Avatar.Image
+            source={{uri: profileImage || defaultAvatar}}
+            size={45}
+          />
           <View style={{marginLeft: 10}}>
             <Text style={{fontWeight: 'bold', fontSize: 16}}>{name}</Text>
             <View

@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {View, StyleSheet, Pressable} from 'react-native';
 import Header from '../../components/Header';
 import {GiftedChat, Bubble} from 'react-native-gifted-chat';
@@ -6,7 +6,7 @@ import {useTheme} from 'react-native-paper';
 import {useWebSockets} from '../../utils/useWebSocket';
 import ChatComposer from '../../components/ChatComposer';
 import ImageLoader from '../../components/ImageLoader';
-import {width} from '../../Constants';
+import {defaultAvatar, width} from '../../Constants';
 import ZoomImage from '../../components/ZoomImage';
 import {GlobalContext} from '../../auth/GlobalProvider';
 import {uploadImage} from '../../utils/userAPI';
@@ -16,11 +16,10 @@ import {useMemo} from 'react';
 const ChatScreen = ({route}) => {
   const {colors} = useTheme();
   const {room, isGroup = false} = route.params;
-  const {user} = useContext(GlobalContext);
-  const [text, setText] = useState('');
+  const {user, setShowAgreement} = useContext(GlobalContext);
   const [selected, setSelected] = useState('');
   const [show, setShow] = useState(false);
-  const {messages, send} = useWebSockets({
+  const {messages, send, status} = useWebSockets({
     roomId: room._id,
     enabled: room ? true : false,
     sender: user._id,
@@ -66,6 +65,7 @@ const ChatScreen = ({route}) => {
   };
 
   const renderInputToolbar = props => {
+    const [text, setText] = useState('');
     return (
       <ChatComposer
         value={text}
@@ -74,11 +74,11 @@ const ChatScreen = ({route}) => {
           send('Text', text);
           setText('');
         }}
-        onImagePress={async () => {
-          let uri = await uploadImage();
-          if (!uri) return;
-          send('Image', uri);
-        }}
+        // onImagePress={async () => {
+        //   let uri = await uploadImage();
+        //   if (!uri) return;
+        //   send('Image', uri);
+        // }}
         props={props}
       />
     );
@@ -101,7 +101,10 @@ const ChatScreen = ({route}) => {
 
   return (
     <View style={styles.container}>
-      <ChatHeader user={userIsP1 ? room.p2 : room.p1} />
+      <ChatHeader
+        user={userIsP1 ? room.p2 : room.p1}
+        onHire={() => setShowAgreement(userIsP1 ? room.p2 : room.p1)}
+      />
       <GiftedChat
         messages={messages}
         renderMessageImage={renderImage}
@@ -114,7 +117,7 @@ const ChatScreen = ({route}) => {
         user={{
           _id: user._id,
           name: user.name,
-          avatar: user.profileImages[0],
+          avatar: user.profileImage || defaultAvatar,
         }}
         renderBubble={renderBubble}
         multiline={true}

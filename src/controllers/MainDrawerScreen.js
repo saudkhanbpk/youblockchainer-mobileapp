@@ -15,6 +15,8 @@ import Loading from '../components/Loading';
 import RoomsScreen from '../screens/Chats';
 import ChatScreen from '../screens/Chats/ChatScreen';
 import ExpertDetail from '../screens/Experts/ExpertDetail';
+import EditProfile from '../screens/Profile/EditProfile';
+import AgreementModal from '../components/Agreements/AgreementModal';
 
 const Drawer = createDrawerNavigator();
 const ChatBotStack = createNativeStackNavigator();
@@ -31,88 +33,91 @@ const MainDrawerScreen = props => {
   return loading ? (
     <Loading />
   ) : (
-    <Drawer.Navigator
-      drawerContent={CustomDrawerContent}
-      screenOptions={{
-        header: ({navigation}) => <Tophead navigation={navigation} />,
-        drawerActiveTintColor: colors.primary,
-        drawerInactiveTintColor: colors.textAfter,
-        drawerActiveBackgroundColor: 'transparent',
-        drawerStyle: {
-          minWidth: 250,
-          width: '60%',
-        },
-      }}>
-      <Drawer.Screen
-        name="ChatBot"
-        component={ChatBotStackScreen}
-        // options={{
-        //   drawerLabel: ({focused, color}) => (
-        //     <Text style={{color: color, fontSize: 16, letterSpacing: 1}}>
-        //       Home
-        //     </Text>
-        //   ),
-        //   drawerIcon: ({focused, color}) => (
-        //     <MaterialCommunityIcons
-        //       name="home-variant"
-        //       size={size}
-        //       color={color}
-        //     />
-        //   ),
-        // }}
-      />
-      <Drawer.Screen
-        name="Expert"
-        component={ExpertStackScreen}
-        // options={{
-        //   drawerLabel: ({focused, color}) => (
-        //     <Text style={{color: color, fontSize: 16, letterSpacing: 1}}>
-        //       Experts
-        //     </Text>
-        //   ),
-        //   drawerIcon: ({focused, color}) => (
-        //     <MaterialCommunityIcons
-        //       name="account-search"
-        //       size={size}
-        //       color={color}
-        //     />
-        //   ),
-        // }}
-      />
-      <Drawer.Screen
-        name="Entity"
-        component={EntityStackScreen}
-        // options={{
-        //   drawerLabel: ({focused, color}) => (
-        //     <Text style={{color: color, fontSize: 16, letterSpacing: 1}}>
-        //       Entities
-        //     </Text>
-        //   ),
-        //   drawerIcon: ({focused, color}) => (
-        //     <MaterialCommunityIcons
-        //       name="feature-search"
-        //       size={size}
-        //       color={color}
-        //     />
-        //   ),
-        // }}
-      />
-      <Drawer.Screen name="Chats" component={ChatStackScreen} />
-      <Drawer.Screen
-        name="Profile"
-        component={ProfileStackScreen}
-        // options={{
-        //   drawerLabel: ({focused, color}) => (
-        //     <Text style={{color: color, fontSize: 16, letterSpacing: 1}}>
-        //       Profile
-        //     </Text>
-        //   ),
-        //   drawerIcon: ({focused, color}) => (
-        //     <MaterialCommunityIcons name="account" size={size} color={color} />
-        //   ),
-        // }}
-      />
-    </Drawer.Navigator>
+    <View style={{flex: 1}}>
+      <Drawer.Navigator
+        drawerContent={CustomDrawerContent}
+        screenOptions={{
+          header: ({navigation}) => <Tophead navigation={navigation} />,
+          drawerActiveTintColor: colors.primary,
+          drawerInactiveTintColor: colors.textAfter,
+          drawerActiveBackgroundColor: 'transparent',
+          drawerStyle: {
+            minWidth: 250,
+            width: '60%',
+          },
+        }}>
+        <Drawer.Screen
+          name="ChatBot"
+          component={ChatBotStackScreen}
+          // options={{
+          //   drawerLabel: ({focused, color}) => (
+          //     <Text style={{color: color, fontSize: 16, letterSpacing: 1}}>
+          //       Home
+          //     </Text>
+          //   ),
+          //   drawerIcon: ({focused, color}) => (
+          //     <MaterialCommunityIcons
+          //       name="home-variant"
+          //       size={size}
+          //       color={color}
+          //     />
+          //   ),
+          // }}
+        />
+        <Drawer.Screen
+          name="Expert"
+          component={ExpertStackScreen}
+          // options={{
+          //   drawerLabel: ({focused, color}) => (
+          //     <Text style={{color: color, fontSize: 16, letterSpacing: 1}}>
+          //       Experts
+          //     </Text>
+          //   ),
+          //   drawerIcon: ({focused, color}) => (
+          //     <MaterialCommunityIcons
+          //       name="account-search"
+          //       size={size}
+          //       color={color}
+          //     />
+          //   ),
+          // }}
+        />
+        <Drawer.Screen
+          name="Entity"
+          component={EntityStackScreen}
+          // options={{
+          //   drawerLabel: ({focused, color}) => (
+          //     <Text style={{color: color, fontSize: 16, letterSpacing: 1}}>
+          //       Entities
+          //     </Text>
+          //   ),
+          //   drawerIcon: ({focused, color}) => (
+          //     <MaterialCommunityIcons
+          //       name="feature-search"
+          //       size={size}
+          //       color={color}
+          //     />
+          //   ),
+          // }}
+        />
+        <Drawer.Screen name="Chats" component={ChatStackScreen} />
+        <Drawer.Screen
+          name="Profile"
+          component={ProfileStackScreen}
+          // options={{
+          //   drawerLabel: ({focused, color}) => (
+          //     <Text style={{color: color, fontSize: 16, letterSpacing: 1}}>
+          //       Profile
+          //     </Text>
+          //   ),
+          //   drawerIcon: ({focused, color}) => (
+          //     <MaterialCommunityIcons name="account" size={size} color={color} />
+          //   ),
+          // }}
+        />
+      </Drawer.Navigator>
+      <AgreementModal />
+    </View>
   );
 };
 
@@ -154,6 +159,7 @@ const ProfileStackScreen = () => {
   return (
     <ProfileStack.Navigator screenOptions={{headerShown: false}}>
       <ProfileStack.Screen name="ProfileMain" component={Profile} />
+      <ProfileStack.Screen name="EditProfile" component={EditProfile} />
     </ProfileStack.Navigator>
   );
 };

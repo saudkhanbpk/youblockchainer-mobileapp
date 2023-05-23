@@ -1,12 +1,14 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {View, StyleSheet, FlatList} from 'react-native';
 import {Text} from 'react-native-paper';
 import SearchBar from '../../components/Experts/SearchBar';
 import ExpertCard from '../../components/Experts/ExpertCard';
 import Loading from '../../components/Loading';
 import {getUsers} from '../../utils/userAPI';
+import {RefreshControl} from 'react-native-gesture-handler';
+import FuzzySearch from 'fuzzy-search';
 
-const SearchExpert = props => {
+const SearchExpert = ({navigation}) => {
   const [experts, setExperts] = useState([
     // {
     //   _id: 0,
@@ -141,14 +143,27 @@ const SearchExpert = props => {
   const [query, setQuery] = useState('');
   const [filtered, setFiltered] = useState();
   const [loading, setLoading] = useState(false);
+  const searcher = useMemo(
+    () =>
+      new FuzzySearch(
+        experts,
+        ['username', 'skills', 'bio', 'descriptorTitle'],
+        {
+          caseSensitive: false,
+          sort: true,
+        },
+      ),
+    [experts],
+  );
 
   const search = text => {
     // await getProducts();
 
     setLoading(true);
-    let filteredName = experts.filter(item => {
-      return item.username.toLowerCase().match(text.toLowerCase());
-    });
+    let filteredName = searcher.search(text);
+    // experts.filter(item => {
+    //   return item.username.toLowerCase().match(text.toLowerCase());
+    // });
     if (!text || text === '') {
       setFiltered(experts);
     } else if (Array.isArray(filteredName)) {
@@ -165,10 +180,15 @@ const SearchExpert = props => {
 
   useEffect(() => {
     search(query);
-  }, [query]);
+  }, [query, experts]);
 
   useEffect(() => {
-    getExperts();
+    const listner = navigation.addListener('focus', () => {
+      getExperts();
+      setQuery('');
+    });
+
+    return listner;
   }, []);
 
   return (
@@ -184,6 +204,9 @@ const SearchExpert = props => {
         <FlatList
           data={filtered}
           style={{marginTop: 10}}
+          refreshControl={
+            <RefreshControl onRefresh={getExperts} refreshing={loading} />
+          }
           numColumns={2}
           keyExtractor={(x, i) => i.toString()}
           renderItem={({item}) => <ExpertCard expert={item} />}

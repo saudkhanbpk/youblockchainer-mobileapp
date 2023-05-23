@@ -12,11 +12,12 @@ import {useState} from 'react';
 import {getMyAgreements} from '../../utils/userAPI';
 import {useEffect} from 'react';
 import Loading from '../../components/Loading';
+import ListEmpty from '../../components/ListEmpty';
 
 const ExpertDetail = ({route, navigation}) => {
   const {profile} = route.params;
   const {colors} = useTheme();
-  const {user} = useContext(GlobalContext);
+  const {user, setShowAgreement} = useContext(GlobalContext);
   const [myAgreements, setMyAgreements] = useState([]);
   const [loading, setLoading] = useState(false);
   //   const myAgreements = [
@@ -57,11 +58,11 @@ const ExpertDetail = ({route, navigation}) => {
     <ScrollView style={styles.container}>
       <NameCard
         profile={profile}
-        onHire={() => {}}
+        onHire={() => setShowAgreement(profile)}
         onConnect={async () =>
           navigation.navigate('Chats', {
             screen: 'Chat',
-            params: {room: await createRoom(user._id)},
+            params: {room: await createRoom(profile._id)},
           })
         }
         baseStyle={styles.cardBase}
@@ -75,7 +76,7 @@ const ExpertDetail = ({route, navigation}) => {
       </View>
       {loading ? (
         <Loading />
-      ) : (
+      ) : !!myAgreements.length ? (
         myAgreements.map((agreement, index) => (
           <PastAgreementCard
             key={index}
@@ -83,6 +84,8 @@ const ExpertDetail = ({route, navigation}) => {
             baseStyle={styles.cardBase}
           />
         ))
+      ) : (
+        <ListEmpty />
       )}
       <View style={{height: 50}} />
     </ScrollView>

@@ -19,7 +19,11 @@ const RoomsScreen = ({navigation}) => {
     setLoading(false);
   };
   useEffect(() => {
-    getRooms();
+    const listener = navigation.addListener('focus', () => {
+      getRooms();
+    });
+
+    return listener;
   }, []);
 
   return (
@@ -44,14 +48,14 @@ const RoomsScreen = ({navigation}) => {
                 <TouchableOpacity
                   onPress={() => navigation.navigate('Chat', {room: item})}>
                   <RoomCard
-                    name={usingP2 ? item.p2.name : item.p1.name}
+                    name={usingP2 ? item.p2.username : item.p1.username}
                     image={
-                      usingP2
-                        ? item.p2.profileImages[0]
-                        : item.p1.profileImages[0]
+                      usingP2 ? item.p2.profileImage : item.p1.profileImage
                     }
                     description={
-                      usingP2 ? item.p2.description : item.p1.description
+                      usingP2
+                        ? item.p2.descriptorTitle
+                        : item.p1.descriptorTitle
                     }
                   />
                 </TouchableOpacity>

@@ -5,6 +5,7 @@ import {View, StyleSheet, Image, TouchableOpacity, Alert} from 'react-native';
 import {Avatar, IconButton, Text, useTheme} from 'react-native-paper';
 import {GlobalContext} from '../auth/GlobalProvider';
 import StorageManager from '../storage/StorageManager';
+import {defaultAvatar} from '../Constants';
 
 const Tophead = ({navigation}) => {
   const connector = useWalletConnect();
@@ -62,16 +63,15 @@ const Tophead = ({navigation}) => {
             {connector.connected ? 'Disconnect' : 'Connect'} wallet
           </Text>
         </TouchableOpacity> */}
-
-        <Avatar.Image
-          source={{
-            uri:
-              user && user.profileImage
-                ? user.profileImage
-                : 'https://icons-for-free.com/iconfiles/png/512/person-1324760545186718018.png',
-          }}
-          size={35}
-        />
+        <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+          <Avatar.Image
+            source={{
+              uri:
+                user && user.profileImage ? user.profileImage : defaultAvatar,
+            }}
+            size={35}
+          />
+        </TouchableOpacity>
       </View>
     </View>
   );

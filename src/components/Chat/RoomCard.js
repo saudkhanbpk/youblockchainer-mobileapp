@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Subheading, useTheme, Avatar, Paragraph} from 'react-native-paper';
-import {width} from '../../Constants';
+import {defaultAvatar, width} from '../../Constants';
 
 const RoomCard = ({image, name, description}) => {
   const {colors} = useTheme();
@@ -9,7 +9,7 @@ const RoomCard = ({image, name, description}) => {
   return (
     <View style={{...styles.container, borderTopColor: colors.textAfter}}>
       <View style={{flexDirection: 'row'}}>
-        <Avatar.Image source={{uri: image}} size={45} />
+        <Avatar.Image source={{uri: image || defaultAvatar}} size={45} />
         <View style={{marginLeft: 10}}>
           <Subheading>{name}</Subheading>
           {description && (

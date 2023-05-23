@@ -53,8 +53,8 @@ export const backendToGifted = chat => {
     createdAt: new Date(chat.createdAt),
     user: {
       _id: chat.sender._id,
-      name: chat.sender.name,
-      avatar: chat.sender.profileImages[0],
+      name: chat.sender.username,
+      avatar: chat.sender.profileImage,
     },
     image: chat.chatMessage,
     video: chat.chatMessage,

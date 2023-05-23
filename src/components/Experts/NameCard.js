@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Avatar, Button, Card, useTheme, Text} from 'react-native-paper';
-import {width} from '../../Constants';
+import {defaultAvatar, width} from '../../Constants';
 import {useContext} from 'react';
 import {GlobalContext} from '../../auth/GlobalProvider';
 import {useMemo} from 'react';
@@ -15,7 +15,10 @@ const NameCard = ({profile, onConnect, onHire, baseStyle}) => {
   return (
     <Card style={{...baseStyle}}>
       <View style={{flexDirection: 'row'}}>
-        <Avatar.Image source={{uri: profileImage}} size={width / 4} />
+        <Avatar.Image
+          source={{uri: profileImage || defaultAvatar}}
+          size={width / 4}
+        />
         <View style={{marginLeft: 10, justifyContent: 'space-around'}}>
           <Text style={styles.name}>{username}</Text>
           {!isMe && (

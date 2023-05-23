@@ -17,6 +17,7 @@ const useTabInitializer = props => {
       await getCreateUser(connector.accounts[0]);
     }
   };
+
   useEffect(() => {
     if (connector.connected && web3 === null) {
       initializeWeb3();

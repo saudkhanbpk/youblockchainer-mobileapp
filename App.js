@@ -7,6 +7,7 @@ import {
   //DarkTheme as DefaultTheme,
   DefaultTheme,
   configureFonts,
+  Avatar,
 } from 'react-native-paper';
 import Navigator from './src/controllers/Navigator';
 import {NavigationContainer} from '@react-navigation/native';

@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Avatar, Button, Text, useTheme} from 'react-native-paper';
-import {width} from '../../Constants';
+import {defaultAvatar, width} from '../../Constants';
 
 const ChatHeader = ({user, onHire}) => {
   const {username, profileImage, descriptorTitle} = user;
@@ -10,7 +10,7 @@ const ChatHeader = ({user, onHire}) => {
   return (
     <View style={styles.container}>
       <View style={{flexDirection: 'row'}}>
-        <Avatar.Image source={{uri: profileImage}} size={50} />
+        <Avatar.Image source={{uri: profileImage || defaultAvatar}} size={50} />
         <View style={{marginLeft: 10}}>
           <Text style={styles.name}>{username}</Text>
           <Text
@@ -20,13 +20,17 @@ const ChatHeader = ({user, onHire}) => {
           </Text>
         </View>
       </View>
-      <Button
-        mode="contained"
-        onPress={onHire}
-        buttonColor={colors.button}
-        textColor={'white'}>
-        Hire
-      </Button>
+      {user.isExpert ? (
+        <Button
+          mode="contained"
+          onPress={onHire}
+          buttonColor={colors.button}
+          textColor={'white'}>
+          Hire
+        </Button>
+      ) : (
+        <View />
+      )}
     </View>
   );
 };

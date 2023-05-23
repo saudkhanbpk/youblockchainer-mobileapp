@@ -2,7 +2,7 @@ import React from 'react';
 import {View, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import {Paragraph, Text, Title, useTheme} from 'react-native-paper';
 import LinearGradient from 'react-native-linear-gradient';
-import {height, width} from '../../Constants';
+import {appLogo, height, width} from '../../Constants';
 import {useNavigation} from '@react-navigation/native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
@@ -13,10 +13,7 @@ const Splash = ({moveForward}) => {
   return (
     <View style={styles.container}>
       <View style={{flex: 6, justifyContent: 'center'}}>
-        <Image
-          source={require('../../assets/img/splash.png')}
-          resizeMode={'center'}
-        />
+        <Image source={appLogo} resizeMode={'center'} />
         <Text style={styles.name}>Youblockchainer</Text>
         <Title style={{textAlign: 'center', marginTop: 20}}>
           Content Production Marketplace

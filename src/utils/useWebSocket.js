@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import io from 'socket.io-client';
+import {io} from 'socket.io-client';
 import {base} from '../Constants';
 import {backendToGifted} from './helper';
 import StorageManager from '../storage/StorageManager';
@@ -11,6 +11,23 @@ export const useWebSockets = ({roomId, enabled, sender}) => {
   const output = 'Output Chat Message';
   const joinRoom = 'Join Room';
   const socket = io(base);
+
+  // socket.on('connect', () => {
+  //   socket.emit(joinRoom, roomId);
+  //   socket.on(output, msg => {
+  //     setMessages(prev => [backendToGifted(msg), ...prev]);
+  //   });
+  // });
+
+  socket.on('disconnect', () => {
+    console.log('Socket Disconnected from server');
+    socket.connect();
+  });
+
+  socket.io.on('error', console.log);
+  socket.io.on('ping', () => {
+    console.log('---Chat Pinging');
+  });
 
   const send = (type, messages) => {
     if (!messages || messages.trim() === '') {
@@ -38,7 +55,7 @@ export const useWebSockets = ({roomId, enabled, sender}) => {
     }
   };
 
-  useEffect(async () => {
+  const getPreviousChats = async () => {
     try {
       setMessages(await fetchFromDevice());
 
@@ -49,25 +66,28 @@ export const useWebSockets = ({roomId, enabled, sender}) => {
       setMessages(prior);
       await StorageManager.put(roomId, prior);
     } catch (e) {
-      console.log('Error in getting previous chats');
+      console.log('Error in getting previous chats:- ', e.message);
     }
+  };
+
+  useEffect(() => {
+    getPreviousChats();
+    return () => socket.disconnect();
   }, []);
 
   useEffect(() => {
     if (!enabled) {
       return;
     }
-
     socket.emit(joinRoom, roomId);
     socket.on(output, msg => {
       setMessages(prev => [backendToGifted(msg), ...prev]);
     });
-
-    return () => socket.disconnect();
   }, [enabled, roomId]);
 
   return {
     send,
     messages,
+    status: socket.connected,
   };
 };

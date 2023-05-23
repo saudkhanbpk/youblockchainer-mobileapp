@@ -25,6 +25,7 @@ const GlobalProvider = ({children}) => {
   const [editProfile, setEditProfile] = useState(false);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [showAgreement, setShowAgreement] = useState(null);
 
   const onChainChanged = async chainId => {
     //console.log(chainId);
@@ -66,7 +67,9 @@ const GlobalProvider = ({children}) => {
   const executeMetaTx = async (data, targetAddress) => {
     try {
       let from = user.walletAddress;
+      console.log('---Caller Wallet:- ', from);
       const nonce = await forwarderC.methods.getNonce(from).call();
+      console.log('---Got Nonce from Forwarder');
       const tx = {
         from,
         to: targetAddress, // Target contract address (AskGPT or Agreement subcontract)
@@ -77,13 +80,15 @@ const GlobalProvider = ({children}) => {
       const digest = await forwarderC.methods
         .getDigest(tx.from, tx.to, tx.value, tx.nonce, tx.data)
         .call();
+      console.log('---Got digest from Forwarder:- ', digest);
       const signature = await web3.eth.personal.sign(digest, from);
-
+      console.log('---Transaction Signed');
       const res = await API.post(ENDPOINTS.META_TX, {
         tx,
         signature,
       });
-
+      console.log('---Meta Tx Status :- ', res.status);
+      if (res.success) return res.data;
       return res.success;
     } catch (error) {
       console.log('Meta Tx creation error:- ', error.message);
@@ -166,9 +171,6 @@ const GlobalProvider = ({children}) => {
     }
   };
 
-  const fetchMyNFTs = async () => {
-    await getUserNFTs(user.walletAddress, setUserNFts);
-  };
   useEffect(() => {
     const checkSignInStatus = async () => {
       if (await StorageManager.get(USER)) setSignedIn(true);
@@ -176,19 +178,19 @@ const GlobalProvider = ({children}) => {
     checkSignInStatus();
   }, []);
 
-  useEffect(() => {
-    if (connector.connected)
-      if (chainId === connector.chainId) onChainChanged(chainId);
-      else setChainId(connector.chainId);
-  }, [user]);
+  // useEffect(() => {
+  //   if (connector.connected)
+  //     if (chainId === connector.chainId) onChainChanged(chainId);
+  //     else setChainId(connector.chainId);
+  // }, [user]);
 
-  useEffect(() => {
-    if (web3Provider) web3Provider.on('chainChanged', setChainId);
-  }, [web3Provider]);
+  // useEffect(() => {
+  //   if (web3Provider) web3Provider.on('chainChanged', setChainId);
+  // }, [web3Provider]);
 
-  useEffect(() => {
-    onChainChanged(chainId);
-  }, [chainId]);
+  // useEffect(() => {
+  //   onChainChanged(chainId);
+  // }, [chainId]);
 
   return (
     <GlobalContext.Provider
@@ -200,10 +202,11 @@ const GlobalProvider = ({children}) => {
         setEditProfile,
         loading,
         web3,
-        fetchMyNFTs,
         initializeWeb3,
         mainContract,
         executeMetaTx,
+        showAgreement,
+        setShowAgreement,
 
         connect: async () => {
           setLoading(true);
