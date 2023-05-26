@@ -9,9 +9,9 @@ export const getBrands = async setData => {
   }
 };
 
-export const getBrandByWalletAddress = async addr => {
+export const getBrandByManager = async id => {
   try {
-    return await API.get(ENDPOINTS.GET_BRAND_BY_WALLET + addr);
+    return await API.get(ENDPOINTS.GET_BRAND_BY_MANAGER + id);
   } catch (error) {
     console.log(error);
     return false;
@@ -22,7 +22,7 @@ export const createBrand = async (body, setBrand) => {
   try {
     let res = await API.post(ENDPOINTS.GET_BRANDS, body);
     console.log(res);
-    setBrand(b => [...b, res]);
+    setBrand(res);
     return res;
   } catch (error) {
     console.log(error);

@@ -2,10 +2,18 @@
 import {contractAddress} from '../Constants';
 import API, {ENDPOINTS} from '../api/apiService';
 
+export const uploadJSON = async data => {
+  try {
+    let res = await API.post(ENDPOINTS.UPLOAD_JSON, data);
+    return res.url;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const getUserAgreementsFromContract = async (contract, address) => {
   try {
     let agreements = await contract.methods.getUserAgreements(address).call();
-    console.log(agreements);
     return agreements;
   } catch (error) {
     console.log('Agreemente fetch from contract Failed:- ', error.message);
@@ -30,8 +38,8 @@ export const createAgreement = async (
       user2: expert,
     };
 
-    let uri = await API.post(ENDPOINTS.UPLOAD_JSON, obj);
-    console.log('---Obj uploaded on IPFS');
+    let uri = await uploadJSON(obj);
+    console.log('---Obj uploaded on IPFS:- ', uri);
     //let contract = new web3.eth.Contract(AskGPT);
     const data = mainContract.methods
       .createAgreement(uri, startsAt, nameofAgreement, expert.walletAddress)
@@ -52,6 +60,7 @@ export const createAgreement = async (
       startsAt,
       user1: me._id,
       user2: expert._id,
+      agreementUri: uri,
     });
     console.log('---Agreement Created in DB', apiRes);
     return true;

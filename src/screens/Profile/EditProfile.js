@@ -16,6 +16,7 @@ import {
   Switch,
   Tooltip,
   IconButton,
+  Button,
 } from 'react-native-paper';
 import {GlobalContext} from '../../auth/GlobalProvider';
 import InputField from '../../components/Profile/InputField';
@@ -26,11 +27,15 @@ import {updateUser, uploadPics} from '../../utils/userAPI';
 import SubmitButton from '../../components/SubmitButton';
 import Header from '../../components/Header';
 import TagInput from 'react-native-tag-input';
+import BrandModal from '../../components/BrandModal';
+import {getBrandByManager} from '../../utils/brandAPI';
 
 const EditProfile = ({navigation}) => {
   const {user, setUser} = useContext(GlobalContext);
   const {colors} = useTheme();
   const [updating, setUpdating] = useState(false);
+  const [showBrand, setShowBrand] = useState(false);
+  const [userBrand, setUserBrand] = useState(null);
   const [username, setUserName] = useState(user.username);
   const [email, setEmail] = useState(user.email || '');
   const [text, setText] = useState('');
@@ -59,22 +64,22 @@ const EditProfile = ({navigation}) => {
 
   const socialMedia = ['facebook', 'twitter', 'instagram'];
 
-  const hasChangedInfo = () => {
-    if (
-      profileBanner.uri !== user.profileBanner ||
-      profileImage.uri !== user.profileImage ||
-      username !== user.username ||
-      email !== user.email ||
-      bio !== user.bio ||
-      descriptorTitle !== user.descriptorTitle ||
-      isExpert !== user.isExpert ||
-      JSON.stringify(socialHandles) !== JSON.stringify(user.socialHandles)
-    ) {
-      return true;
-    }
+  // const hasChangedInfo = () => {
+  //   if (
+  //     profileBanner.uri !== user.profileBanner ||
+  //     profileImage.uri !== user.profileImage ||
+  //     username !== user.username ||
+  //     email !== user.email ||
+  //     bio !== user.bio ||
+  //     descriptorTitle !== user.descriptorTitle ||
+  //     isExpert !== user.isExpert ||
+  //     JSON.stringify(socialHandles) !== JSON.stringify(user.socialHandles)
+  //   ) {
+  //     return true;
+  //   }
 
-    return false;
-  };
+  //   return false;
+  // };
   const onSave = async () => {
     setUpdating(true);
     try {
@@ -119,7 +124,12 @@ const EditProfile = ({navigation}) => {
     setUpdating(false);
   };
 
+  const getUserBrand = async () => {
+    setUserBrand((await getBrandByManager(user._id))[0]);
+  };
+
   useEffect(() => {
+    getUserBrand();
     for (let i in socialMedia) {
       const item = user.socialHandles.find(j => j.name === socialMedia[i]);
       if (item)
@@ -144,9 +154,9 @@ const EditProfile = ({navigation}) => {
     // }
   };
 
-  useEffect(() => {
-    console.log(skills);
-  }, [skills]);
+  // useEffect(() => {
+  //   console.log(userBrand);
+  // }, [userBrand]);
 
   return (
     <View style={styles.container}>
@@ -177,24 +187,49 @@ const EditProfile = ({navigation}) => {
             />
           </View>
         </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            //backgroundColor: 'white',
-            alignItems: 'center',
-            // padding: 10,
-            marginHorizontal: 15,
-            borderRadius: 5,
-            justifyContent: 'space-around',
-            marginVertical: 10,
-          }}>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Text style={{fontWeight: 'bold', fontSize: 16}}>
-              Are you an Expert ?
-            </Text>
+        {!userBrand && (
+          <View
+            style={{
+              flexDirection: 'row',
+              //backgroundColor: 'white',
+              alignItems: 'center',
+              // padding: 10,
+              marginHorizontal: 15,
+              borderRadius: 5,
+              justifyContent: 'space-around',
+              marginTop: 10,
+            }}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <Text style={{fontWeight: 'bold', fontSize: 16}}>
+                Are you an Expert ?
+              </Text>
+            </View>
+            <Switch value={isExpert} onChange={() => setIsExpert(e => !e)} />
           </View>
-          <Switch value={isExpert} onChange={() => setIsExpert(e => !e)} />
-        </View>
+        )}
+        {!isExpert && (
+          <View
+            style={{
+              flexDirection: 'row',
+              //backgroundColor: 'white',
+              alignItems: 'center',
+              // padding: 10,
+              marginHorizontal: 15,
+              borderRadius: 5,
+              justifyContent: 'space-around',
+              marginVertical: 10,
+            }}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <Text style={{fontWeight: 'bold', fontSize: 16}}>
+                {!!userBrand ? 'Edit Your Brand' : 'Do you represent a Brand ?'}
+              </Text>
+            </View>
+            <Button onPress={() => setShowBrand(true)}>
+              {!!userBrand ? userBrand.name : 'Create Brand'}
+            </Button>
+          </View>
+        )}
+
         <InputField label={'Name'} text={username} setText={setUserName} />
         <InputField label={'Email'} text={email} setText={setEmail} />
         <InputField
@@ -276,14 +311,23 @@ const EditProfile = ({navigation}) => {
         </View>
       </ScrollView>
 
-      <FAB
-        icon="floppy"
-        color="white"
-        disabled={!hasChangedInfo()}
-        style={{...styles.fab, backgroundColor: colors.primary}}
-        loading={updating}
-        onPress={onSave}
+      <BrandModal
+        show={showBrand}
+        setShow={setShowBrand}
+        isEditing={!!userBrand}
+        profile={userBrand}
+        setProfile={setUserBrand}
       />
+      {!showBrand && (
+        <FAB
+          icon="floppy"
+          color="white"
+          //disabled={!hasChangedInfo()}
+          style={{...styles.fab, backgroundColor: colors.primary}}
+          loading={updating}
+          onPress={onSave}
+        />
+      )}
       {/* <SubmitButton
         label={'Save Changes'}
         style={{marginBottom: 10}}

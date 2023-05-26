@@ -13,12 +13,17 @@ const Splash = ({moveForward}) => {
   return (
     <View style={styles.container}>
       <View style={{flex: 6, justifyContent: 'center'}}>
-        <Image source={appLogo} resizeMode={'center'} />
-        <Text style={styles.name}>Youblockchainer</Text>
-        <Title style={{textAlign: 'center', marginTop: 20}}>
+        <Image
+          style={{width: width / 1.1, maxWidth: 500}}
+          source={require('../../assets/img/splash.png')}
+          resizeMode={'center'}
+        />
+        {/* <Text style={styles.name}>Youblockchainer</Text> */}
+        {/* <Title style={{textAlign: 'center', color: 'balck'}}>
           Content Production Marketplace
-        </Title>
+        </Title> */}
       </View>
+
       <TouchableOpacity style={{flex: 1}} onPress={moveForward}>
         <LinearGradient
           colors={[colors.secondary, colors.primary]}

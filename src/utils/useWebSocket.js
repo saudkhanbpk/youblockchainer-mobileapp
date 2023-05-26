@@ -20,14 +20,14 @@ export const useWebSockets = ({roomId, enabled, sender}) => {
   // });
 
   socket.on('disconnect', () => {
-    console.log('Socket Disconnected from server');
+    console.log('---Socket Disconnected from server---');
     socket.connect();
   });
 
   socket.io.on('error', console.log);
-  socket.io.on('ping', () => {
-    console.log('---Chat Pinging');
-  });
+  // socket.io.on('ping', () => {
+  //   console.log('---Chat Pinging');
+  // });
 
   const send = (type, messages) => {
     if (!messages || messages.trim() === '') {

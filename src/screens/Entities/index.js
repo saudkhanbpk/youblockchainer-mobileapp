@@ -33,7 +33,7 @@ const SearchEntity = ({navigation}) => {
 
   const getEntities = async () => {
     setLoading(true);
-    await getBrands(true, setEntities);
+    await getBrands(setEntities);
     setLoading(false);
   };
 
@@ -66,7 +66,6 @@ const SearchEntity = ({navigation}) => {
           refreshControl={
             <RefreshControl onRefresh={getEntities} refreshing={loading} />
           }
-          numColumns={2}
           keyExtractor={(x, i) => i.toString()}
           renderItem={({item}) => <EntityCard entity={item} />}
         />

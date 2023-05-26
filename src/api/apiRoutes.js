@@ -20,7 +20,7 @@ const BRAND = {
   GET_BRANDS: '/brand/',
   GET_PAGINATED_BRAND: '/brand/brands/paginated',
   SEARCH_BRAND: '/brand/brands/search',
-  GET_BRAND_BY_WALLET: '/brand/user/',
+  GET_BRAND_BY_MANAGER: '/brand/user/',
 };
 
 const CHAT = {

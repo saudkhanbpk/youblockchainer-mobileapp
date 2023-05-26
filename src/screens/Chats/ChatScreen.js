@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {View, StyleSheet, Pressable} from 'react-native';
 import Header from '../../components/Header';
-import {GiftedChat, Bubble} from 'react-native-gifted-chat';
+import {GiftedChat, Bubble, Time} from 'react-native-gifted-chat';
 import {useTheme} from 'react-native-paper';
 import {useWebSockets} from '../../utils/useWebSocket';
 import ChatComposer from '../../components/ChatComposer';
@@ -64,6 +64,27 @@ const ChatScreen = ({route}) => {
     );
   };
 
+  const renderTime = props => {
+    return (
+      <Time
+        {...props}
+        timeTextStyle={{
+          left: {
+            color: '#3c3c434d',
+            fontSize: 10,
+            fontFamily: 'Poppins-Regular',
+            textAlign: 'right', // or position: 'right'
+          },
+          right: {
+            color: '#3c3c434d',
+            fontSize: 10,
+            fontFamily: 'Poppins-Regular',
+          },
+        }}
+      />
+    );
+  };
+
   const renderInputToolbar = props => {
     const [text, setText] = useState('');
     return (
@@ -108,6 +129,7 @@ const ChatScreen = ({route}) => {
       <GiftedChat
         messages={messages}
         renderMessageImage={renderImage}
+        renderTime={renderTime}
         //onSend={messages => onSend(messages)}
         showAvatarForEveryMessage={true}
         showUserAvatar={true}

@@ -17,6 +17,7 @@ import ChatScreen from '../screens/Chats/ChatScreen';
 import ExpertDetail from '../screens/Experts/ExpertDetail';
 import EditProfile from '../screens/Profile/EditProfile';
 import AgreementModal from '../components/Agreements/AgreementModal';
+import EntityDetail from '../screens/Entities/EntityDetail';
 
 const Drawer = createDrawerNavigator();
 const ChatBotStack = createNativeStackNavigator();
@@ -133,6 +134,7 @@ const EntityStackScreen = () => {
   return (
     <EntityStack.Navigator screenOptions={{headerShown: false}}>
       <EntityStack.Screen name="SearchEntity" component={SearchEntity} />
+      <EntityStack.Screen name="EntityDetail" component={EntityDetail} />
     </EntityStack.Navigator>
   );
 };

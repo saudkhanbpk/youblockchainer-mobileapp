@@ -75,7 +75,7 @@ const CustomDrawerContent = props => {
 
   return (
     <DrawerContentScrollView {...props}>
-      <Image style={{height: 80, width: 80, margin: 20}} source={appLogo} />
+      <Image style={{height: 110, width: 100, margin: 20}} source={appLogo} />
       {Object.entries(availableRoutes).map(i => (
         <DrawerRow
           key={i[0]}

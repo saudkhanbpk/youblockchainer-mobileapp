@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {useTheme, Card, Title, Modal, Text} from 'react-native-paper';
 import {Image, ScrollView, StyleSheet, ToastAndroid, View} from 'react-native';
 import {GlobalContext} from '../auth/GlobalProvider';
@@ -8,11 +8,13 @@ import PickRemoveImg from './Profile/PickRemoveImg';
 import {height, width} from '../Constants';
 import {createBrand, updateBrand} from '../utils/brandAPI';
 import {uploadPics} from '../utils/userAPI';
+import TagInput from 'react-native-tag-input';
 
 const BrandModal = ({show, setShow, isEditing, profile, setProfile}) => {
   const {colors} = useTheme();
   const [name, setName] = useState(isEditing ? profile.name : '');
   const [nickname, setNickname] = useState(isEditing ? profile.nickname : '');
+  const [skills, setSkills] = useState(isEditing ? profile.skills || [] : []);
   const [img, setImg] = useState({uri: isEditing ? profile.img : ''});
   const [secondaryImg, setSecondaryImg] = useState({
     uri: isEditing ? profile.secondaryImg : '',
@@ -20,14 +22,26 @@ const BrandModal = ({show, setShow, isEditing, profile, setProfile}) => {
   const [description, setDescription] = useState(
     isEditing ? profile.description : '',
   );
+  const [text, setText] = useState('');
   const [setting, setSetting] = useState(false);
   const {user} = useContext(GlobalContext);
 
+  useEffect(() => {
+    if (isEditing) {
+      setName(profile.name);
+      setNickname(profile.nickname);
+      setImg({uri: profile.img});
+      setSecondaryImg({uri: profile.secondaryImg});
+      setDescription(profile.description);
+      setSkills(profile.skills || []);
+    }
+  }, [profile]);
+
   const clicker = async () => {
-    setSetting(true);
     if (img.uri.length === 0 || name.length === 0) {
       return alert('Name and Image field cannot be empty');
     }
+    setSetting(true);
     try {
       if (isEditing) {
         await updateBrand(
@@ -36,12 +50,14 @@ const BrandModal = ({show, setShow, isEditing, profile, setProfile}) => {
             name,
             description,
             nickname,
+            skills,
             isVerified: false,
-            //walletAddress: user.walletAddress,
-            img: profile.img === img ? img : (await uploadPics([img]))[0],
+            //manager: user._id,
+            img:
+              profile.img === img.uri ? img.uri : (await uploadPics([img]))[0],
             secondaryImg:
-              profile.secondaryImg === secondaryImg
-                ? secondaryImg
+              profile.secondaryImg === secondaryImg.uri
+                ? secondaryImg.uri
                 : (
                     await uploadPics([secondaryImg])
                   )[0],
@@ -57,7 +73,8 @@ const BrandModal = ({show, setShow, isEditing, profile, setProfile}) => {
           name,
           description,
           nickname,
-          walletAddress: user.walletAddress,
+          skills,
+          manager: user._id,
           img: (await uploadPics([img]))[0],
           secondaryImg: secondaryImg
             ? (
@@ -65,13 +82,19 @@ const BrandModal = ({show, setShow, isEditing, profile, setProfile}) => {
               )[0]
             : '',
         },
-        setShow,
+        setProfile,
       );
       ToastAndroid.show('Brand created successfully 🎉', ToastAndroid.SHORT);
+      setShow(false);
     } catch (error) {
       console.log(error);
     }
     setSetting(false);
+  };
+
+  const onSubmit = inp => {
+    setSkills(s => [...s, inp]);
+    setText('');
   };
 
   return (
@@ -88,6 +111,8 @@ const BrandModal = ({show, setShow, isEditing, profile, setProfile}) => {
                 width: width / 1.2,
                 height: width / 1.2,
                 marginBottom: 20,
+                alignItems: 'center',
+                justifyContent: 'center',
               }}>
               <Image
                 source={{
@@ -95,10 +120,11 @@ const BrandModal = ({show, setShow, isEditing, profile, setProfile}) => {
                     img.uri ||
                     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSY905Whql2OlCP7n_BHy15sgioGA-U3EOsrw&usqp=CAU',
                 }}
+                resizeMode="center"
                 style={{
                   width: width / 1.2,
                   height: width / 1.2,
-                  borderRadius: width,
+                  //borderRadius: width,
                 }}
               />
               <PickRemoveImg img={img} setImg={setImg} size={20} />
@@ -136,6 +162,44 @@ const BrandModal = ({show, setShow, isEditing, profile, setProfile}) => {
                 'describe offer details or give redeem instructions...'
               }
             />
+            <View
+              style={{
+                padding: 10,
+                backgroundColor: 'white',
+                borderRadius: 5,
+                marginHorizontal: 10,
+                marginBottom: 15,
+                marginLeft: 15,
+                paddingLeft: 20,
+              }}>
+              <TagInput
+                value={skills}
+                onChange={setSkills}
+                labelExtractor={skill => skill}
+                tagTextStyle={{fontSize: 12}}
+                tagColor={colors.primary}
+                tagTextColor={'white'}
+                inputColor={colors.text}
+                tagContainerStyle={{height: 32}}
+                inputProps={{
+                  placeholderTextColor: colors.textAfter,
+                  placeholder: '+ Add Work Topic Areas',
+                  onSubmitEditing: e => onSubmit(text),
+                  style: {
+                    height: 32,
+                    minWidth: 150,
+                    marginTop: 6,
+                    fontSize: 12,
+                    color: colors.text,
+                    padding: 0,
+                    margin: 0,
+                    borderWidth: 0,
+                  },
+                }}
+                onChangeText={setText}
+                text={text}
+              />
+            </View>
             <SubmitButton label={'Done'} loading={setting} onClick={clicker} />
             <Text style={{marginTop: 5, fontSize: 10, color: colors.disabled}}>
               *Note:{' '}

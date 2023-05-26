@@ -10,9 +10,11 @@ import AgreementCard from '../../components/Profile/AgreementCard';
 import {getMyAgreements} from '../../utils/userAPI';
 import ListEmpty from '../../components/ListEmpty';
 import Loading from '../../components/Loading';
+import {getUserAgreementsFromContract} from '../../utils/agreementAPI';
+import {mapAgreementAddress} from '../../utils/helper';
 
-const Profile = () => {
-  const {user} = useContext(GlobalContext);
+const Profile = ({navigation}) => {
+  const {user, mainContract} = useContext(GlobalContext);
   const {colors} = useTheme();
   const [myAgreements, setMyAgreements] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -90,14 +92,25 @@ const Profile = () => {
   const getAgreements = async () => {
     setLoading(true);
     let res = await getMyAgreements(user._id);
-    console.log(res);
-    setMyAgreements(res);
+    let contractRes = await getUserAgreementsFromContract(
+      mainContract,
+      user.walletAddress,
+    );
+    let mapped = mapAgreementAddress(res, contractRes);
+
+    setMyAgreements(mapped);
     setLoading(false);
   };
 
   useEffect(() => {
-    console.log('called');
     getAgreements();
+  }, [mainContract]);
+
+  useEffect(() => {
+    const unsubcribe = navigation.addListener('focus', () => {
+      getAgreements();
+    });
+    return unsubcribe;
   }, []);
 
   return (

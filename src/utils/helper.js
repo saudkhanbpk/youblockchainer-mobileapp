@@ -45,6 +45,17 @@ export const arraytoQuickReply = arr => {
   });
 };
 
+export const mapAgreementAddress = (db, contractData) => {
+  return db
+    .filter(i => !!i.agreementUri)
+    .map(i => {
+      return {
+        ...i,
+        contractAddress: contractData.find(j => j[1] === i.agreementUri)[0],
+      };
+    });
+};
+
 export const backendToGifted = chat => {
   //console.log(chat);
   let temp = {

@@ -118,6 +118,7 @@ const GlobalProvider = ({children}) => {
       console.log('---Forwarder Instance Created');
 
       let contract2 = new res.eth.Contract(AskGPT, contractAddress);
+      console.log(await contract2.methods.marketFee().call());
       setMainContract(contract2);
       console.log('---MainContract Instance Created');
 
@@ -207,6 +208,7 @@ const GlobalProvider = ({children}) => {
         executeMetaTx,
         showAgreement,
         setShowAgreement,
+        signedIn,
 
         connect: async () => {
           setLoading(true);

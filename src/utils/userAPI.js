@@ -85,10 +85,8 @@ export const getUsers = async (isExpert, setUsers) => {
 };
 
 export const getMyAgreements = async id => {
-  console.log('caked');
   try {
     let res = await API.get(ENDPOINTS.GET_USER_AGREEMENTS + id);
-    console.log(res);
     return res;
   } catch (error) {
     console.log('Error in getting My Agreement:-', error.message);

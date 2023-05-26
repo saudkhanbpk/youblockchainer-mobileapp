@@ -13,6 +13,7 @@ import {getMyAgreements} from '../../utils/userAPI';
 import {useEffect} from 'react';
 import Loading from '../../components/Loading';
 import ListEmpty from '../../components/ListEmpty';
+import AgreementCard from '../../components/Profile/AgreementCard';
 
 const ExpertDetail = ({route, navigation}) => {
   const {profile} = route.params;
@@ -46,7 +47,10 @@ const ExpertDetail = ({route, navigation}) => {
   const getAgreements = async () => {
     setLoading(true);
     let res = await getMyAgreements(user._id);
-    setMyAgreements(res.filter(i => i.user2._id === user._id && !!i.endsAt));
+    setMyAgreements(
+      res,
+      // res.filter(i => i.user2._id === user._id && !!i.endsAt)
+    );
     setLoading(false);
   };
 
@@ -68,7 +72,9 @@ const ExpertDetail = ({route, navigation}) => {
         baseStyle={styles.cardBase}
       />
       <BioCard profile={profile} baseStyle={styles.cardBase} />
-      <SkillCard profile={profile} baseStyle={styles.cardBase} />
+      {!!profile.skills.length && (
+        <SkillCard profile={profile} baseStyle={styles.cardBase} />
+      )}
       <View style={{marginTop: 10}}>
         <Text style={{...styles.title, color: colors.accent}}>
           Past Agreements
@@ -77,13 +83,21 @@ const ExpertDetail = ({route, navigation}) => {
       {loading ? (
         <Loading />
       ) : !!myAgreements.length ? (
-        myAgreements.map((agreement, index) => (
-          <PastAgreementCard
-            key={index}
-            agreement={agreement}
-            baseStyle={styles.cardBase}
-          />
-        ))
+        myAgreements.map((agreement, index) =>
+          !!agreement.endsAt ? (
+            <PastAgreementCard
+              key={index}
+              agreement={agreement}
+              baseStyle={styles.cardBase}
+            />
+          ) : (
+            <AgreementCard
+              key={index}
+              agreement={agreement}
+              baseStyle={styles.cardBase}
+            />
+          ),
+        )
       ) : (
         <ListEmpty />
       )}
