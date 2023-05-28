@@ -118,6 +118,10 @@ export function validateEmail(email) {
   //return true;
 }
 
+export const dateFormating = dt => {
+  return new Date(dt * 1000).toDateString().split(' ').slice(1).join(' ');
+};
+
 export const pickPhoto = async () => {
   let source = {
     uri: '',

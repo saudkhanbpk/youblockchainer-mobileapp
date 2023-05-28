@@ -1,16 +1,15 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Avatar, Card, Chip, Text, useTheme} from 'react-native-paper';
 import {defaultAvatar} from '../../Constants';
+import {dateFormating} from '../../utils/helper';
 
 const AgreementCard = ({agreement, baseStyle}) => {
   const {user1, name, startsAt, endsAt} = agreement;
   const {profileImage, username} = user1;
   const {colors} = useTheme();
-  const startDate = new Date(startsAt).toDateString();
-  const endDate = !!endsAt
-    ? new Date(endsAt).toLocaleDateString('en-US')
-    : 'present';
+  const startDate = dateFormating(startsAt);
+  const endDate = !!endsAt ? dateFormating(endsAt) : 'present';
 
   return (
     <Card style={{...baseStyle, ...styles.container}}>
