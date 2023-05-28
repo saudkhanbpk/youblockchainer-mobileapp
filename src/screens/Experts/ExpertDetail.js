@@ -77,7 +77,7 @@ const ExpertDetail = ({route, navigation}) => {
       )}
       <View style={{marginTop: 10}}>
         <Text style={{...styles.title, color: colors.accent}}>
-          Past Agreements
+          All Agreements
         </Text>
       </View>
       {loading ? (

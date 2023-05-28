@@ -45,6 +45,7 @@ const ChatScreen = ({route}) => {
           left: {
             backgroundColor: colors.backgroundLight,
             borderRadius: 5,
+            marginVertical: 5,
           },
         }}
         textStyle={{

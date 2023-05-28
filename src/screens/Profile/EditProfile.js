@@ -29,6 +29,7 @@ import Header from '../../components/Header';
 import TagInput from 'react-native-tag-input';
 import BrandModal from '../../components/BrandModal';
 import {getBrandByManager} from '../../utils/brandAPI';
+import Loading from '../../components/Loading';
 
 const EditProfile = ({navigation}) => {
   const {user, setUser} = useContext(GlobalContext);
@@ -36,6 +37,7 @@ const EditProfile = ({navigation}) => {
   const [updating, setUpdating] = useState(false);
   const [showBrand, setShowBrand] = useState(false);
   const [userBrand, setUserBrand] = useState(null);
+  const [loadingBrand, setLoadingBrand] = useState(false);
   const [username, setUserName] = useState(user.username);
   const [email, setEmail] = useState(user.email || '');
   const [text, setText] = useState('');
@@ -125,7 +127,9 @@ const EditProfile = ({navigation}) => {
   };
 
   const getUserBrand = async () => {
+    setLoadingBrand(true);
     setUserBrand((await getBrandByManager(user._id))[0]);
+    setLoadingBrand(false);
   };
 
   useEffect(() => {
@@ -187,49 +191,59 @@ const EditProfile = ({navigation}) => {
             />
           </View>
         </View>
-        {!userBrand && (
-          <View
-            style={{
-              flexDirection: 'row',
-              //backgroundColor: 'white',
-              alignItems: 'center',
-              // padding: 10,
-              marginHorizontal: 15,
-              borderRadius: 5,
-              justifyContent: 'space-around',
-              marginTop: 10,
-            }}>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text style={{fontWeight: 'bold', fontSize: 16}}>
-                Are you an Expert ?
-              </Text>
-            </View>
-            <Switch value={isExpert} onChange={() => setIsExpert(e => !e)} />
+        {loadingBrand ? (
+          <Loading />
+        ) : (
+          <View>
+            {!userBrand && (
+              <View
+                style={{
+                  flexDirection: 'row',
+                  //backgroundColor: 'white',
+                  alignItems: 'center',
+                  // padding: 10,
+                  marginHorizontal: 15,
+                  borderRadius: 5,
+                  justifyContent: 'space-around',
+                  marginTop: 10,
+                }}>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <Text style={{fontWeight: 'bold', fontSize: 16}}>
+                    Are you an Expert ?
+                  </Text>
+                </View>
+                <Switch
+                  value={isExpert}
+                  onChange={() => setIsExpert(e => !e)}
+                />
+              </View>
+            )}
+            {!isExpert && (
+              <View
+                style={{
+                  flexDirection: 'row',
+                  //backgroundColor: 'white',
+                  alignItems: 'center',
+                  // padding: 10,
+                  marginHorizontal: 15,
+                  borderRadius: 5,
+                  justifyContent: 'space-around',
+                  marginVertical: 10,
+                }}>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <Text style={{fontWeight: 'bold', fontSize: 16}}>
+                    {!!userBrand
+                      ? 'Edit Your Brand'
+                      : 'Do you represent a Brand ?'}
+                  </Text>
+                </View>
+                <Button onPress={() => setShowBrand(true)}>
+                  {!!userBrand ? userBrand.name : 'Create Brand'}
+                </Button>
+              </View>
+            )}
           </View>
         )}
-        {!isExpert && (
-          <View
-            style={{
-              flexDirection: 'row',
-              //backgroundColor: 'white',
-              alignItems: 'center',
-              // padding: 10,
-              marginHorizontal: 15,
-              borderRadius: 5,
-              justifyContent: 'space-around',
-              marginVertical: 10,
-            }}>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text style={{fontWeight: 'bold', fontSize: 16}}>
-                {!!userBrand ? 'Edit Your Brand' : 'Do you represent a Brand ?'}
-              </Text>
-            </View>
-            <Button onPress={() => setShowBrand(true)}>
-              {!!userBrand ? userBrand.name : 'Create Brand'}
-            </Button>
-          </View>
-        )}
-
         <InputField label={'Name'} text={username} setText={setUserName} />
         <InputField label={'Email'} text={email} setText={setEmail} />
         <InputField

@@ -87,7 +87,7 @@ const EntityDetail = ({route, navigation}) => {
           }
         />
         <View style={{marginTop: 15}}>
-          <Text style={styles.title}>Past Agreements</Text>
+          <Text style={styles.title}>All Agreements</Text>
 
           {loading ? (
             <Loading />

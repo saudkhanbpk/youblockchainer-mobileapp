@@ -11,13 +11,15 @@ const ChatHeader = ({user, onHire}) => {
     <View style={styles.container}>
       <View style={{flexDirection: 'row'}}>
         <Avatar.Image source={{uri: profileImage || defaultAvatar}} size={50} />
-        <View style={{marginLeft: 10}}>
+        <View style={{marginLeft: 10, justifyContent: 'center'}}>
           <Text style={styles.name}>{username}</Text>
-          <Text
-            style={{maxWidth: width / 2, color: colors.textAfter}}
-            numberOfLines={1}>
-            {descriptorTitle}
-          </Text>
+          {!!descriptorTitle && (
+            <Text
+              style={{maxWidth: width / 2, color: colors.textAfter}}
+              numberOfLines={1}>
+              {descriptorTitle}
+            </Text>
+          )}
         </View>
       </View>
       {user.isExpert ? (
