@@ -1,5 +1,5 @@
 import './shim';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {LogBox, StatusBar} from 'react-native';
 import GlobalProvider from './src/auth/GlobalProvider';
 import {
@@ -7,7 +7,9 @@ import {
   //DarkTheme as DefaultTheme,
   DefaultTheme,
   configureFonts,
-  Avatar,
+  Text,
+  Title,
+  Paragraph,
 } from 'react-native-paper';
 import Navigator from './src/controllers/Navigator';
 import {NavigationContainer} from '@react-navigation/native';
@@ -82,6 +84,19 @@ LogBox.ignoreAllLogs();
 // };
 
 const App = () => {
+  useEffect(() => {
+    Text.defaultProps = {
+      allowFontScaling: false,
+    };
+
+    Title.defaultProps = {
+      allowFontScaling: false,
+    };
+
+    Paragraph.defaultProps = {
+      allowFontScaling: false,
+    };
+  }, []);
   return (
     <WalletConnectProvider
       //uri="wc:00e46b69-d0cc-4b3e-b6a2-cee442f97188@1?bridge=https%3A%2F%2Fbridge.walletconnect.orgkey=91303dedf64285cbbaf9120f6e9d160a5c8aa3deb67017a3874cd272323f48ae"

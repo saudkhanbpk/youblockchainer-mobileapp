@@ -54,8 +54,12 @@ const EntityDetail = ({route, navigation}) => {
   };
 
   useEffect(() => {
-    getAgreements();
-  }, [profile]);
+    const unsubscribe = navigation.addListener('focus', () => {
+      getAgreements();
+    });
+
+    return unsubscribe;
+  }, []);
 
   return (
     <ScrollView style={styles.container}>

@@ -5,7 +5,12 @@ import {ToastAndroid} from 'react-native';
 import API, {ENDPOINTS} from '../api/apiService';
 import Web3 from 'web3';
 import StorageManager from '../storage/StorageManager';
-import {contractAddress, forwarderAddress, rpcConfig} from '../Constants';
+import {
+  MetaMaskNetworkObject,
+  contractAddress,
+  forwarderAddress,
+  rpcConfig,
+} from '../Constants';
 import {API_TOKEN, ONBOARDED, USER} from '../storage/StorageKeys';
 import {useEffect} from 'react';
 import {getMe, getUserNFTs} from '../utils/userAPI';
@@ -20,6 +25,7 @@ const GlobalProvider = ({children}) => {
   const [signedIn, setSignedIn] = useState(false);
   const [web3Provider, setWeb3Provider] = useState(null);
   const [web3, setWeb3] = useState(null);
+  const [containsNetwork, setContainsNetwork] = useState(true);
   const [forwarderC, setForwarderC] = useState(null);
   const [mainContract, setMainContract] = useState(null);
   const [editProfile, setEditProfile] = useState(false);
@@ -27,10 +33,23 @@ const GlobalProvider = ({children}) => {
   const [loading, setLoading] = useState(false);
   const [showAgreement, setShowAgreement] = useState(null);
 
+  const addChain = async res => {
+    try {
+      await res.request({
+        method: 'wallet_addEthereumChain',
+        params: [MetaMaskNetworkObject],
+      });
+      setContainsNetwork(true);
+    } catch (addError) {
+      console.error('Adding Error:- ', addError);
+    }
+  };
+
   const onChainChanged = async chainId => {
-    //console.log(chainId);
+    console.log(chainId);
     if (!!chainId && chainId !== rpcConfig.chainId) {
       let res = web3Provider;
+      let w3 = web3;
       if (!res) {
         res = new WalletConnectProvider({
           ...rpcConfig,
@@ -38,13 +57,22 @@ const GlobalProvider = ({children}) => {
         });
         await res.enable();
       }
+
+      if (!w3) {
+        w3 = new Web3(res);
+      }
       try {
-        res.request({
+        if (!containsNetwork) return await addChain(res);
+        await res.request({
           method: 'wallet_switchEthereumChain',
-          params: [{chainId: `0x${rpcConfig.chainId}`}],
+          params: [{chainId: Web3.utils.toHex(rpcConfig.chainId)}],
         });
       } catch (error) {
-        console.log('Switching Error:- ' + error.message);
+        console.log('Switching Error:- ', error);
+
+        if (error.message.includes('Unrecognized chain ID')) {
+          setContainsNetwork(false);
+        }
       }
     }
   };
@@ -106,9 +134,10 @@ const GlobalProvider = ({children}) => {
         });
         await provider.enable();
         provider.chainId = rpcConfig.chainId;
-        setWeb3Provider(provider);
+
         res = new Web3(provider);
         setWeb3(res);
+        setWeb3Provider(provider);
         console.log('---Created Web3');
       }
       const accounts = await res.eth.getAccounts();
@@ -138,10 +167,11 @@ const GlobalProvider = ({children}) => {
       });
       await provider.enable();
       provider.chainId = rpcConfig.chainId;
-      setWeb3Provider(provider);
+
       // provider.on('chainChanged', onChainChanged);
       const res = new Web3(provider);
       setWeb3(res);
+      setWeb3Provider(provider);
       initializeWeb3(res);
       //console.log(res);
       let userAddress = connector.accounts[0].toLowerCase();
@@ -179,19 +209,19 @@ const GlobalProvider = ({children}) => {
     checkSignInStatus();
   }, []);
 
-  // useEffect(() => {
-  //   if (connector.connected)
-  //     if (chainId === connector.chainId) onChainChanged(chainId);
-  //     else setChainId(connector.chainId);
-  // }, [user]);
+  useEffect(() => {
+    if (connector.connected)
+      if (chainId === connector.chainId) onChainChanged(chainId);
+      else setChainId(connector.chainId);
+  }, [user]);
 
-  // useEffect(() => {
-  //   if (web3Provider) web3Provider.on('chainChanged', setChainId);
-  // }, [web3Provider]);
+  useEffect(() => {
+    if (web3Provider) web3Provider.on('chainChanged', setChainId);
+  }, [web3Provider]);
 
-  // useEffect(() => {
-  //   onChainChanged(chainId);
-  // }, [chainId]);
+  useEffect(() => {
+    onChainChanged(chainId);
+  }, [chainId]);
 
   return (
     <GlobalContext.Provider

@@ -269,7 +269,7 @@ const EditProfile = ({navigation}) => {
             tagColor={colors.primary}
             tagTextColor={'white'}
             inputColor={colors.text}
-            tagContainerStyle={{height: 32}}
+            tagContainerStyle={{minHeight: 32}}
             inputProps={{
               placeholderTextColor: colors.textAfter,
               placeholder: '+ Add Skills',
@@ -368,7 +368,7 @@ const styles = StyleSheet.create({
     borderRadius: 100,
   },
   input: {
-    height: 40,
+    //height: 40,
     marginLeft: 10,
     borderRadius: 5,
     fontFamily: 'Poppins-Regular',

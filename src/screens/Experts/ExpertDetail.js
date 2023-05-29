@@ -18,7 +18,7 @@ import AgreementCard from '../../components/Profile/AgreementCard';
 const ExpertDetail = ({route, navigation}) => {
   const {profile} = route.params;
   const {colors} = useTheme();
-  const {user, setShowAgreement} = useContext(GlobalContext);
+  const {user, setShowAgreement, showAgreement} = useContext(GlobalContext);
   const [myAgreements, setMyAgreements] = useState([]);
   const [loading, setLoading] = useState(false);
   //   const myAgreements = [
@@ -48,7 +48,7 @@ const ExpertDetail = ({route, navigation}) => {
     setLoading(true);
     let res = await getMyAgreements(user._id);
     setMyAgreements(
-      res,
+      res.sort((a, b) => Date.parse(b.startsAt) - Date.parse(a.startsAt)),
       // res.filter(i => i.user2._id === user._id && !!i.endsAt)
     );
     setLoading(false);
@@ -56,6 +56,14 @@ const ExpertDetail = ({route, navigation}) => {
 
   useEffect(() => {
     getAgreements();
+  }, [showAgreement]);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      getAgreements();
+    });
+
+    return unsubscribe;
   }, []);
 
   return (
