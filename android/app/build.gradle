@@ -94,9 +94,9 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.ybcapp"
+    namespace "app.myreeldream.ai"
     defaultConfig {
-        applicationId "com.ybcapp"
+        applicationId "app.myreeldream.ai"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

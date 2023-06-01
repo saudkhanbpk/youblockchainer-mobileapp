@@ -241,7 +241,7 @@ const ChatBot = props => {
   };
 
   const saveDownloadScript = async inDevice => {
-    console.log('here', FountainParser);
+    //console.log('here', FountainParser);
     let options = {
       paginate: true,
       //lines_per_page: 'none' | 'loose' | 'normal' | 'tight' | 'very_tight',

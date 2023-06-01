@@ -14,9 +14,14 @@ const Splash = ({moveForward}) => {
     <View style={styles.container}>
       <View style={{flex: 6, justifyContent: 'center'}}>
         <Image
-          style={{width: width / 1.1, maxWidth: 500}}
-          source={require('../../assets/img/splash.jpg')}
-          resizeMode={'center'}
+          style={{
+            width: width / 1.2,
+            height: width / 2.4,
+            maxWidth: 300,
+            maxHeight: 150,
+          }}
+          source={require('../../assets/img/splash_new.png')}
+          //resizeMode={'center'}
         />
         {/* <Text style={styles.name}>Youblockchainer</Text> */}
         {/* <Title style={{textAlign: 'center', color: 'balck'}}>

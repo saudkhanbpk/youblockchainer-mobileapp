@@ -25,7 +25,7 @@ const GlobalProvider = ({children}) => {
   const [signedIn, setSignedIn] = useState(false);
   const [web3Provider, setWeb3Provider] = useState(null);
   const [web3, setWeb3] = useState(null);
-  const [containsNetwork, setContainsNetwork] = useState(true);
+  //const [containsNetwork, setContainsNetwork] = useState(true);
   const [forwarderC, setForwarderC] = useState(null);
   const [mainContract, setMainContract] = useState(null);
   const [editProfile, setEditProfile] = useState(false);
@@ -49,7 +49,7 @@ const GlobalProvider = ({children}) => {
     console.log(chainId);
     if (!!chainId && chainId !== rpcConfig.chainId) {
       let res = web3Provider;
-      let w3 = web3;
+      // let w3 = web3;
       if (!res) {
         res = new WalletConnectProvider({
           ...rpcConfig,
@@ -58,11 +58,11 @@ const GlobalProvider = ({children}) => {
         await res.enable();
       }
 
-      if (!w3) {
-        w3 = new Web3(res);
-      }
+      // if (!w3) {
+      //   w3 = new Web3(res);
+      // }
       try {
-        if (!containsNetwork) return await addChain(res);
+        //if (!containsNetwork) return await addChain(res);
         await res.request({
           method: 'wallet_switchEthereumChain',
           params: [{chainId: Web3.utils.toHex(rpcConfig.chainId)}],
@@ -71,7 +71,7 @@ const GlobalProvider = ({children}) => {
         console.log('Switching Error:- ', error);
 
         if (error.message.includes('Unrecognized chain ID')) {
-          setContainsNetwork(false);
+          return await addChain(res);
         }
       }
     }

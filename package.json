@@ -1,10 +1,11 @@
 {
-  "name": "ybcApp",
+  "name": "myreeldreams",
   "version": "0.0.1",
   "private": true,
   "scripts": {
     "android": "react-native run-android --active-arch-only",
     "release-apk": "cd android & gradlew assembleRelease & cd..",
+    "gwclean": "cd android & gradlew clean & cd..",
     "ios": "react-native run-ios",
     "lint": "eslint .",
     "start": "react-native start",

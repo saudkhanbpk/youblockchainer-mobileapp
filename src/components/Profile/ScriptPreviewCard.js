@@ -1,42 +1,19 @@
 import React, {useContext, useState} from 'react';
-import {View, StyleSheet, ToastAndroid, TouchableOpacity} from 'react-native';
+import {View, StyleSheet, Alert} from 'react-native';
 import PDFView from 'react-native-pdf';
-import RNFetchBlob from 'rn-fetch-blob';
-import {getStoragePermission} from '../../utils/chatAPI';
+import {saveInDevice} from '../../utils/chatAPI';
 import {width} from '../../Constants';
-import {ActivityIndicator, IconButton, Text} from 'react-native-paper';
+import {ActivityIndicator, IconButton} from 'react-native-paper';
 import {GlobalContext} from '../../auth/GlobalProvider';
 import {updateUser} from '../../utils/userAPI';
 
 const ScriptPreviewCard = ({url, isDeleting, id}) => {
   const {user, setUser} = useContext(GlobalContext);
   const [loading, setLoading] = useState(false);
+
   const handleDownload = async () => {
     setLoading(true);
-    try {
-      await getStoragePermission();
-      console.log('here');
-      const {dirs} = RNFetchBlob.fs;
-      const fileName = url.substring(url.lastIndexOf('/') + 1);
-      const path = `${dirs.DownloadDir}/${fileName}`;
-      console.log('then here');
-      let res = await RNFetchBlob.config({
-        fileCache: true,
-        addAndroidDownloads: {
-          useDownloadManager: true,
-          notification: true,
-          path,
-          description: 'Downloading Script...',
-        },
-      }).fetch('GET', url);
-      ToastAndroid.show(
-        'Script downloaded to: ',
-        res.path(),
-        ToastAndroid.SHORT,
-      );
-    } catch (error) {
-      console.log('Error downloading file: ', error);
-    }
+    await saveInDevice(url);
     setLoading(false);
   };
 
@@ -66,6 +43,7 @@ const ScriptPreviewCard = ({url, isDeleting, id}) => {
       <PDFView
         style={{flex: 1}}
         trustAllCerts={false}
+        singlePage
         source={{uri: url, cache: true}}
         onError={error => console.log('Error rendering PDF: ', error)}
       />
@@ -77,7 +55,25 @@ const ScriptPreviewCard = ({url, isDeleting, id}) => {
       ) : (
         <IconButton
           style={styles.buttonPos}
-          onPress={isDeleting ? () => onDelete(url) : handleDownload}
+          onPress={
+            isDeleting
+              ? () =>
+                  Alert.alert(
+                    'Are you sure ?',
+                    'You want to delete this script from your account',
+                    [
+                      {
+                        text: 'no',
+                        style: 'cancel',
+                      },
+                      {
+                        text: 'yes',
+                        onPress: onDelete,
+                      },
+                    ],
+                  )
+              : handleDownload
+          }
           icon={isDeleting ? 'delete' : 'download'}
           size={32}
         />

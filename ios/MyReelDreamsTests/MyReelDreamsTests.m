@@ -7,11 +7,11 @@
 #define TIMEOUT_SECONDS 600
 #define TEXT_TO_LOOK_FOR @"Welcome to React"
 
-@interface ybcAppTests : XCTestCase
+@interface MyReelDreamsTests : XCTestCase
 
 @end
 
-@implementation ybcAppTests
+@implementation MyReelDreamsTests
 
 - (BOOL)findSubviewInView:(UIView *)view matching:(BOOL (^)(UIView *view))test
 {

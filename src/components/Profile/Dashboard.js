@@ -57,8 +57,8 @@ const Dashboard = ({profile}) => {
             <IconButton
               icon={isDeleting ? 'check' : 'pencil'}
               iconColor={colors.textAfter}
-              size={24}
-              style={{marginLeft: -2, marginTop: -5}}
+              size={20}
+              style={{marginLeft: -2, marginTop: -3}}
               onPress={() => setIsDeleting(d => !d)}
             />
           </View>

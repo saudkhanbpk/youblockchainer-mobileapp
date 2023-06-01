@@ -21,7 +21,7 @@ if linkage != nil
   use_frameworks! :linkage => linkage.to_sym
 end
 
-target 'ybcApp' do
+target 'MyReelDreams' do
   config = use_native_modules!
 
   # Flags change depending on the env values.
@@ -43,7 +43,7 @@ target 'ybcApp' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
-  target 'ybcAppTests' do
+  target 'MyReelDreamsTests' do
     inherit! :complete
     # Pods for testing
   end

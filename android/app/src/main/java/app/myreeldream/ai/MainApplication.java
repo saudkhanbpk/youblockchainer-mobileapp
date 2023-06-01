@@ -1,4 +1,4 @@
-package com.ybcapp;
+package app.myreeldream.ai;
 
 import android.app.Application;
 import com.facebook.react.PackageList;

@@ -3,6 +3,7 @@ import API, {ENDPOINTS} from '../api/apiService';
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import {PermissionsAndroid, ToastAndroid} from 'react-native';
 import {updateUser, uploadPics} from './userAPI';
+import RNFetchBlob from 'rn-fetch-blob';
 
 export const getAllRooms = async () => {
   try {
@@ -15,33 +16,69 @@ export const getAllRooms = async () => {
 
 export const getStoragePermission = async () => {
   let permission = PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE;
-  console.log(await PermissionsAndroid.check(permission));
+  console.log('Permission:- ' + (await PermissionsAndroid.check(permission)));
   if (!(await PermissionsAndroid.check(permission))) {
+    console.log('here');
     let granted = await PermissionsAndroid.request(permission);
-    if (!granted) throw Error('Permission Denied');
+    //if (!granted) throw Error('Permission Denied');
     return true;
+  }
+  return true;
+};
+
+export const saveInDevice = async url => {
+  try {
+    await getStoragePermission();
+    const {dirs} = RNFetchBlob.fs;
+    const fileName = url.substring(url.lastIndexOf('/') + 1);
+    const path = `${dirs.DownloadDir}/${fileName}.pdf`;
+
+    let res = await RNFetchBlob.config({
+      fileCache: true,
+      addAndroidDownloads: {
+        useDownloadManager: true,
+        notification: true,
+        path,
+        description: 'Downloading Script...',
+      },
+    }).fetch('GET', url);
+    ToastAndroid.show('Script downloaded to: ' + res.path(), ToastAndroid.LONG);
+  } catch (error) {
+    console.log('Error downloading file: ', error);
   }
 };
 
 export const saveAsPdf = async (html, inDevice, prevScripts, setUser) => {
   try {
-    if (inDevice) {
-      getStoragePermission();
-    }
     let options = {
       html,
       fileName: `Script_${shorthash.unique(html)}`,
+      base64: true,
     };
 
-    if (inDevice) options['directory'] = 'Downloads';
+    //if (inDevice) options['directory'] = 'Downloads';
 
     let file = await RNHTMLtoPDF.convert(options);
     console.log(`---Converted To PDF (${file.filePath})`);
-    if (inDevice)
-      return ToastAndroid.show(
-        `${options.fileName} saved in ${options.directory} Folder`,
-        ToastAndroid.LONG,
-      );
+    if (inDevice) {
+      if (await getStoragePermission()) {
+        await RNFetchBlob.fs.cp(
+          file.filePath,
+          `${RNFetchBlob.fs.dirs.DownloadDir}/${options.fileName}.pdf`,
+        );
+        return ToastAndroid.show(
+          `${options.fileName} saved in Downlaods Folder`,
+          ToastAndroid.LONG,
+        );
+      }
+      return ToastAndroid.show('Permission Denied :(', ToastAndroid.SHORT);
+      // await RNFetchBlob.fs.writeFile(
+      //   `${RNFetchBlob.fs.dirs.DownloadDir}/${options.fileName}.pdf`,
+      //   file.base64,
+      //   'base64',
+      // );
+    }
+
     let urls = await uploadPics([
       {
         uri: 'file://' + file.filePath,
@@ -64,7 +101,10 @@ export const saveAsPdf = async (html, inDevice, prevScripts, setUser) => {
     ToastAndroid.show(`Script saved in your profile 🎉`, ToastAndroid.SHORT);
   } catch (error) {
     console.log('Save as Pdf:- ', error.message);
-    ToastAndroid.show('Could not save script :(', ToastAndroid.SHORT);
+    ToastAndroid.show(
+      'Could not save script :( Try again Later',
+      ToastAndroid.SHORT,
+    );
   }
 };
 
