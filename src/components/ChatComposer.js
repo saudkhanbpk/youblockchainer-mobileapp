@@ -49,7 +49,7 @@ const ChatComposer = ({
         size={32}
         iconColor={colors.primary}
         onPress={onSend}
-        // disabled={disabled}
+        //disabled={disabled}
       />
     </View>
   );

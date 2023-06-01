@@ -37,6 +37,7 @@ const MainDrawerScreen = props => {
     <View style={{flex: 1}}>
       <Drawer.Navigator
         drawerContent={CustomDrawerContent}
+        backBehavior="none"
         screenOptions={{
           header: ({navigation}) => <Tophead navigation={navigation} />,
           drawerActiveTintColor: colors.primary,
@@ -135,6 +136,7 @@ const EntityStackScreen = () => {
     <EntityStack.Navigator screenOptions={{headerShown: false}}>
       <EntityStack.Screen name="SearchEntity" component={SearchEntity} />
       <EntityStack.Screen name="EntityDetail" component={EntityDetail} />
+      <EntityStack.Screen name="Chat" component={ChatScreen} />
     </EntityStack.Navigator>
   );
 };
@@ -144,6 +146,7 @@ const ExpertStackScreen = () => {
     <ExpertStack.Navigator screenOptions={{headerShown: false}}>
       <ExpertStack.Screen name="SearchExpert" component={SearchExpert} />
       <ExpertStack.Screen name="ExpertDetail" component={ExpertDetail} />
+      <ExpertStack.Screen name="Chat" component={ChatScreen} />
     </ExpertStack.Navigator>
   );
 };

@@ -67,7 +67,7 @@ export const saveAsPdf = async (html, inDevice, prevScripts, setUser) => {
           `${RNFetchBlob.fs.dirs.DownloadDir}/${options.fileName}.pdf`,
         );
         return ToastAndroid.show(
-          `${options.fileName} saved in Downlaods Folder`,
+          `${options.fileName} saved in Downloads Folder`,
           ToastAndroid.LONG,
         );
       }

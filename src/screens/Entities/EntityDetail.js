@@ -84,9 +84,8 @@ const EntityDetail = ({route, navigation}) => {
           profile={profile}
           onHire={() => setShowAgreement(profile)}
           onConnect={async () =>
-            navigation.navigate('Chats', {
-              screen: 'Chat',
-              params: {room: await createRoom(profile.manager._id)},
+            navigation.navigate('Chat', {
+              room: await createRoom(profile.manager._id),
             })
           }
         />

@@ -26,7 +26,7 @@ const Dashboard = ({profile, setShow, onHire, onConnect}) => {
           </Text>
         </View>
 
-        {!(user._id === manager._id) && (
+        {user && !(user._id === manager._id) && (
           // ? (
           //   <Button onPress={() => setShow(true)}>Edit Profile</Button>
           // ) :

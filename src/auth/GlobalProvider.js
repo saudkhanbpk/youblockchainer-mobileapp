@@ -213,7 +213,7 @@ const GlobalProvider = ({children}) => {
     if (connector.connected)
       if (chainId === connector.chainId) onChainChanged(chainId);
       else setChainId(connector.chainId);
-  }, [user]);
+  }, [signedIn]);
 
   useEffect(() => {
     if (web3Provider) web3Provider.on('chainChanged', setChainId);

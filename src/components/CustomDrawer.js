@@ -2,7 +2,7 @@ import {DrawerContentScrollView, DrawerItem} from '@react-navigation/drawer';
 import {useTheme} from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Text} from 'react-native-paper';
-import {useContext} from 'react';
+import {useContext, useMemo} from 'react';
 import {View} from 'react-native';
 import {useWalletConnect} from '@walletconnect/react-native-dapp';
 import {GlobalContext} from '../auth/GlobalProvider';
@@ -19,10 +19,12 @@ const DrawerRow = ({
   active,
   inactive,
   onClick,
+  disabled,
 }) => {
   const size = 26;
   return (
     <DrawerItem
+      style={{opacity: disabled ? 0.7 : 1}}
       label={() => (
         <Text
           style={{
@@ -41,7 +43,13 @@ const DrawerRow = ({
           color={focused ? active : inactive}
         />
       )}
-      onPress={onClick ? onClick : () => navigation.navigate(route)}
+      onPress={
+        disabled
+          ? () => {}
+          : onClick
+          ? onClick
+          : () => navigation.navigate(route)
+      }
     />
   );
 };
@@ -50,29 +58,33 @@ const CustomDrawerContent = props => {
   const {colors} = useTheme();
   const {routes, index} = props.state;
   const connector = useWalletConnect();
-  const {connect, disconnect} = useContext(GlobalContext);
-  const availableRoutes = {
-    ChatBot: {
-      label: 'Home',
-      icon: 'home-variant',
-    },
-    Expert: {
-      label: 'Experts',
-      icon: 'account-search',
-    },
-    Entity: {
-      label: 'Organizations',
-      icon: 'feature-search',
-    },
-    Chats: {
-      label: 'Chats',
-      icon: 'chat',
-    },
-    Profile: {
-      label: 'Profile',
-      icon: 'account',
-    },
-  };
+  const {connect, disconnect, signedIn} = useContext(GlobalContext);
+  const availableRoutes = useMemo(() => {
+    return {
+      ChatBot: {
+        label: 'Home',
+        icon: 'home-variant',
+      },
+      Expert: {
+        label: 'Experts',
+        icon: 'account-search',
+      },
+      Entity: {
+        label: 'Organizations',
+        icon: 'feature-search',
+      },
+      Chats: {
+        label: 'Chats',
+        icon: 'chat',
+        disabled: !signedIn,
+      },
+      Profile: {
+        label: 'Profile',
+        icon: 'account',
+        disabled: !signedIn,
+      },
+    };
+  }, [signedIn]);
 
   return (
     <DrawerContentScrollView {...props}>
@@ -84,6 +96,7 @@ const CustomDrawerContent = props => {
           focused={routes[index].name === i[0]}
           label={i[1].label}
           icon={i[1].icon}
+          disabled={i[1].disabled}
           route={i[0]}
           active={colors.primary}
           inactive={colors.textAfter}

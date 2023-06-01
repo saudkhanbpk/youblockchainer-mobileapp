@@ -15,9 +15,11 @@ const BotHeader = ({
   const {signedIn} = useContext(GlobalContext);
   return (
     <View style={styles.container}>
-      <Button mode="contained" disabled={!showClear} onPress={onClear}>
-        {generating ? 'Stop Generation' : 'Clear Chat'}
-      </Button>
+      {!generating && (
+        <Button mode="contained" disabled={!showClear} onPress={onClear}>
+          {generating ? 'Stop Generation' : 'Clear Chat'}
+        </Button>
+      )}
       {signedIn && (
         <Menu
           visible={show}

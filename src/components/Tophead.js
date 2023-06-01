@@ -63,7 +63,9 @@ const Tophead = ({navigation}) => {
             {connector.connected ? 'Disconnect' : 'Connect'} wallet
           </Text>
         </TouchableOpacity> */}
-        <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+        <TouchableOpacity
+          disabled={!user}
+          onPress={() => navigation.navigate('Profile')}>
           <Avatar.Image
             source={{
               uri:

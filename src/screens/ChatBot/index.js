@@ -169,6 +169,7 @@ const ChatBot = props => {
         value={text}
         onChangeText={setText}
         onSend={() => {
+          if (!text) return;
           onSelectOption([{title: text}]);
           setText('');
         }}
@@ -803,6 +804,7 @@ const ChatBot = props => {
         onClear={() => {
           setStopped(true);
           setLoading(false);
+          setFinalScript('');
           clearChat();
         }}
         generating={loading}

@@ -10,7 +10,7 @@ const NameCard = ({profile, onConnect, onHire, baseStyle}) => {
   const {user} = useContext(GlobalContext);
   const {profileImage, username, isVerified, _id} = profile;
   const {colors} = useTheme();
-  const isMe = useMemo(() => user._id === _id, [user]);
+  const isMe = useMemo(() => !user || user._id === _id, [user]);
 
   return (
     <Card style={{...baseStyle}}>
