@@ -44,7 +44,7 @@ const MainDrawerScreen = props => {
           drawerActiveBackgroundColor: 'transparent',
           drawerStyle: {
             minWidth: 250,
-            width: '60%',
+            width: '65%',
           },
         }}>
         <Drawer.Screen

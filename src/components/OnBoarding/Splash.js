@@ -15,7 +15,7 @@ const Splash = ({moveForward}) => {
       <View style={{flex: 6, justifyContent: 'center'}}>
         <Image
           style={{width: width / 1.1, maxWidth: 500}}
-          source={require('../../assets/img/splash.png')}
+          source={require('../../assets/img/splash.jpg')}
           resizeMode={'center'}
         />
         {/* <Text style={styles.name}>Youblockchainer</Text> */}

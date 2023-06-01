@@ -29,4 +29,4 @@ export const MetaMaskNetworkObject = {
 export const etherScanApiToken = 'R782X6XWEFS1N52RK3V47CC3BYP6H43W2P';
 export const alchemyApiToken = '1t7-El0FDwdi9miOxMFUKKd69Fuk0eXT';
 export const etherScanURL = 'https://goerli.etherscan.io';
-export const appLogo = require('./assets/img/logo.png');
+export const appLogo = require('./assets/img/logo_renew.png');

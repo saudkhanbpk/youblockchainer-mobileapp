@@ -1,12 +1,15 @@
 import {useNavigation} from '@react-navigation/native';
-import React from 'react';
+import React, {useState} from 'react';
 import {View, StyleSheet} from 'react-native';
+import {FlatList} from 'react-native-gesture-handler';
 import {Chip, IconButton, Text, useTheme} from 'react-native-paper';
+import ScriptPreviewCard from './ScriptPreviewCard';
 
 const Dashboard = ({profile}) => {
-  const {username, bio, descriptorTitle, skills = []} = profile;
+  const {username, bio, descriptorTitle, skills = [], scripts = []} = profile;
   const {colors} = useTheme();
   const navigation = useNavigation();
+  const [isDeleting, setIsDeleting] = useState(false);
 
   return (
     <View>
@@ -44,6 +47,30 @@ const Dashboard = ({profile}) => {
               </Chip>
             ))}
           </View>
+        </View>
+      )}
+
+      {!!scripts.length && (
+        <View style={{marginTop: 15}}>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Text style={styles.title}>Saved Scripts</Text>
+            <IconButton
+              icon={isDeleting ? 'check' : 'pencil'}
+              iconColor={colors.textAfter}
+              size={24}
+              style={{marginLeft: -2, marginTop: -5}}
+              onPress={() => setIsDeleting(d => !d)}
+            />
+          </View>
+
+          <FlatList
+            data={scripts.filter(i => i)}
+            keyExtractor={(x, i) => i.toString()}
+            horizontal
+            renderItem={({item}) => (
+              <ScriptPreviewCard url={item} isDeleting={isDeleting} />
+            )}
+          />
         </View>
       )}
     </View>

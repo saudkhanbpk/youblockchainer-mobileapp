@@ -39,7 +39,7 @@ const GlobalProvider = ({children}) => {
         method: 'wallet_addEthereumChain',
         params: [MetaMaskNetworkObject],
       });
-      setContainsNetwork(true);
+      // setContainsNetwork(true);
     } catch (addError) {
       console.error('Adding Error:- ', addError);
     }

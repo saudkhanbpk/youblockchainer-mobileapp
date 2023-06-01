@@ -133,6 +133,7 @@ const Profile = ({navigation}) => {
       </View>
       <View style={{paddingHorizontal: 20, marginTop: 20}}>
         <Dashboard profile={user} />
+
         <View style={{marginTop: 15}}>
           <Text style={styles.title}>All Agreements</Text>
 

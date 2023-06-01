@@ -13,15 +13,20 @@ export const getAllRooms = async () => {
   }
 };
 
+export const getStoragePermission = async () => {
+  let permission = PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE;
+  console.log(await PermissionsAndroid.check(permission));
+  if (!(await PermissionsAndroid.check(permission))) {
+    let granted = await PermissionsAndroid.request(permission);
+    if (!granted) throw Error('Permission Denied');
+    return true;
+  }
+};
+
 export const saveAsPdf = async (html, inDevice, prevScripts, setUser) => {
   try {
     if (inDevice) {
-      let permission = PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE;
-      console.log(await PermissionsAndroid.check(permission));
-      if (!(await PermissionsAndroid.check(permission))) {
-        let granted = await PermissionsAndroid.request(permission);
-        if (!granted) throw Error('Permission Denied');
-      }
+      getStoragePermission();
     }
     let options = {
       html,

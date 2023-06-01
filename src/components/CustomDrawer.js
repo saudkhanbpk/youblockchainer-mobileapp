@@ -29,6 +29,7 @@ const DrawerRow = ({
             color: focused ? active : inactive,
             fontSize: 16,
             letterSpacing: 1,
+            width: 120,
           }}>
           {label}
         </Text>
