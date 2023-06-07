@@ -107,10 +107,10 @@ const App = () => {
         asyncStorage: AsyncStorage,
       }}
       clientMeta={{
-        description: 'Connect to Youblockchainer App',
-        url: 'https://youblockchainer.xyz',
+        description: 'Connect to MyReelDreams App',
+        url: 'http://app.myreeldream.ai',
         icons: [appLogo],
-        name: 'Youblockchainer',
+        name: 'MyReelDreams',
       }}>
       <GlobalProvider>
         <StatusBar backgroundColor={theme.colors.primary} />

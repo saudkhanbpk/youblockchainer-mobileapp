@@ -14,6 +14,7 @@ import {useEffect} from 'react';
 import Loading from '../../components/Loading';
 import ListEmpty from '../../components/ListEmpty';
 import AgreementCard from '../../components/Profile/AgreementCard';
+import IntroVideoCard from '../../components/Experts/IntroVideoCard';
 
 const ExpertDetail = ({route, navigation}) => {
   const {profile} = route.params;
@@ -79,6 +80,9 @@ const ExpertDetail = ({route, navigation}) => {
       <BioCard profile={profile} baseStyle={styles.cardBase} />
       {!!profile.skills.length && (
         <SkillCard profile={profile} baseStyle={styles.cardBase} />
+      )}
+      {profile.videoVisibility && (
+        <IntroVideoCard profile={profile} baseStyle={styles.cardBase} />
       )}
       <View style={{marginTop: 10}}>
         <Text style={{...styles.title, color: colors.accent}}>

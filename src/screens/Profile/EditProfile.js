@@ -49,6 +49,7 @@ const EditProfile = ({navigation}) => {
   const [profileImage, setProfileImage] = useState({uri: user.profileImage});
   const [profileBanner, setProfileBanner] = useState({uri: user.profileBanner});
   const [skills, setSkills] = useState(user.skills || []);
+  const [videoVisibility, setVideoVisibility] = useState(user.videoVisibility);
   const [socialHandles, setSocialHandles] = useState([
     {
       name: 'instagram',
@@ -115,6 +116,7 @@ const EditProfile = ({navigation}) => {
           isExpert,
           descriptorTitle,
           skills,
+          videoVisibility,
           profileBanner: profban[0],
           profileImage: profimg[0],
         },
@@ -244,6 +246,7 @@ const EditProfile = ({navigation}) => {
             )}
           </View>
         )}
+
         <InputField label={'Name'} text={username} setText={setUserName} />
         <InputField label={'Email'} text={email} setText={setEmail} />
         <InputField
@@ -296,7 +299,26 @@ const EditProfile = ({navigation}) => {
           props={{multiline: true}}
           placeholder={'Tell us something about yourself...'}
         />
+        <View
+          style={{
+            flexDirection: 'row',
+            //backgroundColor: 'white',
+            alignItems: 'center',
+            // padding: 10,
+            marginHorizontal: 15,
+            borderRadius: 5,
+            justifyContent: 'space-around',
+            marginVertical: 10,
+          }}>
+          <Text style={{fontWeight: 'bold', fontSize: 16}}>
+            Show Intro clip in public profile
+          </Text>
 
+          <Switch
+            value={videoVisibility}
+            onChange={() => setVideoVisibility(e => !e)}
+          />
+        </View>
         <View style={{marginHorizontal: 10, marginBottom: 60}}>
           {socialHandles.map((item, index) => (
             <View key={index} style={styles.socialSection}>

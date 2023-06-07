@@ -12,6 +12,8 @@ import ListEmpty from '../../components/ListEmpty';
 import Loading from '../../components/Loading';
 import {getUserAgreementsFromContract} from '../../utils/agreementAPI';
 import {mapAgreementAddress} from '../../utils/helper';
+import Video from 'react-native-video';
+import VideoComponent from '../../components/VideoPlayer/VideoComponent';
 
 const Profile = ({navigation}) => {
   const {user, mainContract} = useContext(GlobalContext);
@@ -133,6 +135,30 @@ const Profile = ({navigation}) => {
       </View>
       <View style={{paddingHorizontal: 20, marginTop: 20}}>
         <Dashboard profile={user} />
+        <Text style={styles.title}>Your Introduction Video</Text>
+        <VideoComponent
+          uri={user.videoIntro}
+          style={{
+            width: '90%',
+            height: width * 0.5,
+            alignSelf: 'center',
+            backgroundColor: colors.primary,
+          }}
+        />
+        {/* <Video
+          source={{uri: user.videoIntro}}
+          controls
+          paused
+          poster="https://media1.giphy.com/media/xFmuT64Jto3mRO4w3G/giphy.gif?cid=ecf05e470lf8auazyojivsd0h8744xnvrqdiss98bgedx0mh&ep=v1_gifs_search&rid=giphy.gif&ct=g"
+          posterResizeMode="cover"
+          style={{
+            width: '90%',
+            height: width * 0.5,
+            borderRadius: 20,
+            alignSelf: 'center',
+            backgroundColor: colors.primary,
+          }}
+        /> */}
 
         <View style={{marginTop: 15}}>
           <Text style={styles.title}>All Agreements</Text>

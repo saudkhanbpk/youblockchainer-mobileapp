@@ -18,6 +18,7 @@ import ExpertDetail from '../screens/Experts/ExpertDetail';
 import EditProfile from '../screens/Profile/EditProfile';
 import AgreementModal from '../components/Agreements/AgreementModal';
 import EntityDetail from '../screens/Entities/EntityDetail';
+import EmailModal from '../components/EmailModal';
 
 const Drawer = createDrawerNavigator();
 const ChatBotStack = createNativeStackNavigator();
@@ -28,7 +29,8 @@ const ChatStack = createNativeStackNavigator();
 
 const MainDrawerScreen = props => {
   const {colors} = useTheme();
-  const {loading} = useTabInitializer();
+  const {loading, showMail, setShowMail, updateEmail, uploading, updateVideo} =
+    useTabInitializer();
   // const size = 26;
 
   return loading ? (
@@ -119,6 +121,13 @@ const MainDrawerScreen = props => {
         />
       </Drawer.Navigator>
       <AgreementModal />
+      <EmailModal
+        show={showMail}
+        onClick={updateEmail}
+        onRecord={updateVideo}
+        setShow={setShowMail}
+        uploading={uploading}
+      />
     </View>
   );
 };

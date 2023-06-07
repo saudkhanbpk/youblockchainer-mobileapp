@@ -28,7 +28,7 @@ export const uploadPics = async imgs => {
 export const uploadImage = async () => {
   try {
     let image = await pickPhoto();
-    return (await uploadPics(image))[0];
+    return (await uploadPics([image]))[0];
   } catch (error) {
     console.log('Error in image upload');
     return false;
