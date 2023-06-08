@@ -1,5 +1,5 @@
 import React, {useRef, useState, useContext} from 'react';
-import {View, TouchableOpacity, StyleSheet, Pressable} from 'react-native';
+import {View, TouchableOpacity, StyleSheet, Pressable, Linking} from 'react-native';
 import {Paragraph, Text, useTheme} from 'react-native-paper';
 import LinearGradient from 'react-native-linear-gradient';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -138,6 +138,7 @@ const GetStarted = ({navigation}) => {
               bottom: width / 12,
               alignSelf: 'center',
             }}>
+              
             <TouchableOpacity style={{flex: 1}} onPress={connect}>
               <LinearGradient
                 colors={[colors.secondary, colors.primary]}
@@ -149,6 +150,14 @@ const GetStarted = ({navigation}) => {
             </TouchableOpacity>
             <TouchableOpacity
               style={{
+                marginRight: 5,
+                marginTop: 5,
+              }}
+              onPress={() => Linking.openURL('https://metamask.io/')}>
+              <Paragraph style={{marginRight: 2, fontSize: 12 , textDecorationLine:'underline'}}>Don't have a wallet ?</Paragraph>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{
                 flexDirection: 'row',
                 alignItems: 'center',
                 alignSelf: 'flex-end',
@@ -156,8 +165,8 @@ const GetStarted = ({navigation}) => {
                 marginTop: 5,
               }}
               onPress={() => navigation.replace('MainDrawer')}>
-              <Paragraph style={{marginRight: 2, fontSize: 12}}>Skip</Paragraph>
-              <AntDesign name="right" color={colors.border} size={12} />
+              <Paragraph style={{marginRight: 2, fontSize: 14}}>Skip</Paragraph>
+              <AntDesign name="right" color={colors.border} size={14} />
             </TouchableOpacity>
           </View>
         ))}

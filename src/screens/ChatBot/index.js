@@ -10,6 +10,7 @@ import {askGPT, saveAsPdf} from '../../utils/chatAPI';
 import {appLogo, defaultAvatar} from '../../Constants';
 import BotHeader from '../../components/ChatBot.js/BotHeader';
 import {FountainParser} from 'screenplay-js';
+import InstructionCard from '../../components/ChatBot.js/InstructionCard';
 
 const ChatBot = props => {
   const {colors} = useTheme();
@@ -816,6 +817,7 @@ const ChatBot = props => {
           saveDownloadScript(true);
         }}
       />
+      {messages.length === 1 && <InstructionCard />}
       <GiftedChat
         messages={messages}
         renderAvatarOnTop={true}
