@@ -4,14 +4,16 @@ import {ScrollView} from 'react-native-gesture-handler';
 import {Text, useTheme} from 'react-native-paper';
 
 const Instruction = ({text}) => {
+  const {colors} = useTheme();
   return (
     <View
       style={{
-        backgroundColor: 'rgba(52, 52, 52, 0.2)',
+        backgroundColor: colors.primary,
         paddingHorizontal: 10,
         paddingVertical: 10,
         borderRadius: 10,
         marginTop: 6,
+        opacity: 0.4,
       }}>
       <Text
         style={{
@@ -19,6 +21,7 @@ const Instruction = ({text}) => {
           textAlign: 'center',
           fontWeight: 'bold',
           fontSize: 15,
+          zIndex: 1,
         }}>
         {text}
       </Text>
@@ -45,8 +48,13 @@ const InstructionCard = props => {
         }}>
         MyReelDream
       </Text>
-      <View>
-        <Text style={{fontSize: 16, fontFamily: 'Poppins-Bold'}}>
+      <View style={{width: '80%', marginTop: '5%'}}>
+        <Text
+          style={{
+            fontSize: 16,
+            fontFamily: 'Poppins-Bold',
+            textAlign: 'center',
+          }}>
           Instructions
         </Text>
 
