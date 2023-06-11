@@ -19,6 +19,7 @@ import EditProfile from '../screens/Profile/EditProfile';
 import AgreementModal from '../components/Agreements/AgreementModal';
 import EntityDetail from '../screens/Entities/EntityDetail';
 import EmailModal from '../components/EmailModal';
+import AgreementDetail from '../screens/Profile/AgreementDetail';
 
 const Drawer = createDrawerNavigator();
 const ChatBotStack = createNativeStackNavigator();
@@ -174,6 +175,7 @@ const ProfileStackScreen = () => {
     <ProfileStack.Navigator screenOptions={{headerShown: false}}>
       <ProfileStack.Screen name="ProfileMain" component={Profile} />
       <ProfileStack.Screen name="EditProfile" component={EditProfile} />
+      <ProfileStack.Screen name="Agreement" component={AgreementDetail} />
     </ProfileStack.Navigator>
   );
 };

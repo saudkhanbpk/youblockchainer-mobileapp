@@ -74,6 +74,9 @@
     "react-test-renderer": "18.2.0",
     "rn-nodeify": "^10.3.0"
   },
+  "resolutions": {
+    "better-sqlite3": "^8.4.0"
+  },
   "jest": {
     "preset": "react-native"
   },

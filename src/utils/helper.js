@@ -47,7 +47,10 @@ export const arraytoQuickReply = arr => {
 
 export const mapAgreementAddress = (db, contractData) => {
   return db
-    .filter(i => !!i.agreementUri)
+    .filter(
+      i =>
+        !!i.agreementUri && !!contractData.find(j => j[1] === i.agreementUri),
+    )
     .map(i => {
       return {
         ...i,

@@ -299,7 +299,7 @@ const EditProfile = ({navigation}) => {
           props={{multiline: true}}
           placeholder={'Tell us something about yourself...'}
         />
-        <View
+        {/* <View
           style={{
             flexDirection: 'row',
             //backgroundColor: 'white',
@@ -318,7 +318,7 @@ const EditProfile = ({navigation}) => {
             value={videoVisibility}
             onChange={() => setVideoVisibility(e => !e)}
           />
-        </View>
+        </View> */}
         <View style={{marginHorizontal: 10, marginBottom: 60}}>
           {socialHandles.map((item, index) => (
             <View key={index} style={styles.socialSection}>

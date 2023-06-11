@@ -1,78 +1,106 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useMemo, useState} from 'react';
 import {useTheme, Card, Title, Modal} from 'react-native-paper';
-import {ScrollView, StyleSheet, View} from 'react-native';
+import {
+  ScrollView,
+  StyleSheet,
+  View,
+  ToastAndroid,
+  Keyboard,
+} from 'react-native';
 import {GlobalContext} from '../../auth/GlobalProvider';
 import InputField from '../Profile/InputField';
-import moment from 'moment/moment';
 import SubmitButton from '../SubmitButton';
 import Entypo from 'react-native-vector-icons/Entypo';
-import DatePicker from 'react-native-date-picker';
-import {createAgreement} from '../../utils/agreementAPI';
-import {ToastAndroid} from 'react-native';
+import {addMilestone, updateMilestone} from '../../utils/agreementAPI';
 
-const AgreementModal = () => {
+const MilestoneModal = ({contract, addr, show, setShow}) => {
   const {colors} = useTheme();
+  const isEditing = useMemo(() => typeof show === 'object', [show]);
+  const {executeMetaTx, web3} = useContext(GlobalContext);
   const [name, setName] = useState('');
-  const [showPicker, setShowPicker] = useState(false);
-  const [startsAt, setStartsAt] = useState(null);
+  const [amount, setAmount] = useState('');
+  const [description, setDescription] = useState('');
   const [setting, setSetting] = useState(false);
-  const {
-    user,
-    mainContract,
-    executeMetaTx,
-    showAgreement,
-    setShowAgreement,
-    web3,
-  } = useContext(GlobalContext);
 
   const clicker = async () => {
-    setSetting(true);
-    if (!startsAt || name.length === 0) {
-      return alert('"Name" and "Starts At" field cannot be empty');
+    if (!description.length || !name.length) {
+      return alert('"Name" or "Description" field cannot be empty');
     }
+    if (isNaN(amount)) {
+      return alert('Amount field should be numerical');
+    }
+    setSetting(true);
     if (
-      await createAgreement(
-        user,
-        showAgreement,
-        name,
-        moment(startsAt).unix(),
-        moment().unix(),
-        mainContract,
-        executeMetaTx,
-        web3,
-      )
+      isEditing
+        ? await updateMilestone(
+            show[0],
+            name,
+            web3.utils.toWei(amount),
+            description,
+            executeMetaTx,
+            contract,
+            addr,
+          )
+        : await addMilestone(
+            name,
+            web3.utils.toWei(amount),
+            description,
+            executeMetaTx,
+            contract,
+            addr,
+          )
     ) {
-      setShowAgreement(null);
+      setShow(null);
       return ToastAndroid.show(
-        'Agreement created Successfully 🎉',
+        `Milestone ${isEditing ? 'edited' : 'added'} successfully 🎉`,
         ToastAndroid.SHORT,
       );
     }
     setSetting(false);
   };
 
+  useEffect(() => {
+    setSetting(false);
+    if (!isEditing) {
+      setName('');
+      setDescription('');
+      setAmount('');
+    }
+    if (show) {
+      setName(show[1]);
+      setAmount(web3.utils.fromWei(show[2]));
+      setDescription(show[3]);
+    }
+  }, [show]);
+
   return (
-    <Modal visible={showAgreement} onDismiss={() => setShowAgreement(null)}>
+    <Modal visible={show} onDismiss={() => setShow(false)}>
       <View style={styles.modal}>
         <Card style={styles.card}>
           <ScrollView>
             <Title
               style={{fontWeight: 'bold', marginTop: -5, marginBottom: 15}}>
-              Enter Agreement Details
+              {isEditing ? 'Edit' : 'Enter'} Milestone Details
             </Title>
             <InputField
               text={name}
               setText={setName}
-              label={'Agreement Name*'}
+              label={'Milestone Name*'}
             />
             <InputField
-              label={'Starts At*'}
-              text={startsAt ? new Date(startsAt).toLocaleString() : ''}
+              label={'Description*'}
+              text={description}
+              props={{multiline: true}}
+              setText={setDescription}
+            />
+            <InputField
+              label={'Amount* (in ETH)'}
+              text={amount}
+              setText={setAmount}
               // style={{width: width / 2.5, fontSize: 12}}
-              props={{onPressIn: () => setShowPicker(true)}}
               children={
                 <Entypo
-                  name="calendar"
+                  name="ethereum"
                   size={20}
                   style={{
                     fontSize: 20,
@@ -83,26 +111,9 @@ const AgreementModal = () => {
               }
             />
             <SubmitButton
-              label={'Create'}
+              label={isEditing ? 'Edit' : 'Add'}
               loading={setting}
               onClick={clicker}
-            />
-            <DatePicker
-              modal
-              mode="date"
-              title={`Select Agreement Start date`}
-              open={showPicker}
-              minimumDate={new Date()}
-              date={new Date()}
-              onConfirm={date => {
-                //console.log(date);
-                date.setHours(0, 0, 0, 0);
-                let changed = date.toUTCString(); //.split('T')[0] + 'T00:00:00';
-
-                setStartsAt(changed);
-                setShowPicker(false);
-              }}
-              onCancel={() => setShowPicker(false)}
             />
           </ScrollView>
         </Card>
@@ -114,7 +125,7 @@ const AgreementModal = () => {
 const styles = StyleSheet.create({
   modal: {
     width: '80%',
-    height: '60%',
+    height: '75%',
     alignSelf: 'center',
   },
   activedot: {
@@ -165,4 +176,4 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
   },
 });
-export default AgreementModal;
+export default MilestoneModal;

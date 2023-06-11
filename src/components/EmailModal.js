@@ -1,5 +1,13 @@
 import React, {useContext, useEffect, useRef, useState} from 'react';
-import {useTheme, Card, Title, Modal, Text, Button} from 'react-native-paper';
+import {
+  useTheme,
+  Card,
+  Title,
+  Modal,
+  Text,
+  Button,
+  Checkbox,
+} from 'react-native-paper';
 import {
   StyleSheet,
   TouchableOpacity,
@@ -18,6 +26,7 @@ const EmailModal = ({show, onClick, setShow, onRecord, uploading}) => {
   const {user} = useContext(GlobalContext);
   const [email, setEmail] = useState();
   const [setting, setSetting] = useState(false);
+  const [visible, setVisible] = useState(true);
 
   const swiper_ref = useRef(null);
 
@@ -99,6 +108,11 @@ const EmailModal = ({show, onClick, setShow, onRecord, uploading}) => {
               style={{fontWeight: 'bold', marginTop: -5, marginBottom: 15}}>
               Record a Video (Introduce Yourself)
             </Title>
+            <Checkbox.Item
+              label={'Show Intro Clip on your Public Profile'}
+              status={visible ? 'checked' : 'unchecked'}
+              onPress={() => setVisible(v => !v)}
+            />
             <SubmitButton
               label={'Record'}
               onClick={onRecord}

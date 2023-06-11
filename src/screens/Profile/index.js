@@ -14,6 +14,7 @@ import {getUserAgreementsFromContract} from '../../utils/agreementAPI';
 import {mapAgreementAddress} from '../../utils/helper';
 import Video from 'react-native-video';
 import VideoComponent from '../../components/VideoPlayer/VideoComponent';
+import {TouchableOpacity} from 'react-native';
 
 const Profile = ({navigation}) => {
   const {user, mainContract} = useContext(GlobalContext);
@@ -167,11 +168,14 @@ const Profile = ({navigation}) => {
             <Loading />
           ) : !!myAgreements.length ? (
             myAgreements.map((agreement, index) => (
-              <AgreementCard
+              <TouchableOpacity
                 key={index}
-                agreement={agreement}
-                baseStyle={styles.cardBase}
-              />
+                onPress={() => navigation.navigate('Agreement', {agreement})}>
+                <AgreementCard
+                  agreement={agreement}
+                  baseStyle={styles.cardBase}
+                />
+              </TouchableOpacity>
             ))
           ) : (
             <ListEmpty />

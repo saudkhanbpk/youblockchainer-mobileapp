@@ -41,7 +41,7 @@ const useTabInitializer = props => {
     }
   };
 
-  const updateVideo = async () => {
+  const updateVideo = async videoVisibility => {
     let source = {
       uri: '',
       type: '',
@@ -57,7 +57,11 @@ const useTabInitializer = props => {
       source.type = result.mime;
       source.name = `${shorthash.unique(result.path)}.${arr[arr.length - 1]}`;
       let uris = await uploadPics([source]);
-      await updateUser(user._id, {videoIntro: uris[0]}, setUser);
+      await updateUser(
+        user._id,
+        {videoIntro: uris[0], videoVisibility},
+        setUser,
+      );
       setShowMail(false);
     } catch (error) {
       console.log('Error in video upload:- ', error.message);

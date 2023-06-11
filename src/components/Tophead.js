@@ -65,7 +65,14 @@ const Tophead = ({navigation}) => {
         </TouchableOpacity> */}
         <TouchableOpacity
           disabled={!user}
-          onPress={() => navigation.navigate('Profile')}>
+          style={{
+            borderWidth: 2,
+            borderColor: colors.primary,
+            borderRadius: 100,
+          }}
+          onPress={() =>
+            navigation.navigate('Profile', {screen: 'ProfileMain'})
+          }>
           <Avatar.Image
             source={{
               uri:
