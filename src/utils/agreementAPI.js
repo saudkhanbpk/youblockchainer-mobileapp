@@ -94,14 +94,16 @@ export const fundMilestone = async (
   value,
 ) => {
   try {
-    await agreementContract.methods.fundMilestone(id).send({
+    console.log(value);
+    let hash = await agreementContract.methods.fundMilestone(id).send({
       from: walletAddress,
       value,
     });
+    console.log(hash);
     return true;
   } catch (error) {
     notifyEVMError(error);
-    console.log('Error in funding:- ', error.message);
+    console.log('Error in funding:- ', error);
     return false;
   }
 };
@@ -133,6 +135,89 @@ export const requestPayment = async (
 ) => {
   try {
     let data = await agreementContract.methods.requestPayment(id).encodeABI();
+    console.log('---Abi encoded');
+    let res = await executeMetaTx(data, agreementAddr);
+    if (!res) throw Error('Meta Tx Failed :(');
+    console.log('---Meta Tx successful');
+    return true;
+  } catch (error) {
+    console.log('Error in delting milestone:- ', error.message);
+    return false;
+  }
+};
+
+export const raiseRefundRequest = async (
+  milestoneId,
+  amount,
+  agreementContract,
+  executeMetaTx,
+  agreementAddr,
+) => {
+  try {
+    let data = await agreementContract.methods
+      .requestRefund(milestoneId, amount)
+      .encodeABI();
+    console.log('---Abi encoded');
+    let res = await executeMetaTx(data, agreementAddr);
+    if (!res) throw Error('Meta Tx Failed :(');
+    console.log('---Meta Tx successful');
+    return true;
+  } catch (error) {
+    console.log('Error in delting milestone:- ', error.message);
+    return false;
+  }
+};
+
+export const updateRefundRequest = async (
+  requestId,
+  amount,
+  agreementContract,
+  executeMetaTx,
+  agreementAddr,
+) => {
+  try {
+    let data = await agreementContract.methods
+      .updateRequest(requestId, amount)
+      .encodeABI();
+    console.log('---Abi encoded');
+    let res = await executeMetaTx(data, agreementAddr);
+    if (!res) throw Error('Meta Tx Failed :(');
+    console.log('---Meta Tx successful');
+    return true;
+  } catch (error) {
+    console.log('Error in delting milestone:- ', error.message);
+    return false;
+  }
+};
+
+export const grantRefundRequest = async (
+  requestId,
+  agreementContract,
+  executeMetaTx,
+  agreementAddr,
+) => {
+  try {
+    let data = await agreementContract.methods
+      .grantRefund(requestId)
+      .encodeABI();
+    console.log('---Abi encoded');
+    let res = await executeMetaTx(data, agreementAddr);
+    if (!res) throw Error('Meta Tx Failed :(');
+    console.log('---Meta Tx successful');
+    return true;
+  } catch (error) {
+    console.log('Error in delting milestone:- ', error.message);
+    return false;
+  }
+};
+
+export const endContract = async (
+  agreementContract,
+  executeMetaTx,
+  agreementAddr,
+) => {
+  try {
+    let data = await agreementContract.methods.endContract().encodeABI();
     console.log('---Abi encoded');
     let res = await executeMetaTx(data, agreementAddr);
     if (!res) throw Error('Meta Tx Failed :(');

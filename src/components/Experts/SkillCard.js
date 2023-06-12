@@ -9,8 +9,9 @@ const SkillCard = ({profile, baseStyle}) => {
       <View>
         <Text style={styles.title}>Skills</Text>
         <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
-          {skills.map(skill => (
+          {skills.map((skill, index) => (
             <Chip
+              key={index}
               compact
               disabled
               textStyle={{fontSize: 12}}

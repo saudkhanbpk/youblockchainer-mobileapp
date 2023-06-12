@@ -1,5 +1,11 @@
 import React, {useRef, useState, useContext} from 'react';
-import {View, TouchableOpacity, StyleSheet, Pressable, Linking} from 'react-native';
+import {
+  View,
+  TouchableOpacity,
+  StyleSheet,
+  Pressable,
+  Linking,
+} from 'react-native';
 import {Paragraph, Text, useTheme} from 'react-native-paper';
 import LinearGradient from 'react-native-linear-gradient';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -10,6 +16,7 @@ import Splash from '../../components/OnBoarding/Splash';
 import {AnimatedCircularProgress} from 'react-native-circular-progress';
 import {GlobalContext} from '../../auth/GlobalProvider';
 import {useEffect} from 'react';
+import {Platform} from 'react-native';
 
 const GetStarted = ({navigation}) => {
   const {colors} = useTheme();
@@ -138,7 +145,6 @@ const GetStarted = ({navigation}) => {
               bottom: width / 12,
               alignSelf: 'center',
             }}>
-              
             <TouchableOpacity style={{flex: 1}} onPress={connect}>
               <LinearGradient
                 colors={[colors.secondary, colors.primary]}
@@ -153,17 +159,24 @@ const GetStarted = ({navigation}) => {
                 marginRight: 5,
                 marginTop: 5,
               }}
-              onPress={() => Linking.openURL('https://metamask.io/')}>
-              <Paragraph style={{marginRight: 2, fontSize: 12 , textDecorationLine:'underline'}}>Don't have a wallet ?</Paragraph>
+              onPress={() =>
+                Linking.openURL(
+                  Platform.OS === 'android'
+                    ? 'https://play.google.com/store/apps/details?id=io.metamask'
+                    : 'https://apps.apple.com/us/app/metamask-blockchain-wallet/id1438144202',
+                )
+              }>
+              <Paragraph
+                style={{
+                  marginRight: 2,
+                  fontSize: 12,
+                  textDecorationLine: 'underline',
+                }}>
+                Don't have a wallet ?
+              </Paragraph>
             </TouchableOpacity>
             <TouchableOpacity
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                alignSelf: 'flex-end',
-                marginRight: 5,
-                marginTop: 5,
-              }}
+              style={styles.skipButton}
               onPress={() => navigation.replace('MainDrawer')}>
               <Paragraph style={{marginRight: 2, fontSize: 14}}>Skip</Paragraph>
               <AntDesign name="right" color={colors.border} size={14} />
@@ -210,6 +223,13 @@ const styles = StyleSheet.create({
     right: 10,
     top: 10,
     zIndex: 2,
+  },
+  skipButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignSelf: 'flex-end',
+    marginRight: 5,
+    marginTop: 5,
   },
 });
 export default GetStarted;

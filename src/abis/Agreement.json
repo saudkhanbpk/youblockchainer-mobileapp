@@ -43,7 +43,7 @@
       },
       {
         "internalType": "address",
-        "name": "_creator",
+        "name": "_admin",
         "type": "address"
       },
       {

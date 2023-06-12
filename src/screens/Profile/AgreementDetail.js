@@ -13,7 +13,7 @@ import Loading from '../../components/Loading';
 
 const AgreementDetail = ({route}) => {
   const {agreement} = route.params;
-  const {user, web3, executeMetaTx} = useContext(GlobalContext);
+  const {user, web3, executeMetaTx, mainContract} = useContext(GlobalContext);
   const {
     name,
     contractAddress,
@@ -33,6 +33,7 @@ const AgreementDetail = ({route}) => {
   const startDate = dateFormating(startsAt);
   const endDate = isEnded ? dateFormating(endsAt) : 'present';
   const [agreementContract, setAgreementContract] = useState(null);
+  const [feeRate, setFeeRate] = useState(0);
   const [milestones, setMilestones] = useState([]);
   const [loading, setLoading] = useState(false);
   const [show, setShow] = useState(false);
@@ -44,9 +45,17 @@ const AgreementDetail = ({route}) => {
   const getAllMilestones = async () => {
     setLoading(true);
     try {
+      let fee = await mainContract.methods.marketFee().call();
+      setFeeRate(fee);
       let res = await agreementContract.methods.getAllMilestones().call();
+      let reqs = await agreementContract.methods.getAllRefundRequests().call();
+
       // console.log(res);
-      setMilestones(res.filter(i => i[0] !== '0'));
+      setMilestones(
+        res
+          .filter(i => i[0] !== '0')
+          .map(i => [...i, reqs.filter(j => j[1] === i[0])]),
+      );
     } catch (error) {
       console.log('Error in getting mileStones:- ', error.message);
     }
@@ -144,6 +153,15 @@ const AgreementDetail = ({route}) => {
             <FlatList
               data={milestones}
               keyExtractor={(x, i) => x[0]}
+              ItemSeparatorComponent={() => (
+                <View
+                  style={{
+                    width: '100%',
+                    height: 2,
+                    backgroundColor: colors.primary,
+                  }}
+                />
+              )}
               ListEmptyComponent={() => <ListEmpty />}
               renderItem={({item, index}) => (
                 <MileStoneCard
@@ -154,6 +172,7 @@ const AgreementDetail = ({route}) => {
                   getMilestone={getAllMilestones}
                   setShow={setShow}
                   contractAddr={contractAddress}
+                  feeRate={feeRate}
                 />
               )}
             />
@@ -174,6 +193,7 @@ const AgreementDetail = ({route}) => {
         setShow={setShow}
         addr={contractAddress}
         contract={agreementContract}
+        feeRate={feeRate}
       />
     </View>
   );

@@ -66,8 +66,9 @@ const MilestoneModal = ({contract, addr, show, setShow}) => {
       setDescription('');
       setAmount('');
     }
-    if (show) {
+    if (show && isEditing) {
       setName(show[1]);
+      //console.log(show[2]);
       setAmount(web3.utils.fromWei(show[2]));
       setDescription(show[3]);
     }
@@ -98,19 +99,20 @@ const MilestoneModal = ({contract, addr, show, setShow}) => {
               text={amount}
               setText={setAmount}
               // style={{width: width / 2.5, fontSize: 12}}
-              children={
-                <Entypo
-                  name="ethereum"
-                  size={20}
-                  style={{
-                    fontSize: 20,
-                    color: colors.textAfter,
-                    marginLeft: 10,
-                  }}
-                />
-              }
+              // children={
+              //   <Entypo
+              //     name="ethereum"
+              //     size={20}
+              //     style={{
+              //       fontSize: 20,
+              //       color: colors.textAfter,
+              //       marginLeft: 10,
+              //     }}
+              //   />
+              // }
             />
             <SubmitButton
+              style={{marginTop: '10%'}}
               label={isEditing ? 'Edit' : 'Add'}
               loading={setting}
               onClick={clicker}

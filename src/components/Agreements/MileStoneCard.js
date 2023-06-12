@@ -19,9 +19,12 @@ import {
   deleteMilestone,
   fundMilestone,
   payMilestone,
+  raiseRefundRequest,
   requestPayment,
 } from '../../utils/agreementAPI';
 import {GlobalContext} from '../../auth/GlobalProvider';
+import InputField from '../Profile/InputField';
+import {width} from '../../Constants';
 
 const MileStoneCard = ({
   index,
@@ -31,14 +34,26 @@ const MileStoneCard = ({
   getMilestone,
   setShow,
   contractAddr,
+  feeRate,
 }) => {
   const [expanded, setExpanded] = useState(false);
-  const [id, name, amount, description, funded, paymentRequested, paid] =
-    milestone;
+  const [
+    id,
+    name,
+    amount,
+    description,
+    funded,
+    paymentRequested,
+    paid,
+    refundRequests,
+  ] = milestone;
   const {colors} = useTheme();
   const [loading, setLoading] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [generating, setGenerating] = useState(false);
+  const [refundAmt, setRefundAmt] = useState('');
   const {executeMetaTx, web3, user} = useContext(GlobalContext);
+  const feeAmount = (amount * feeRate) / 1000;
 
   const togglePlans = () => {
     LayoutAnimation.configureNext({
@@ -49,10 +64,10 @@ const MileStoneCard = ({
     });
     setExpanded(e => !e);
   };
-  const getHeight = () => {
-    if (expanded) return 'auto';
-    else return 60;
-  };
+  // const getHeight = () => {
+  //   if (expanded) return 'auto';
+  //   else return 60;
+  // };
 
   useEffect(() => {
     if (Platform.OS === 'android') {
@@ -83,7 +98,12 @@ const MileStoneCard = ({
     setLoading(true);
     if (
       !funded
-        ? await fundMilestone(id, contract, user.walletAddress, amount)
+        ? await fundMilestone(
+            id,
+            contract,
+            user.walletAddress,
+            Number(amount) + feeAmount + 1,
+          )
         : await payMilestone(id, contract, executeMetaTx, contractAddr)
     ) {
       await getMilestone();
@@ -115,11 +135,35 @@ const MileStoneCard = ({
     setLoading(false);
   };
 
+  const generateRequest = async () => {
+    if (isNaN(refundAmt)) return alert('Refund amount should be a number');
+
+    setGenerating(true);
+    if (
+      await raiseRefundRequest(
+        id,
+        web3.utils.toWei(refundAmt),
+        contract,
+        executeMetaTx,
+        contractAddr,
+      )
+    ) {
+      await getMilestone();
+      return ToastAndroid.show(
+        'Refund request generated successfully successfully 🎉',
+        ToastAndroid.SHORT,
+      );
+    }
+    alert('Refund Request failed');
+    setGenerating(false);
+  };
+
   return (
     <View
       style={{
         backgroundColor: 'white',
-        height: getHeight(),
+        //height: getHeight(),
+        marginVertical: 5,
         marginHorizontal: 15,
       }}>
       <View style={styles.header}>
@@ -143,7 +187,12 @@ const MileStoneCard = ({
                 color: paid ? colors.primary : colors.text,
                 fontFamily: 'Poppins-SemiBold',
               }}>
-              {web3.utils.fromWei(amount)} ETH
+              {web3.utils.fromWei(amount)} ETH +{' '}
+              {isAssigner
+                ? '\n' +
+                  web3.utils.fromWei(feeAmount.toString()) +
+                  ` ETH (${feeRate / 10}% fee )`
+                : ''}
             </Text>
           </View>
         </View>
@@ -171,17 +220,7 @@ const MileStoneCard = ({
                   textColor={paid ? colors.primary : colors.button}>
                   {funded ? (paid ? 'Paid' : 'Pay') : 'Fund'}
                 </Button>
-                {funded ? (
-                  !paid && (
-                    <Button
-                      uppercase={false}
-                      loading={loading}
-                      onPress={() => {}}
-                      textColor={colors.text}>
-                      Request Refund
-                    </Button>
-                  )
-                ) : (
+                {!funded && (
                   <View style={{flexDirection: 'row'}}>
                     <IconButton
                       onPress={() => setShow(milestone)}
@@ -222,6 +261,40 @@ const MileStoneCard = ({
           ) : (
             <Text style={{color: colors.star}}>Milestone not funded</Text>
           )}
+          {isAssigner && funded && !paid && (
+            <View>
+              <Text
+                style={{fontWeight: 'bold', textDecorationLine: 'underline'}}>
+                Generate Refund Request
+              </Text>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}>
+                <InputField
+                  text={refundAmt}
+                  setText={setRefundAmt}
+                  style={{width: width / 2.5}}
+                  label={'Amount (in ETH)'}
+                />
+                <Button
+                  mode="contained"
+                  uppercase={false}
+                  loading={generating}
+                  onPress={generateRequest}
+                  textColor="white"
+                  style={{
+                    backgroundColor: colors.primary,
+                    height: 42,
+                    alignItems: 'center',
+                  }}>
+                  Generate
+                </Button>
+              </View>
+            </View>
+          )}
+          {!!refundRequests.length && <View></View>}
         </View>
       ) : null}
     </View>
