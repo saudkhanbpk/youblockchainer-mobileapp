@@ -7,6 +7,7 @@ import {
   Text,
   Button,
   Checkbox,
+  Subheading,
 } from 'react-native-paper';
 import {
   StyleSheet,
@@ -20,23 +21,27 @@ import LinearGradient from 'react-native-linear-gradient';
 import Swiper from 'react-native-swiper';
 import {GlobalContext} from '../auth/GlobalProvider';
 import SubmitButton from './SubmitButton';
+import {validateEmail} from '../utils/helper';
 
 const EmailModal = ({show, onClick, setShow, onRecord, uploading}) => {
   const {colors} = useTheme();
   const {user} = useContext(GlobalContext);
-  const [email, setEmail] = useState();
+  const [email, setEmail] = useState('');
+  const [country, setCountry] = useState('');
   const [setting, setSetting] = useState(false);
   const [visible, setVisible] = useState(true);
 
   const swiper_ref = useRef(null);
 
   const clicker = async () => {
+    if (!validateEmail(email)) return alert('Enter a valid email');
+    if (!country.length) return alert('Country of residence is compulsary');
     setSetting(true);
-    await onClick(email, () => swiper_ref.current.scrollBy(1));
+    await onClick(email, country, () => swiper_ref.current.scrollBy(1));
     setSetting(false);
   };
   useEffect(() => {
-    if (user && user.email && !!swiper_ref.current)
+    if (user && user.email && user.country && !!swiper_ref.current)
       swiper_ref.current.scrollBy(1);
     if (user && user.videoIntro) setShow(false);
   }, [user, swiper_ref.current]);
@@ -63,8 +68,9 @@ const EmailModal = ({show, onClick, setShow, onRecord, uploading}) => {
           <Card style={styles.card}>
             <Title
               style={{fontWeight: 'bold', marginTop: -5, marginBottom: 15}}>
-              Enter E-mail*
+              Enter Details
             </Title>
+            <Subheading style={{fontWeight: 'bold'}}>Email*</Subheading>
             <TextInput
               value={email}
               onChangeText={setEmail}
@@ -74,6 +80,20 @@ const EmailModal = ({show, onClick, setShow, onRecord, uploading}) => {
                 color: colors.text,
               }}
               placeholder={'doe@example.com'}
+              placeholderTextColor={colors.disabled}
+            />
+            <Subheading style={{marginTop: 10, fontWeight: 'bold'}}>
+              Country*
+            </Subheading>
+            <TextInput
+              value={country}
+              onChangeText={setCountry}
+              style={{
+                ...styles.reasonInput,
+                borderColor: colors.textAfter,
+                color: colors.text,
+              }}
+              placeholder={'eg. USA'}
               placeholderTextColor={colors.disabled}
             />
             <TouchableOpacity
@@ -134,7 +154,7 @@ const EmailModal = ({show, onClick, setShow, onRecord, uploading}) => {
 const styles = StyleSheet.create({
   modal: {
     width: '70%',
-    height: 280,
+    height: 400,
     alignSelf: 'center',
   },
   activedot: {

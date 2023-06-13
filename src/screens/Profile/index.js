@@ -94,14 +94,20 @@ const Profile = ({navigation}) => {
 
   const getAgreements = async () => {
     setLoading(true);
-    let res = await getMyAgreements(user._id);
-    let contractRes = await getUserAgreementsFromContract(
-      mainContract,
-      user.walletAddress,
-    );
-    let mapped = mapAgreementAddress(res, contractRes);
+    try {
+      let res = await getMyAgreements(user._id);
+      //console.log(res);
+      let contractRes = await getUserAgreementsFromContract(
+        mainContract,
+        user.walletAddress,
+      );
+      //console.log(contractRes);
+      let mapped = mapAgreementAddress(res, contractRes);
+      setMyAgreements(mapped);
+    } catch (error) {
+      console.log('Error in mapping conractAddress:- ', error.message);
+    }
 
-    setMyAgreements(mapped);
     setLoading(false);
   };
 
@@ -174,6 +180,7 @@ const Profile = ({navigation}) => {
                 <AgreementCard
                   agreement={agreement}
                   baseStyle={styles.cardBase}
+                  showuser2={agreement.user1._id === user._id}
                 />
               </TouchableOpacity>
             ))

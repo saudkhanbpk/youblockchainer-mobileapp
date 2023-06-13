@@ -206,6 +206,12 @@
       {
         "indexed": true,
         "internalType": "uint256",
+        "name": "_requestId",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
         "name": "_milestoneId",
         "type": "uint256"
       },
@@ -432,6 +438,11 @@
         "components": [
           {
             "internalType": "uint256",
+            "name": "requestId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
             "name": "milestoneId",
             "type": "uint256"
           },
@@ -526,6 +537,11 @@
     ],
     "name": "refunds",
     "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "requestId",
+        "type": "uint256"
+      },
       {
         "internalType": "uint256",
         "name": "milestoneId",

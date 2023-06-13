@@ -2,10 +2,11 @@ import React from 'react';
 import {StyleSheet} from 'react-native';
 import {Button, useTheme} from 'react-native-paper';
 
-const SubmitButton = ({label, loading, onClick, style, disabled}) => {
+const SubmitButton = ({props, label, loading, onClick, style, disabled}) => {
   const {colors} = useTheme();
   return (
     <Button
+      {...props}
       mode="contained"
       onPress={onClick}
       disabled={disabled || loading}

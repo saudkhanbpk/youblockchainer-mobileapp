@@ -4,9 +4,9 @@ import {Avatar, Card, Chip, Text, useTheme} from 'react-native-paper';
 import {defaultAvatar} from '../../Constants';
 import {dateFormating} from '../../utils/helper';
 
-const AgreementCard = ({agreement, baseStyle}) => {
-  const {user1, name, startsAt, endsAt} = agreement;
-  const {profileImage, username} = user1;
+const AgreementCard = ({agreement, baseStyle, showuser2}) => {
+  const {user1, user2, name, startsAt, endsAt} = agreement;
+  const {profileImage, username} = showuser2 ? user2 : user1;
   const {colors} = useTheme();
   const startDate = dateFormating(startsAt);
   const endDate = !!endsAt ? dateFormating(endsAt) : 'present';

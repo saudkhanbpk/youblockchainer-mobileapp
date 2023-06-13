@@ -1,4 +1,5 @@
 //import AskGPT from '../abis/AskGPT.json';
+import moment from 'moment/moment';
 import {contractAddress} from '../Constants';
 import API, {ENDPOINTS} from '../api/apiService';
 import {notifyEVMError} from './helper';
@@ -211,18 +212,46 @@ export const grantRefundRequest = async (
   }
 };
 
+export const updateAgreement = async (
+  id,
+  body,
+  setAgreement,
+  contractAddress,
+) => {
+  try {
+    let apiRes = await API.put(ENDPOINTS.AGREEMENT_ACTION + id, body);
+    if (setAgreement) setAgreement({...apiRes, contractAddress});
+    return true;
+  } catch (error) {
+    console.log('Agreement updation error:- ', error.message);
+    return false;
+  }
+};
+
 export const endContract = async (
   agreementContract,
   executeMetaTx,
   agreementAddr,
+  agreementId,
+  setAgreement,
 ) => {
   try {
     let data = await agreementContract.methods.endContract().encodeABI();
+    let current = moment().unix();
     console.log('---Abi encoded');
     let res = await executeMetaTx(data, agreementAddr);
     if (!res) throw Error('Meta Tx Failed :(');
     console.log('---Meta Tx successful');
-    return true;
+    if (
+      await updateAgreement(
+        agreementId,
+        {endsAt: current},
+        setAgreement,
+        agreementAddr,
+      )
+    )
+      return true;
+    return false;
   } catch (error) {
     console.log('Error in delting milestone:- ', error.message);
     return false;

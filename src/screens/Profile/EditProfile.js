@@ -50,6 +50,8 @@ const EditProfile = ({navigation}) => {
   const [profileBanner, setProfileBanner] = useState({uri: user.profileBanner});
   const [skills, setSkills] = useState(user.skills || []);
   const [videoVisibility, setVideoVisibility] = useState(user.videoVisibility);
+  const [age, setAge] = useState(user.age ? user.age.toString() : '0');
+  const [isActor, setisActor] = useState(user.isActor);
   const [socialHandles, setSocialHandles] = useState([
     {
       name: 'instagram',
@@ -66,7 +68,6 @@ const EditProfile = ({navigation}) => {
   ]);
 
   const socialMedia = ['facebook', 'twitter', 'instagram'];
-
   // const hasChangedInfo = () => {
   //   if (
   //     profileBanner.uri !== user.profileBanner ||
@@ -84,6 +85,9 @@ const EditProfile = ({navigation}) => {
   //   return false;
   // };
   const onSave = async () => {
+    if (isNaN(age)) {
+      return alert('Age should be a number');
+    }
     setUpdating(true);
     try {
       let changedBanner = false,
@@ -116,6 +120,8 @@ const EditProfile = ({navigation}) => {
           isExpert,
           descriptorTitle,
           skills,
+          age,
+          isActor,
           videoVisibility,
           profileBanner: profban[0],
           profileImage: profimg[0],
@@ -193,6 +199,24 @@ const EditProfile = ({navigation}) => {
             />
           </View>
         </View>
+        <View
+          style={{
+            flexDirection: 'row',
+            //backgroundColor: 'white',
+            alignItems: 'center',
+            // padding: 10,
+            marginHorizontal: 15,
+            borderRadius: 5,
+            justifyContent: 'space-around',
+            marginTop: 10,
+          }}>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Text style={{fontWeight: 'bold', fontSize: 16}}>
+              Are you an Actor ?
+            </Text>
+          </View>
+          <Switch value={isActor} onChange={() => setisActor(a => !a)} />
+        </View>
         {loadingBrand ? (
           <Loading />
         ) : (
@@ -248,6 +272,7 @@ const EditProfile = ({navigation}) => {
         )}
 
         <InputField label={'Name'} text={username} setText={setUserName} />
+        <InputField label={'Age (in Years)'} text={age} setText={setAge} />
         <InputField label={'Email'} text={email} setText={setEmail} />
         <InputField
           label={'Descriptor Text'}

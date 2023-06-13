@@ -12,6 +12,7 @@ import InputField from '../Profile/InputField';
 import SubmitButton from '../SubmitButton';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {addMilestone, updateMilestone} from '../../utils/agreementAPI';
+import CancelButton from '../CancelButton';
 
 const MilestoneModal = ({contract, addr, show, setShow}) => {
   const {colors} = useTheme();
@@ -111,12 +112,26 @@ const MilestoneModal = ({contract, addr, show, setShow}) => {
               //   />
               // }
             />
-            <SubmitButton
-              style={{marginTop: '10%'}}
-              label={isEditing ? 'Edit' : 'Add'}
-              loading={setting}
-              onClick={clicker}
-            />
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-around',
+                marginTop: '10%',
+              }}>
+              <SubmitButton
+                style={{backgroundColor: colors.text}}
+                label={'Close'}
+                disabled={setting}
+                //loading={setting}
+                onClick={() => setShow(false)}
+              />
+              <SubmitButton
+                label={isEditing ? 'Edit' : 'Add'}
+                loading={setting}
+                onClick={clicker}
+              />
+            </View>
+            {setting && <CancelButton setLoading={setSetting} />}
           </ScrollView>
         </Card>
       </View>

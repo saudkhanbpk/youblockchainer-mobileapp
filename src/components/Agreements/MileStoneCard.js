@@ -7,6 +7,7 @@ import {
   UIManager,
   Alert,
   ToastAndroid,
+  TextInput,
 } from 'react-native';
 import {
   ActivityIndicator,
@@ -23,8 +24,9 @@ import {
   requestPayment,
 } from '../../utils/agreementAPI';
 import {GlobalContext} from '../../auth/GlobalProvider';
-import InputField from '../Profile/InputField';
-import {width} from '../../Constants';
+import RefundRequestEntry from './RefundRequestEntry';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import SubmitButton from '../SubmitButton';
 
 const MileStoneCard = ({
   index,
@@ -52,6 +54,7 @@ const MileStoneCard = ({
   const [deleting, setDeleting] = useState(false);
   const [generating, setGenerating] = useState(false);
   const [refundAmt, setRefundAmt] = useState('');
+  const [totalRequested, setTotalRequested] = useState(0);
   const {executeMetaTx, web3, user} = useContext(GlobalContext);
   const feeAmount = (amount * feeRate) / 1000;
 
@@ -73,6 +76,11 @@ const MileStoneCard = ({
     if (Platform.OS === 'android') {
       UIManager.setLayoutAnimationEnabledExperimental(true);
     }
+    let total = 0;
+    refundRequests.forEach(element => {
+      total += Number(element[2]);
+    });
+    setTotalRequested(total);
   }, []);
 
   const deleteMileStoneClick = async () => {
@@ -102,7 +110,7 @@ const MileStoneCard = ({
             id,
             contract,
             user.walletAddress,
-            Number(amount) + feeAmount + 1,
+            Number(amount) + feeAmount,
           )
         : await payMilestone(id, contract, executeMetaTx, contractAddr)
     ) {
@@ -124,7 +132,7 @@ const MileStoneCard = ({
     if (await requestPayment(id, contract, executeMetaTx, contractAddr)) {
       await getMilestone();
       return ToastAndroid.show(
-        `Request For payment raised successfully 🎉`,
+        `Request For payment raised ✅`,
         ToastAndroid.SHORT,
       );
     }
@@ -138,7 +146,10 @@ const MileStoneCard = ({
   const generateRequest = async () => {
     if (isNaN(refundAmt)) return alert('Refund amount should be a number');
 
+    if (amount - totalRequested < Number(refundAmt))
+      return alert('Refund Amount cannot exceed undisputed amount');
     setGenerating(true);
+
     if (
       await raiseRefundRequest(
         id,
@@ -177,7 +188,7 @@ const MileStoneCard = ({
               style={{
                 color: paid ? colors.primary : colors.text,
               }}>
-              {index}
+              {index + 1}
             </Text>
           </View>
           <View>
@@ -187,9 +198,9 @@ const MileStoneCard = ({
                 color: paid ? colors.primary : colors.text,
                 fontFamily: 'Poppins-SemiBold',
               }}>
-              {web3.utils.fromWei(amount)} ETH +{' '}
+              {web3.utils.fromWei(amount)} ETH
               {isAssigner
-                ? '\n' +
+                ? '+ \n' +
                   web3.utils.fromWei(feeAmount.toString()) +
                   ` ETH (${feeRate / 10}% fee )`
                 : ''}
@@ -204,6 +215,7 @@ const MileStoneCard = ({
       </View>
       {expanded ? (
         <View style={{marginLeft: 35}}>
+          <Text style={styles.subheading}>Description</Text>
           <Text>{description}</Text>
           {isAssigner ? (
             <View>
@@ -218,7 +230,7 @@ const MileStoneCard = ({
                   loading={loading}
                   onPress={assignerClick}
                   textColor={paid ? colors.primary : colors.button}>
-                  {funded ? (paid ? 'Paid' : 'Pay') : 'Fund'}
+                  {funded ? (paid ? 'Payment Forwarded' : 'Pay') : 'Fund'}
                 </Button>
                 {!funded && (
                   <View style={{flexDirection: 'row'}}>
@@ -239,7 +251,7 @@ const MileStoneCard = ({
                   </View>
                 )}
               </View>
-              {paymentRequested && (
+              {!paid && paymentRequested && (
                 <Text style={{color: colors.star}}>
                   Creator has requested payment
                 </Text>
@@ -253,7 +265,7 @@ const MileStoneCard = ({
               disabled={!paid && paymentRequested}
               textColor={paid ? colors.primary : colors.button}>
               {paid
-                ? 'Paid'
+                ? 'Payment Received'
                 : paymentRequested
                 ? 'Payment Requested'
                 : 'Request Payment'}
@@ -263,38 +275,89 @@ const MileStoneCard = ({
           )}
           {isAssigner && funded && !paid && (
             <View>
-              <Text
-                style={{fontWeight: 'bold', textDecorationLine: 'underline'}}>
-                Generate Refund Request
-              </Text>
+              <Text style={styles.subheading}>Generate Refund Request</Text>
               <View
                 style={{
                   flexDirection: 'row',
                   alignItems: 'center',
+                  marginTop: 5,
                 }}>
-                <InputField
-                  text={refundAmt}
-                  setText={setRefundAmt}
-                  style={{width: width / 2.5}}
-                  label={'Amount (in ETH)'}
+                <TextInput
+                  value={refundAmt}
+                  onChangeText={setRefundAmt}
+                  style={{
+                    ...styles.reasonInput,
+                    borderColor: colors.textAfter,
+                    color: colors.text,
+                  }}
+                  placeholder={'Amount (in ETH)'}
+                  placeholderTextColor={colors.disabled}
                 />
-                <Button
+                {/* <SubmitButton
+                  label={'Generate'}
+                  loading={generating}
+                  onClick={generateRequest}
+                  style={{marginBottom: 10 , marginLeft:10}}
+                /> */}
+                <TouchableOpacity
+                  style={{
+                    backgroundColor: colors.primary,
+                    paddingVertical: 5,
+                    paddingHorizontal: 10,
+                    marginLeft: 5,
+                    borderRadius: 5,
+                    marginBottom: '15%',
+                    flexDirection: 'row',
+                  }}
+                  onPress={generateRequest}>
+                  {generating && (
+                    <ActivityIndicator
+                      color="white"
+                      size={'small'}
+                      style={{marginHorizontal: 5}}
+                    />
+                  )}
+                  <Text
+                    style={{fontSize: 12, fontWeight: 'bold', color: 'white'}}>
+                    Generate
+                  </Text>
+                </TouchableOpacity>
+                {/* <Button
                   mode="contained"
                   uppercase={false}
                   loading={generating}
                   onPress={generateRequest}
                   textColor="white"
+                  labelStyle={{fontSize: 10}}
                   style={{
                     backgroundColor: colors.primary,
                     height: 42,
+                    width: 100,
                     alignItems: 'center',
                   }}>
                   Generate
-                </Button>
+                </Button> */}
               </View>
             </View>
           )}
-          {!!refundRequests.length && <View></View>}
+          {!!refundRequests.length && !paid && (
+            <View>
+              <Text style={styles.subheading}>Refund Requests</Text>
+              {refundRequests.map((item, i) => (
+                <RefundRequestEntry
+                  key={index}
+                  index={i + 1}
+                  data={item}
+                  isAssigner={isAssigner}
+                  getMilestones={getMilestone}
+                  contract={contract}
+                  contractAddr={contractAddr}
+                  totalRequested={totalRequested}
+                  total={amount}
+                />
+              ))}
+            </View>
+          )}
         </View>
       ) : null}
     </View>
@@ -328,5 +391,15 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     borderWidth: 1,
     marginRight: 10,
+  },
+  subheading: {fontWeight: 'bold', textDecorationLine: 'underline'},
+  reasonInput: {
+    height: 40,
+    borderWidth: 2,
+    marginBottom: 15,
+    borderRadius: 5,
+    fontFamily: 'Poppins-Regular',
+    paddingHorizontal: 10,
+    fontSize: 12,
   },
 });

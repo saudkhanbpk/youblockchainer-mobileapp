@@ -3,7 +3,6 @@ import {StyleSheet} from 'react-native';
 import {GlobalContext} from '../auth/GlobalProvider';
 import {useWalletConnect} from '@walletconnect/react-native-dapp';
 import {updateUser, uploadPics} from './userAPI';
-import {validateEmail} from './helper';
 import ImageCropPicker from 'react-native-image-crop-picker';
 import shorthash from 'shorthash';
 
@@ -30,15 +29,13 @@ const useTabInitializer = props => {
 
   useEffect(() => {
     if (user) {
-      if (!user.email || !user.videoIntro) setShowMail(true);
+      if (!user.email || !user.videoIntro || !user.country) setShowMail(true);
     }
   }, [user]);
 
-  const updateEmail = async (email, callback) => {
-    if (validateEmail(email)) {
-      await updateUser(user._id, {email}, setUser);
-      callback();
-    }
+  const updateEmail = async (email, country, callback) => {
+    await updateUser(user._id, {email, country}, setUser);
+    callback();
   };
 
   const updateVideo = async videoVisibility => {

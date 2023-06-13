@@ -9,6 +9,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import DatePicker from 'react-native-date-picker';
 import {createAgreement} from '../../utils/agreementAPI';
 import {ToastAndroid} from 'react-native';
+import CancelButton from '../CancelButton';
 
 const AgreementModal = () => {
   const {colors} = useTheme();
@@ -87,6 +88,7 @@ const AgreementModal = () => {
               loading={setting}
               onClick={clicker}
             />
+            {setting && <CancelButton setLoading={setSetting} />}
             <DatePicker
               modal
               mode="date"
