@@ -27,6 +27,7 @@ import {GlobalContext} from '../../auth/GlobalProvider';
 import RefundRequestEntry from './RefundRequestEntry';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import SubmitButton from '../SubmitButton';
+import CancelButton from '../CancelButton';
 
 const MileStoneCard = ({
   index,
@@ -213,6 +214,18 @@ const MileStoneCard = ({
           style={{...styles.icon, color: colors.primary}}
         />
       </View>
+      {/* <Text
+        style={{
+          color: paid ? colors.primary : colors.text,
+          fontFamily: 'Poppins-SemiBold',
+        }}>
+        {web3.utils.fromWei(amount)} ETH
+        {isAssigner
+          ? '+' +
+            web3.utils.fromWei(feeAmount.toString()) +
+            ` ETH (${feeRate / 10}% fee )`
+          : ''}
+      </Text> */}
       {expanded ? (
         <View style={{marginLeft: 35}}>
           <Text style={styles.subheading}>Description</Text>
@@ -230,7 +243,15 @@ const MileStoneCard = ({
                   loading={loading}
                   onPress={assignerClick}
                   textColor={paid ? colors.primary : colors.button}>
-                  {funded ? (paid ? 'Payment Forwarded' : 'Pay') : 'Fund'}
+                  {funded
+                    ? paid
+                      ? 'Payment Forwarded'
+                      : loading
+                      ? 'Paying'
+                      : 'Pay'
+                    : loading
+                    ? 'Funding Milestone'
+                    : 'Fund'}
                 </Button>
                 {!funded && (
                   <View style={{flexDirection: 'row'}}>
@@ -240,7 +261,10 @@ const MileStoneCard = ({
                       style={{...styles.icon, color: colors.primary}}
                     />
                     {deleting ? (
-                      <ActivityIndicator size={'small'} />
+                      <ActivityIndicator
+                        size={'small'}
+                        style={{marginHorizontal: 5}}
+                      />
                     ) : (
                       <IconButton
                         onPress={deleteMileStoneClick}
@@ -268,6 +292,8 @@ const MileStoneCard = ({
                 ? 'Payment Received'
                 : paymentRequested
                 ? 'Payment Requested'
+                : loading
+                ? 'Requesting'
                 : 'Request Payment'}
             </Button>
           ) : (
@@ -308,6 +334,7 @@ const MileStoneCard = ({
                     borderRadius: 5,
                     marginBottom: '15%',
                     flexDirection: 'row',
+                    alignItems: 'center',
                   }}
                   onPress={generateRequest}>
                   {generating && (
@@ -319,9 +346,10 @@ const MileStoneCard = ({
                   )}
                   <Text
                     style={{fontSize: 12, fontWeight: 'bold', color: 'white'}}>
-                    Generate
+                    Generat{generating ? 'ing' : 'e'}
                   </Text>
                 </TouchableOpacity>
+                {generating && <CancelButton setLoading={setGenerating} />}
                 {/* <Button
                   mode="contained"
                   uppercase={false}
@@ -345,7 +373,7 @@ const MileStoneCard = ({
               <Text style={styles.subheading}>Refund Requests</Text>
               {refundRequests.map((item, i) => (
                 <RefundRequestEntry
-                  key={index}
+                  key={i}
                   index={i + 1}
                   data={item}
                   isAssigner={isAssigner}

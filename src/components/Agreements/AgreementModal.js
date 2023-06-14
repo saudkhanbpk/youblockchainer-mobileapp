@@ -24,6 +24,7 @@ const AgreementModal = () => {
     showAgreement,
     setShowAgreement,
     web3,
+    contractAddress,
   } = useContext(GlobalContext);
 
   const clicker = async () => {
@@ -41,6 +42,7 @@ const AgreementModal = () => {
         mainContract,
         executeMetaTx,
         web3,
+        contractAddress,
       )
     ) {
       setShowAgreement(null);

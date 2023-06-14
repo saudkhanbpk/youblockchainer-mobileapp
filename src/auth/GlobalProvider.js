@@ -7,8 +7,8 @@ import Web3 from 'web3';
 import StorageManager from '../storage/StorageManager';
 import {
   MetaMaskNetworkObject,
-  contractAddress,
-  forwarderAddress,
+  // contractAddress as ca,
+  // forwarderAddress as fa,
   rpcConfig,
 } from '../Constants';
 import {API_TOKEN, ONBOARDED, USER} from '../storage/StorageKeys';
@@ -25,6 +25,8 @@ const GlobalProvider = ({children}) => {
   const [signedIn, setSignedIn] = useState(false);
   const [web3Provider, setWeb3Provider] = useState(null);
   const [web3, setWeb3] = useState(null);
+  const [contractAddress, setContractAddress] = useState('');
+  const [forwarderAddress, setForwarderAddress] = useState('');
   //const [containsNetwork, setContainsNetwork] = useState(true);
   const [forwarderC, setForwarderC] = useState(null);
   const [mainContract, setMainContract] = useState(null);
@@ -142,11 +144,15 @@ const GlobalProvider = ({children}) => {
       }
       const accounts = await res.eth.getAccounts();
       console.log('---EthAccounts:-', accounts);
-      let contract1 = new res.eth.Contract(Forwarder, forwarderAddress);
+      let cd = await API.get(ENDPOINTS.GET_LATEST_CONTRACTADDRESS);
+      setContractAddress(cd.contractAddress);
+      setForwarderAddress(cd.contractAddressF);
+
+      let contract1 = new res.eth.Contract(Forwarder, cd.contractAddressF);
       setForwarderC(contract1);
       console.log('---Forwarder Instance Created');
 
-      let contract2 = new res.eth.Contract(AskGPT, contractAddress);
+      let contract2 = new res.eth.Contract(AskGPT, cd.contractAddress);
       console.log(await contract2.methods.marketFee().call());
       setMainContract(contract2);
       console.log('---MainContract Instance Created');
@@ -239,6 +245,7 @@ const GlobalProvider = ({children}) => {
         showAgreement,
         setShowAgreement,
         signedIn,
+        contractAddress,
 
         connect: async () => {
           setLoading(true);

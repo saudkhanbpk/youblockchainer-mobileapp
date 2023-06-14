@@ -8,7 +8,7 @@ const USER = {
   META_TX: '/user/metatx',
   GET_USER_AGREEMENTS: '/user/agreements/', //append user id
   AGREEMENT_ACTION: '/user/agreement/', //append agreement id
-  CREATE_METATX: '/user/metatx',
+  GET_LATEST_CONTRACTADDRESS: '/user/contractAddress/latest',
 };
 
 const IPFS = {

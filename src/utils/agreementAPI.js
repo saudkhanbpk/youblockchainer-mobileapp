@@ -1,6 +1,5 @@
 //import AskGPT from '../abis/AskGPT.json';
 import moment from 'moment/moment';
-import {contractAddress} from '../Constants';
 import API, {ENDPOINTS} from '../api/apiService';
 import {notifyEVMError} from './helper';
 
@@ -123,7 +122,7 @@ export const payMilestone = async (
     console.log('---Meta Tx successful');
     return true;
   } catch (error) {
-    console.log('Error in delting milestone:- ', error.message);
+    console.log('Error in approving milestone:- ', error.message);
     return false;
   }
 };
@@ -142,7 +141,7 @@ export const requestPayment = async (
     console.log('---Meta Tx successful');
     return true;
   } catch (error) {
-    console.log('Error in delting milestone:- ', error.message);
+    console.log('Error in request payment:- ', error.message);
     return false;
   }
 };
@@ -164,7 +163,7 @@ export const raiseRefundRequest = async (
     console.log('---Meta Tx successful');
     return true;
   } catch (error) {
-    console.log('Error in delting milestone:- ', error.message);
+    console.log('Error in raising refund request:- ', error.message);
     return false;
   }
 };
@@ -186,7 +185,7 @@ export const updateRefundRequest = async (
     console.log('---Meta Tx successful');
     return true;
   } catch (error) {
-    console.log('Error in delting milestone:- ', error.message);
+    console.log('Error in updating refund request:- ', error.message);
     return false;
   }
 };
@@ -207,7 +206,7 @@ export const grantRefundRequest = async (
     console.log('---Meta Tx successful');
     return true;
   } catch (error) {
-    console.log('Error in delting milestone:- ', error.message);
+    console.log('Error in granting refund request:- ', error.message);
     return false;
   }
 };
@@ -216,11 +215,12 @@ export const updateAgreement = async (
   id,
   body,
   setAgreement,
-  contractAddress,
+  agreeContractAddress,
 ) => {
   try {
     let apiRes = await API.put(ENDPOINTS.AGREEMENT_ACTION + id, body);
-    if (setAgreement) setAgreement({...apiRes, contractAddress});
+    if (setAgreement)
+      setAgreement({...apiRes, contractAddress: agreeContractAddress});
     return true;
   } catch (error) {
     console.log('Agreement updation error:- ', error.message);
@@ -253,7 +253,7 @@ export const endContract = async (
       return true;
     return false;
   } catch (error) {
-    console.log('Error in delting milestone:- ', error.message);
+    console.log('Error in ending contract:- ', error.message);
     return false;
   }
 };
@@ -267,6 +267,7 @@ export const createAgreement = async (
   mainContract,
   executeMetaTx,
   web3,
+  contractAddress,
 ) => {
   try {
     let obj = {

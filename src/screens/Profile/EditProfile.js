@@ -1,12 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {
-  View,
-  StyleSheet,
-  Image,
-  ScrollView,
-  TouchableOpacity,
-  ActivityIndicator,
-} from 'react-native';
+import {View, StyleSheet, Image, ScrollView} from 'react-native';
 import {
   Avatar,
   Text,
@@ -14,8 +7,6 @@ import {
   TextInput,
   FAB,
   Switch,
-  Tooltip,
-  IconButton,
   Button,
 } from 'react-native-paper';
 import {GlobalContext} from '../../auth/GlobalProvider';
@@ -24,7 +15,6 @@ import {height, width} from '../../Constants';
 import Entypo from 'react-native-vector-icons/Entypo';
 import PickRemoveImg from '../../components/Profile/PickRemoveImg';
 import {updateUser, uploadPics} from '../../utils/userAPI';
-import SubmitButton from '../../components/SubmitButton';
 import Header from '../../components/Header';
 import TagInput from 'react-native-tag-input';
 import BrandModal from '../../components/BrandModal';
@@ -50,7 +40,7 @@ const EditProfile = ({navigation}) => {
   const [profileBanner, setProfileBanner] = useState({uri: user.profileBanner});
   const [skills, setSkills] = useState(user.skills || []);
   const [videoVisibility, setVideoVisibility] = useState(user.videoVisibility);
-  const [age, setAge] = useState(user.age ? user.age.toString() : '0');
+  const [age, setAge] = useState(!!user.age ? user.age.toString() : '');
   const [isActor, setisActor] = useState(user.isActor);
   const [socialHandles, setSocialHandles] = useState([
     {
@@ -120,7 +110,7 @@ const EditProfile = ({navigation}) => {
           isExpert,
           descriptorTitle,
           skills,
-          age,
+          age: age || 0,
           isActor,
           videoVisibility,
           profileBanner: profban[0],

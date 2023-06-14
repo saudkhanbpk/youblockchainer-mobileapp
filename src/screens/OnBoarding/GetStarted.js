@@ -24,6 +24,7 @@ const GetStarted = ({navigation}) => {
   const swiper_ = useRef(null);
   const [index, setIndex] = useState(0);
   const asset_dir = '../../assets/img/';
+  const bullet = '➢';
   const media = [
     {
       bg: require(`${asset_dir}bg1.png`),
@@ -34,8 +35,8 @@ const GetStarted = ({navigation}) => {
         top: height / 6,
         alignSelf: 'center',
       },
-      title: 'Generate content in seconds',
-      description: `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s`,
+      title: 'Ideation',
+      description: `${bullet} From your idea to a one minute pitch\n${bullet} From your 1 Minute pitch to your Synopsis\n${bullet} Synopis to Full lengh script\n${bullet} Story board`,
       up: true,
     },
     {
@@ -47,10 +48,9 @@ const GetStarted = ({navigation}) => {
         top: height / 8.7,
         alignSelf: 'center',
       },
-      title: 'Get experts help',
-      description:
-        'when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries',
-      up: false,
+      title: 'Pre-Production',
+      description: `${bullet} Casting\n${bullet} Hiring crew members\n${bullet} Location scouting\n${bullet} Production schedule\n${bullet} Designing sets & Costumes\n${bullet} Filming on location/Studio`,
+      up: true,
     },
     {
       bg: require(`${asset_dir}bg3.png`),
@@ -61,10 +61,9 @@ const GetStarted = ({navigation}) => {
         top: height / 8.7,
         alignSelf: 'center',
       },
-      title: 'Get connected to entities to sell your content',
-      description:
-        'ut also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset',
-      up: true,
+      title: 'Post-Production & Distribution',
+      description: `${bullet} Film Editing\n${bullet} Marketing\n${bullet} Distribution\n${bullet} Release\n${bullet} Post-release`,
+      up: false,
     },
     {
       bg: require(`${asset_dir}bg4.png`),
@@ -75,9 +74,8 @@ const GetStarted = ({navigation}) => {
         top: height / 10,
         alignSelf: 'center',
       },
-      title: 'Connect your wallet and get started',
-      description:
-        'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is ',
+      title: 'Connect your wallet',
+      description: 'Connect to Metmask wallet through mobile application', //`Steps:\n\n1. Click "Connect Walllet" Button.\n2. Press connect button on Metamask popup.\n3. Sign the Message for wallet verification on our servers.\n4. Enjoy all functionalities offered by "MyReelDreams" App.`,
       up: true,
     },
   ];
@@ -110,35 +108,7 @@ const GetStarted = ({navigation}) => {
         <OnBoard page={media[0]} />
         <OnBoard page={media[1]} />
         <OnBoard page={media[2]} />
-        <OnBoard page={media[3]} />
-      </Swiper>
-
-      {index !== 0 &&
-        (index !== 4 ? (
-          <View style={styles.button}>
-            <AnimatedCircularProgress
-              size={60}
-              width={3}
-              style={{position: 'absolute', transform: [{rotate: '-90deg'}]}}
-              fill={((index + 1) / 5) * 100}
-              tintColor={colors.secondary}
-            />
-            <Pressable
-              onPress={() => {
-                swiper_.current.scrollBy(1);
-                setIndex(i => i + 1);
-              }}
-              style={{marginTop: 5, marginLeft: 5}}>
-              <LinearGradient
-                colors={[colors.secondary, colors.primary]}
-                start={{x: 0, y: 1}}
-                end={{x: 1, y: 0}}
-                style={styles.lineargradient}>
-                <AntDesign name="right" color={'white'} size={18} />
-              </LinearGradient>
-            </Pressable>
-          </View>
-        ) : (
+        <OnBoard page={media[3]}>
           <View
             style={{
               position: 'absolute',
@@ -182,7 +152,78 @@ const GetStarted = ({navigation}) => {
               <AntDesign name="right" color={colors.border} size={14} />
             </TouchableOpacity>
           </View>
-        ))}
+        </OnBoard>
+      </Swiper>
+
+      {index !== 0 && index !== 4 && (
+        <View style={styles.button}>
+          <AnimatedCircularProgress
+            size={60}
+            width={3}
+            style={{position: 'absolute', transform: [{rotate: '-90deg'}]}}
+            fill={((index + 1) / 5) * 100}
+            tintColor={colors.secondary}
+          />
+          <Pressable
+            onPress={() => {
+              swiper_.current.scrollBy(1);
+              setIndex(i => i + 1);
+            }}
+            style={{marginTop: 5, marginLeft: 5}}>
+            <LinearGradient
+              colors={[colors.secondary, colors.primary]}
+              start={{x: 0, y: 1}}
+              end={{x: 1, y: 0}}
+              style={styles.lineargradient}>
+              <AntDesign name="right" color={'white'} size={18} />
+            </LinearGradient>
+          </Pressable>
+        </View>
+        // : (
+        //   <View
+        //     style={{
+        //       position: 'absolute',
+        //       bottom: width / 12,
+        //       alignSelf: 'center',
+        //     }}>
+        //     <TouchableOpacity style={{flex: 1}} onPress={connect}>
+        //       <LinearGradient
+        //         colors={[colors.secondary, colors.primary]}
+        //         start={{x: 0, y: 1}}
+        //         end={{x: 1, y: 0}}
+        //         style={styles.big_button}>
+        //         <Text style={styles.label}>Connect Wallet</Text>
+        //       </LinearGradient>
+        //     </TouchableOpacity>
+        //     <TouchableOpacity
+        //       style={{
+        //         marginRight: 5,
+        //         marginTop: 5,
+        //       }}
+        //       onPress={() =>
+        //         Linking.openURL(
+        //           Platform.OS === 'android'
+        //             ? 'https://play.google.com/store/apps/details?id=io.metamask'
+        //             : 'https://apps.apple.com/us/app/metamask-blockchain-wallet/id1438144202',
+        //         )
+        //       }>
+        //       <Paragraph
+        //         style={{
+        //           marginRight: 2,
+        //           fontSize: 12,
+        //           textDecorationLine: 'underline',
+        //         }}>
+        //         Don't have a wallet ?
+        //       </Paragraph>
+        //     </TouchableOpacity>
+        //     <TouchableOpacity
+        //       style={styles.skipButton}
+        //       onPress={() => navigation.replace('MainDrawer')}>
+        //       <Paragraph style={{marginRight: 2, fontSize: 14}}>Skip</Paragraph>
+        //       <AntDesign name="right" color={colors.border} size={14} />
+        //     </TouchableOpacity>
+        //   </View> )
+      )}
     </View>
   );
 };

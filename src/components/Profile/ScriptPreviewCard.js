@@ -50,7 +50,11 @@ const ScriptPreviewCard = ({url, isDeleting, id}) => {
       {loading ? (
         <ActivityIndicator
           size={'small'}
-          style={{position: 'absolute', alignSelf: 'center', top: '40%'}}
+          style={{
+            position: 'absolute',
+            alignSelf: 'center',
+            top: '40%',
+          }}
         />
       ) : (
         <IconButton

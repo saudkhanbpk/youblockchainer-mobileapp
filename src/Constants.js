@@ -4,8 +4,8 @@ import {io} from 'socket.io-client';
 export const {height, width} = Dimensions.get('window');
 export const base = 'http://ec2-13-51-105-31.eu-north-1.compute.amazonaws.com'; //'http://app.myreeldream.ai';
 export const baseUrl = `${base}/api/v1`;
-export const contractAddress = '0x791ed0cA769B8690Db2c5c810e184BC1BDc5aD37';
-export const forwarderAddress = '0x2604441A291eF0EEba319a4Fd959Fa8e96899e8E';
+// export const contractAddress = '0xc83589897479A672d9496307E24D16ab1658c4aF';
+// export const forwarderAddress = '0x2604441A291eF0EEba319a4Fd959Fa8e96899e8E';
 export const socket = io.connect(base);
 
 export const defaultAvatar =

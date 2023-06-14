@@ -1,7 +1,8 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, Image} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import {Text, useTheme} from 'react-native-paper';
+import AnimatedTyping from '../AnimatedTyping';
 
 const Instruction = ({text}) => {
   const {colors} = useTheme();
@@ -40,15 +41,31 @@ const InstructionCard = props => {
     <ScrollView
       style={styles.container}
       contentContainerStyle={{alignItems: 'center', justifyContent: 'center'}}>
-      <Text
+      {/* <Text
         style={{
           fontSize: 20,
           fontFamily: 'Poppins-ExtraBold',
           color: colors.primary,
         }}>
         MyReelDream
-      </Text>
-      <View style={{width: '80%', marginTop: '5%'}}>
+      </Text> */}
+      <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <AnimatedTyping
+          text={['MyReelDreams']}
+          repeat={false}
+          textStyle={{
+            fontSize: 26,
+            fontFamily: 'Poppins-ExtraBold',
+            color: colors.primary,
+            textAlign: 'center',
+          }}
+        />
+        <Image
+          source={require('../../assets/img/logo_renew.png')}
+          style={{height: 35, width: 35}}
+        />
+      </View>
+      {/* <View style={{width: '80%', marginTop: '5%'}}>
         <Text
           style={{
             fontSize: 16,
@@ -63,7 +80,7 @@ const InstructionCard = props => {
             <Instruction key={i} text={t} />
           ))}
         </View>
-      </View>
+      </View> */}
     </ScrollView>
   );
 };

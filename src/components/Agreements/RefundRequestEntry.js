@@ -94,7 +94,10 @@ const RefundRequestEntry = ({
             <View>
               {editing ? (
                 executing ? (
-                  <ActivityIndicator size={'small'} />
+                  <ActivityIndicator
+                    size={'small'}
+                    style={{marginHorizontal: 5}}
+                  />
                 ) : (
                   <View style={{flexDirection: 'row'}}>
                     <IconButton
