@@ -12,6 +12,7 @@ import BrandModal from '../../components/BrandModal';
 import {createRoom} from '../../utils/chatAPI';
 import {GlobalContext} from '../../auth/GlobalProvider';
 import AgreementCard from '../../components/Profile/AgreementCard';
+import Header from '../../components/Header';
 
 const EntityDetail = ({route, navigation}) => {
   const {profile} = route.params;
@@ -63,6 +64,7 @@ const EntityDetail = ({route, navigation}) => {
 
   return (
     <ScrollView style={styles.container}>
+      <Header title={'Organization'} />
       <View style={{width: '100%', height: width / 2.4}}>
         <Image
           source={{

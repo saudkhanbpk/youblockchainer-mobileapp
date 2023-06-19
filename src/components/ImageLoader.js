@@ -1,21 +1,31 @@
 import React, {useEffect, useState} from 'react';
-import {View, Image, ImageBackground} from 'react-native';
+import {View, Image, ImageBackground, Platform} from 'react-native';
 import FastImage from 'react-native-fast-image';
 
-const ImageLoader = ({uri, style, borderRadius}) => {
+const ImageLoader = ({
+  uri = 'https://www.pulsecarshalton.co.uk/wp-content/uploads/2016/08/jk-placeholder-image.jpg',
+  style,
+  borderRadius,
+}) => {
   const [loading, setLoading] = useState(false);
-  const [resize, setResize] = useState(FastImage.resizeMode.center);
+  const [resize, setResize] = useState(
+    FastImage.resizeMode[Platform.OS === 'ios' ? 'cover' : 'center'],
+  );
   const [wait, setWait] = useState(true);
 
   useEffect(() => {
-    Image.getSize(
-      uri,
-      (width, height) => {
-        if (width > height) setResize(FastImage.resizeMode.cover);
-        setWait(false);
-      },
-      console.log,
-    );
+    if (!!uri)
+      Image.getSize(
+        uri,
+        (width, height) => {
+          if (width > height)
+            setResize(
+              FastImage.resizeMode[Platform.OS === 'ios' ? 'center' : 'cover'],
+            );
+          setWait(false);
+        },
+        console.log,
+      );
   }, []);
 
   const Loader = () => {
@@ -43,6 +53,8 @@ const ImageLoader = ({uri, style, borderRadius}) => {
     );
   };
 
+  console.log(resize, uri);
+
   return wait ? (
     <View style={style}>
       <Loader />
@@ -58,7 +70,7 @@ const ImageLoader = ({uri, style, borderRadius}) => {
         }}
         imageStyle={{borderRadius}}
         source={{uri}}
-        blurRadius={40}
+        //blurRadius={40}
         resizeMode="cover">
         <FastImage
           style={{
@@ -67,7 +79,9 @@ const ImageLoader = ({uri, style, borderRadius}) => {
             //backgroundColor: ,
             borderRadius,
           }}
-          source={{uri}}
+          source={{
+            uri,
+          }}
           resizeMode={resize}
           onLoadStart={() => setLoading(true)}
           onLoadEnd={() => setLoading(false)}

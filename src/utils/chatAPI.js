@@ -3,7 +3,7 @@ import API, {ENDPOINTS} from '../api/apiService';
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import {PermissionsAndroid, ToastAndroid} from 'react-native';
 import {updateUser, uploadPics} from './userAPI';
-import RNFetchBlob from 'rn-fetch-blob';
+import RNFetchBlob from 'react-native-blob-util';
 
 export const getAllRooms = async () => {
   try {

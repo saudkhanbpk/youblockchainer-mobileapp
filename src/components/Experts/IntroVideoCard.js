@@ -1,7 +1,6 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
-import {Card, Chip, Text, useTheme} from 'react-native-paper';
-import Video from 'react-native-video';
+import {Card, Text, useTheme} from 'react-native-paper';
 import {width} from '../../Constants';
 import VideoComponent from '../VideoPlayer/VideoComponent';
 
@@ -21,8 +20,8 @@ const IntroVideoCard = ({profile, baseStyle}) => {
             width: '90%',
             height: width * 0.5,
             //borderRadius: 20,
-            alignSelf: 'center',
-            backgroundColor: colors.text,
+            // alignSelf: 'center',
+            // backgroundColor: colors.text,
           }}
         />
         {/* <Video

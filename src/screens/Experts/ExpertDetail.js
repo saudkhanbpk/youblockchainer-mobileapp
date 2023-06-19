@@ -15,6 +15,7 @@ import Loading from '../../components/Loading';
 import ListEmpty from '../../components/ListEmpty';
 import AgreementCard from '../../components/Profile/AgreementCard';
 import IntroVideoCard from '../../components/Experts/IntroVideoCard';
+import Header from '../../components/Header';
 
 const ExpertDetail = ({route, navigation}) => {
   const {profile} = route.params;
@@ -47,7 +48,7 @@ const ExpertDetail = ({route, navigation}) => {
 
   const getAgreements = async () => {
     setLoading(true);
-    let res = await getMyAgreements(user._id);
+    let res = await getMyAgreements(profile._id);
     setMyAgreements(
       res.sort((a, b) => Date.parse(b.startsAt) - Date.parse(a.startsAt)),
       // res.filter(i => i.user2._id === user._id && !!i.endsAt)
@@ -69,6 +70,7 @@ const ExpertDetail = ({route, navigation}) => {
 
   return (
     <ScrollView style={styles.container}>
+      <Header title={'Expert'} />
       <NameCard
         profile={profile}
         onHire={() => setShowAgreement(profile)}

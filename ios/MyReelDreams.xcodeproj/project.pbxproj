@@ -8,12 +8,31 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* MyReelDreamsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* MyReelDreamsTests.m */; };
-		0C80B921A6F3F58F76C31292 /* libPods-MyReelDreams.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-MyReelDreams.a */; };
+		0C80B921A6F3F58F76C31292 /* libPods-MyReelDreams.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-MyReelDreams.a */; settings = {ATTRIBUTES = (Required, ); }; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		7699B88040F8A987B510C191 /* libPods-MyReelDreams-MyReelDreamsTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-MyReelDreams-MyReelDreamsTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		EEAD21422A40C9E100C1E262 /* fonts in Resources */ = {isa = PBXBuildFile; fileRef = EEAD21412A40C9E100C1E262 /* fonts */; };
+		D8337005C266401F95816FF5 /* Poppins-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FE1BFED9511E4F76B2D5EE5A /* Poppins-Black.ttf */; };
+		0AEE49D29BE947658BA7B715 /* Poppins-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D251579553124F309430F302 /* Poppins-BlackItalic.ttf */; };
+		4667CFEC16B24077A53823E2 /* Poppins-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0B081784F6B2496EA75C2F52 /* Poppins-Bold.ttf */; };
+		196933C10C7A4FF695B8B06D /* Poppins-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EE8772FC9A324C35BEAC71D7 /* Poppins-BoldItalic.ttf */; };
+		AC9884BF3FF8481FAD234CED /* Poppins-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F48B27E77F944C93B4F88336 /* Poppins-ExtraBold.ttf */; };
+		CA720D76360B49B2A5D939D1 /* Poppins-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AFFF58309F3E4B959C42F38F /* Poppins-ExtraBoldItalic.ttf */; };
+		FC7819B4A0884F7FA26D9463 /* Poppins-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 31360C5338544751B975889F /* Poppins-ExtraLight.ttf */; };
+		DE950C0DC90F4A39897680C3 /* Poppins-ExtraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C36BF80B1BE54ABFB2E40B08 /* Poppins-ExtraLightItalic.ttf */; };
+		31C94F9C0C8B47208CBDB3AC /* Poppins-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 13532252473C49ABA606C679 /* Poppins-Italic.ttf */; };
+		CFF21B428A314D69947EEAF2 /* Poppins-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2FE207EB37B24B24964D5911 /* Poppins-Light.ttf */; };
+		846E4C0D9DE746128DC2E654 /* Poppins-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D950FB5100A24EAF94D2F8ED /* Poppins-LightItalic.ttf */; };
+		628CFD1F3BFD421A939797E3 /* Poppins-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3D902F0878D74BDB970EF351 /* Poppins-Medium.ttf */; };
+		E6D0CBE3F4EC4B8099DB8051 /* Poppins-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0B8C45C34DC44740AA765274 /* Poppins-MediumItalic.ttf */; };
+		75FE5D5015014BFDBF0F5408 /* Poppins-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1477D3ACB6274E0DA0313151 /* Poppins-Regular.ttf */; };
+		F145C864AFBE4AAF8723E768 /* Poppins-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 334E7B52CD59478BBEE98CFC /* Poppins-SemiBold.ttf */; };
+		6F18E6190B304FC3B41DA8C0 /* Poppins-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 413231A6453D4553A1EEEE49 /* Poppins-SemiBoldItalic.ttf */; };
+		100A0D822639462A99B4C46F /* Poppins-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A4D46D2C8DCB4989A82D6C81 /* Poppins-Thin.ttf */; };
+		E127EB44DB074A2C99C2B7DF /* Poppins-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F2725687ABBA4059BFD900E5 /* Poppins-ThinItalic.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -22,28 +41,47 @@
 			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
-			remoteInfo = "MyReelDreams";
+			remoteInfo = MyReelDreams;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		00E356EE1AD99517003FC87E /* MyReelDreamsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "MyReelDreamsTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		00E356EE1AD99517003FC87E /* MyReelDreamsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MyReelDreamsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		00E356F21AD99517003FC87E /* MyReelDreamsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "MyReelDreamsTests.m"; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* MyReelDreams.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MyReelDreams.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = "MyReelDreams/AppDelegate.h"; sourceTree = "<group>"; };
-		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = "MyReelDreams/AppDelegate.mm"; sourceTree = "<group>"; };
-		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = "MyReelDreams/Images.xcassets"; sourceTree = "<group>"; };
-		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = "MyReelDreams/Info.plist"; sourceTree = "<group>"; };
-		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = "MyReelDreams/main.m"; sourceTree = "<group>"; };
+		00E356F21AD99517003FC87E /* MyReelDreamsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyReelDreamsTests.m; sourceTree = "<group>"; };
+		13B07F961A680F5B00A75B9A /* MyReelDreams.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyReelDreams.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = MyReelDreams/AppDelegate.h; sourceTree = "<group>"; };
+		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = MyReelDreams/AppDelegate.mm; sourceTree = "<group>"; };
+		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = MyReelDreams/Images.xcassets; sourceTree = "<group>"; };
+		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = MyReelDreams/Info.plist; sourceTree = "<group>"; };
+		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = MyReelDreams/main.m; sourceTree = "<group>"; };
 		19F6CBCC0A4E27FBF8BF4A61 /* libPods-MyReelDreams-MyReelDreamsTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MyReelDreams-MyReelDreamsTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B4392A12AC88292D35C810B /* Pods-MyReelDreams.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyReelDreams.debug.xcconfig"; path = "Target Support Files/Pods-MyReelDreams/Pods-MyReelDreams.debug.xcconfig"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-MyReelDreams.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyReelDreams.release.xcconfig"; path = "Target Support Files/Pods-MyReelDreams/Pods-MyReelDreams.release.xcconfig"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-MyReelDreams-MyReelDreamsTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyReelDreams-MyReelDreamsTests.debug.xcconfig"; path = "Target Support Files/Pods-MyReelDreams-MyReelDreamsTests/Pods-MyReelDreams-MyReelDreamsTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-MyReelDreams.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MyReelDreams.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = "MyReelDreams/LaunchScreen.storyboard"; sourceTree = "<group>"; };
+		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = MyReelDreams/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-MyReelDreams-MyReelDreamsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyReelDreams-MyReelDreamsTests.release.xcconfig"; path = "Target Support Files/Pods-MyReelDreams-MyReelDreamsTests/Pods-MyReelDreams-MyReelDreamsTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		EEAD21412A40C9E100C1E262 /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = fonts; sourceTree = "<group>"; };
+		FE1BFED9511E4F76B2D5EE5A /* Poppins-Black.ttf */ = {isa = PBXFileReference; name = "Poppins-Black.ttf"; path = "../src/assets/fonts/Poppins-Black.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		D251579553124F309430F302 /* Poppins-BlackItalic.ttf */ = {isa = PBXFileReference; name = "Poppins-BlackItalic.ttf"; path = "../src/assets/fonts/Poppins-BlackItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		0B081784F6B2496EA75C2F52 /* Poppins-Bold.ttf */ = {isa = PBXFileReference; name = "Poppins-Bold.ttf"; path = "../src/assets/fonts/Poppins-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		EE8772FC9A324C35BEAC71D7 /* Poppins-BoldItalic.ttf */ = {isa = PBXFileReference; name = "Poppins-BoldItalic.ttf"; path = "../src/assets/fonts/Poppins-BoldItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		F48B27E77F944C93B4F88336 /* Poppins-ExtraBold.ttf */ = {isa = PBXFileReference; name = "Poppins-ExtraBold.ttf"; path = "../src/assets/fonts/Poppins-ExtraBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		AFFF58309F3E4B959C42F38F /* Poppins-ExtraBoldItalic.ttf */ = {isa = PBXFileReference; name = "Poppins-ExtraBoldItalic.ttf"; path = "../src/assets/fonts/Poppins-ExtraBoldItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		31360C5338544751B975889F /* Poppins-ExtraLight.ttf */ = {isa = PBXFileReference; name = "Poppins-ExtraLight.ttf"; path = "../src/assets/fonts/Poppins-ExtraLight.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		C36BF80B1BE54ABFB2E40B08 /* Poppins-ExtraLightItalic.ttf */ = {isa = PBXFileReference; name = "Poppins-ExtraLightItalic.ttf"; path = "../src/assets/fonts/Poppins-ExtraLightItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		13532252473C49ABA606C679 /* Poppins-Italic.ttf */ = {isa = PBXFileReference; name = "Poppins-Italic.ttf"; path = "../src/assets/fonts/Poppins-Italic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		2FE207EB37B24B24964D5911 /* Poppins-Light.ttf */ = {isa = PBXFileReference; name = "Poppins-Light.ttf"; path = "../src/assets/fonts/Poppins-Light.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		D950FB5100A24EAF94D2F8ED /* Poppins-LightItalic.ttf */ = {isa = PBXFileReference; name = "Poppins-LightItalic.ttf"; path = "../src/assets/fonts/Poppins-LightItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		3D902F0878D74BDB970EF351 /* Poppins-Medium.ttf */ = {isa = PBXFileReference; name = "Poppins-Medium.ttf"; path = "../src/assets/fonts/Poppins-Medium.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		0B8C45C34DC44740AA765274 /* Poppins-MediumItalic.ttf */ = {isa = PBXFileReference; name = "Poppins-MediumItalic.ttf"; path = "../src/assets/fonts/Poppins-MediumItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		1477D3ACB6274E0DA0313151 /* Poppins-Regular.ttf */ = {isa = PBXFileReference; name = "Poppins-Regular.ttf"; path = "../src/assets/fonts/Poppins-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		334E7B52CD59478BBEE98CFC /* Poppins-SemiBold.ttf */ = {isa = PBXFileReference; name = "Poppins-SemiBold.ttf"; path = "../src/assets/fonts/Poppins-SemiBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		413231A6453D4553A1EEEE49 /* Poppins-SemiBoldItalic.ttf */ = {isa = PBXFileReference; name = "Poppins-SemiBoldItalic.ttf"; path = "../src/assets/fonts/Poppins-SemiBoldItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		A4D46D2C8DCB4989A82D6C81 /* Poppins-Thin.ttf */ = {isa = PBXFileReference; name = "Poppins-Thin.ttf"; path = "../src/assets/fonts/Poppins-Thin.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		F2725687ABBA4059BFD900E5 /* Poppins-ThinItalic.ttf */ = {isa = PBXFileReference; name = "Poppins-ThinItalic.ttf"; path = "../src/assets/fonts/Poppins-ThinItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,7 +110,7 @@
 				00E356F21AD99517003FC87E /* MyReelDreamsTests.m */,
 				00E356F01AD99517003FC87E /* Supporting Files */,
 			);
-			path = "MyReelDreamsTests";
+			path = MyReelDreamsTests;
 			sourceTree = "<group>";
 		};
 		00E356F01AD99517003FC87E /* Supporting Files */ = {
@@ -93,7 +131,7 @@
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
-			name = "MyReelDreams";
+			name = MyReelDreams;
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
@@ -116,12 +154,14 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				EEAD21412A40C9E100C1E262 /* fonts */,
 				13B07FAE1A68108700A75B9A /* MyReelDreams */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* MyReelDreamsTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
+				223A795B26B44DFA82058CA9 /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -148,6 +188,32 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		223A795B26B44DFA82058CA9 /* Resources */ = {
+			isa = "PBXGroup";
+			children = (
+				FE1BFED9511E4F76B2D5EE5A /* Poppins-Black.ttf */,
+				D251579553124F309430F302 /* Poppins-BlackItalic.ttf */,
+				0B081784F6B2496EA75C2F52 /* Poppins-Bold.ttf */,
+				EE8772FC9A324C35BEAC71D7 /* Poppins-BoldItalic.ttf */,
+				F48B27E77F944C93B4F88336 /* Poppins-ExtraBold.ttf */,
+				AFFF58309F3E4B959C42F38F /* Poppins-ExtraBoldItalic.ttf */,
+				31360C5338544751B975889F /* Poppins-ExtraLight.ttf */,
+				C36BF80B1BE54ABFB2E40B08 /* Poppins-ExtraLightItalic.ttf */,
+				13532252473C49ABA606C679 /* Poppins-Italic.ttf */,
+				2FE207EB37B24B24964D5911 /* Poppins-Light.ttf */,
+				D950FB5100A24EAF94D2F8ED /* Poppins-LightItalic.ttf */,
+				3D902F0878D74BDB970EF351 /* Poppins-Medium.ttf */,
+				0B8C45C34DC44740AA765274 /* Poppins-MediumItalic.ttf */,
+				1477D3ACB6274E0DA0313151 /* Poppins-Regular.ttf */,
+				334E7B52CD59478BBEE98CFC /* Poppins-SemiBold.ttf */,
+				413231A6453D4553A1EEEE49 /* Poppins-SemiBoldItalic.ttf */,
+				A4D46D2C8DCB4989A82D6C81 /* Poppins-Thin.ttf */,
+				F2725687ABBA4059BFD900E5 /* Poppins-ThinItalic.ttf */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+			path = "";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -167,8 +233,8 @@
 			dependencies = (
 				00E356F51AD99517003FC87E /* PBXTargetDependency */,
 			);
-			name = "MyReelDreamsTests";
-			productname = "MyReelDreamsTests";
+			name = MyReelDreamsTests;
+			productName = MyReelDreamsTests;
 			productReference = 00E356EE1AD99517003FC87E /* MyReelDreamsTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
@@ -189,8 +255,8 @@
 			);
 			dependencies = (
 			);
-			name = "MyReelDreams";
-			productName = "MyReelDreams";
+			name = MyReelDreams;
+			productName = MyReelDreams;
 			productReference = 13B07F961A680F5B00A75B9A /* MyReelDreams.app */;
 			productType = "com.apple.product-type.application";
 		};
@@ -242,8 +308,27 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EEAD21422A40C9E100C1E262 /* fonts in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				D8337005C266401F95816FF5 /* Poppins-Black.ttf in Resources */,
+				0AEE49D29BE947658BA7B715 /* Poppins-BlackItalic.ttf in Resources */,
+				4667CFEC16B24077A53823E2 /* Poppins-Bold.ttf in Resources */,
+				196933C10C7A4FF695B8B06D /* Poppins-BoldItalic.ttf in Resources */,
+				AC9884BF3FF8481FAD234CED /* Poppins-ExtraBold.ttf in Resources */,
+				CA720D76360B49B2A5D939D1 /* Poppins-ExtraBoldItalic.ttf in Resources */,
+				FC7819B4A0884F7FA26D9463 /* Poppins-ExtraLight.ttf in Resources */,
+				DE950C0DC90F4A39897680C3 /* Poppins-ExtraLightItalic.ttf in Resources */,
+				31C94F9C0C8B47208CBDB3AC /* Poppins-Italic.ttf in Resources */,
+				CFF21B428A314D69947EEAF2 /* Poppins-Light.ttf in Resources */,
+				846E4C0D9DE746128DC2E654 /* Poppins-LightItalic.ttf in Resources */,
+				628CFD1F3BFD421A939797E3 /* Poppins-Medium.ttf in Resources */,
+				E6D0CBE3F4EC4B8099DB8051 /* Poppins-MediumItalic.ttf in Resources */,
+				75FE5D5015014BFDBF0F5408 /* Poppins-Regular.ttf in Resources */,
+				F145C864AFBE4AAF8723E768 /* Poppins-SemiBold.ttf in Resources */,
+				6F18E6190B304FC3B41DA8C0 /* Poppins-SemiBoldItalic.ttf in Resources */,
+				100A0D822639462A99B4C46F /* Poppins-Thin.ttf in Resources */,
+				E127EB44DB074A2C99C2B7DF /* Poppins-ThinItalic.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -437,7 +522,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "MyReelDreamsTests/Info.plist";
+				INFOPLIST_FILE = MyReelDreamsTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -449,7 +534,7 @@
 					"-lc++",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "ai.myreeldream.app";
+				PRODUCT_BUNDLE_IDENTIFIER = ai.myreeldream.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MyReelDreams.app/MyReelDreams";
 			};
@@ -461,7 +546,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
-				INFOPLIST_FILE = "MyReelDreamsTests/Info.plist";
+				INFOPLIST_FILE = MyReelDreamsTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -473,7 +558,7 @@
 					"-lc++",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "ai.myreeldream.app";
+				PRODUCT_BUNDLE_IDENTIFIER = ai.myreeldream.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MyReelDreams.app/MyReelDreams";
 			};
@@ -487,8 +572,8 @@
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_BITCODE = NO;
-				INFOPLIST_FILE = "MyReelDreams/Info.plist";
-             INFOPLIST_KEY_CFBundleDisplayName = "MyReelDreams";
+				INFOPLIST_FILE = MyReelDreams/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = MyReelDreams;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -499,8 +584,8 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "ai.myreeldream.app";
-				PRODUCT_NAME = "MyReelDreams";
+				PRODUCT_BUNDLE_IDENTIFIER = ai.myreeldream.app;
+				PRODUCT_NAME = MyReelDreams;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -514,8 +599,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				INFOPLIST_FILE = "MyReelDreams/Info.plist";
-             INFOPLIST_KEY_CFBundleDisplayName = "MyReelDreams";
+				INFOPLIST_FILE = MyReelDreams/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = MyReelDreams;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -526,8 +611,8 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "ai.myreeldream.app";
-				PRODUCT_NAME = "MyReelDreams";
+				PRODUCT_BUNDLE_IDENTIFIER = ai.myreeldream.app;
+				PRODUCT_NAME = MyReelDreams;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -566,7 +651,7 @@
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -600,6 +685,7 @@
 					"-DFOLLY_MOBILE=1",
 					"-DFOLLY_USE_LIBCPP=1",
 				);
+				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -637,7 +723,7 @@
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -663,6 +749,7 @@
 					"-DFOLLY_MOBILE=1",
 					"-DFOLLY_USE_LIBCPP=1",
 				);
+				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};

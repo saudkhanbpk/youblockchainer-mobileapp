@@ -15,7 +15,7 @@ const RoomsScreen = ({navigation}) => {
 
   const getRooms = async () => {
     setLoading(true);
-    setRooms(await getAllRooms());
+    setRooms((await getAllRooms()).filter(i => !!i.p1 && !!i.p2));
     setLoading(false);
   };
   useEffect(() => {

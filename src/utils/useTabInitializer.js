@@ -38,7 +38,7 @@ const useTabInitializer = props => {
     callback();
   };
 
-  const updateVideo = async videoVisibility => {
+  const updateVideo = async (videoVisibility, callback) => {
     let source = {
       uri: '',
       type: '',
@@ -59,7 +59,8 @@ const useTabInitializer = props => {
         {videoIntro: uris[0], videoVisibility},
         setUser,
       );
-      setShowMail(false);
+      callback();
+      //setShowMail(false);
     } catch (error) {
       console.log('Error in video upload:- ', error.message);
       alert('Video upload Falied. Try again');

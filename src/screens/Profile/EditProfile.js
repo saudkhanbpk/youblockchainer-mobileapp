@@ -35,6 +35,7 @@ const EditProfile = ({navigation}) => {
   const [descriptorTitle, setDescriptorTitle] = useState(
     user.descriptorTitle || '',
   );
+  const [rate, setRate] = useState(user.rate.toString());
   const [isExpert, setIsExpert] = useState(user.isExpert);
   const [profileImage, setProfileImage] = useState({uri: user.profileImage});
   const [profileBanner, setProfileBanner] = useState({uri: user.profileBanner});
@@ -110,6 +111,7 @@ const EditProfile = ({navigation}) => {
           isExpert,
           descriptorTitle,
           skills,
+          rate,
           age: age || 0,
           isActor,
           videoVisibility,
@@ -269,6 +271,9 @@ const EditProfile = ({navigation}) => {
           text={descriptorTitle}
           setText={setDescriptorTitle}
         />
+        {isExpert && (
+          <InputField label={'Rate (in $/hr)'} text={rate} setText={setRate} />
+        )}
         <View
           style={{
             padding: 10,

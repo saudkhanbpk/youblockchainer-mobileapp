@@ -8,7 +8,7 @@ import {
   Dimensions,
   Image,
 } from 'react-native';
-import {useTheme} from 'react-native-paper';
+import {IconButton, useTheme} from 'react-native-paper';
 import Video from 'react-native-video';
 import Orientation from 'react-native-orientation-locker';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -26,6 +26,9 @@ const VideoComponent = ({
   swiperControl,
   autoPlay,
   playing,
+  onEndVideo,
+  muted = false,
+  repeat,
 }) => {
   const videoRef = React.createRef();
   const {colors} = useTheme();
@@ -38,6 +41,7 @@ const VideoComponent = ({
     height: Dimensions.get('screen').height,
     width: Dimensions.get('screen').width,
   });
+  const [mute, setMute] = useState(muted);
 
   useEffect(() => {
     if (autoPlay) {
@@ -69,6 +73,8 @@ const VideoComponent = ({
         }>
         <Video
           ref={videoRef}
+          muted={mute}
+          repeat={repeat}
           source={{
             uri,
           }}
@@ -87,18 +93,36 @@ const VideoComponent = ({
           onEnd={onEnd}
           paused={playing ? !playing : !state.play}
         />
+        <IconButton
+          icon={mute ? 'volume-mute' : 'volume-high'}
+          onPress={() => setMute(m => !m)}
+          iconColor="white"
+          size={16}
+          style={{
+            backgroundColor: '#000000c4',
+            borderRadius: 50,
+            padding: 5,
+            position: 'absolute',
+            top: 0,
+          }}
+        />
         {loading ? (
           <View
             style={{
               alignItems: 'center',
               justifyContent: 'center',
-              ...StyleSheet.absoluteFill,
+              position: 'absolute',
+              ...style,
+              // ...StyleSheet.absoluteFill,
             }}>
-            <Image source={require('../../assets/img/loader.gif')} />
+            <Image
+              source={require('../../assets/img/loader.gif')}
+              resizeMode="center"
+            />
           </View>
         ) : (
           state.showControls && (
-            <View style={styles.controlOverlay}>
+            <View style={{...styles.controlOverlay, ...style}}>
               {setFullScreen && (
                 <TouchableOpacity
                   onPress={handleFullscreen}
@@ -205,6 +229,7 @@ const VideoComponent = ({
     setState({...state, play: false});
     videoRef.current.seek(0);
     if (swiperControl) swiperControl({nativeEvent: {locationX: width}});
+    if (onEndVideo) onEndVideo();
   }
 
   function showControls() {

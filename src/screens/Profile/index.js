@@ -148,8 +148,6 @@ const Profile = ({navigation}) => {
           style={{
             width: '90%',
             height: width * 0.5,
-            alignSelf: 'center',
-            backgroundColor: colors.primary,
           }}
         />
         {/* <Video

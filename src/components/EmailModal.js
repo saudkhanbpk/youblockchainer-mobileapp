@@ -22,6 +22,7 @@ import Swiper from 'react-native-swiper';
 import {GlobalContext} from '../auth/GlobalProvider';
 import SubmitButton from './SubmitButton';
 import {validateEmail} from '../utils/helper';
+import VideoComponent from './VideoPlayer/VideoComponent';
 
 const EmailModal = ({show, onClick, setShow, onRecord, uploading}) => {
   const {colors} = useTheme();
@@ -30,6 +31,7 @@ const EmailModal = ({show, onClick, setShow, onRecord, uploading}) => {
   const [country, setCountry] = useState('');
   const [setting, setSetting] = useState(false);
   const [visible, setVisible] = useState(true);
+  const [index, setIndex] = useState(1);
 
   const swiper_ref = useRef(null);
 
@@ -38,13 +40,21 @@ const EmailModal = ({show, onClick, setShow, onRecord, uploading}) => {
     if (!country.length) return alert('Country of residence is compulsary');
     setSetting(true);
     await onClick(email, country, () => swiper_ref.current.scrollBy(1));
+    setIndex(2);
     setSetting(false);
   };
+
   useEffect(() => {
-    if (user && user.email && user.country && !!swiper_ref.current)
-      swiper_ref.current.scrollBy(1);
-    if (user && user.videoIntro) setShow(false);
-  }, [user, swiper_ref.current]);
+    setIndex(1);
+  }, []);
+
+  // useEffect(() => {
+  //   // if (user && user.email && user.country && !!swiper_ref.current)
+  //   //   return swiper_ref.current.scrollBy(1);
+  //   // if (user && user.videoIntro) setShow(false);
+
+  //   console.log(swiper_ref.current ? swiper_ref.current.state : '');
+  // }, [user, swiper_ref.current]);
 
   return (
     <Modal visible={show}>
@@ -59,9 +69,7 @@ const EmailModal = ({show, onClick, setShow, onRecord, uploading}) => {
                 ...styles.activedot,
                 backgroundColor: colors.primary,
               }}>
-              <Text style={{color: 'white'}}>
-                {swiper_ref.current ? swiper_ref.current.state.index + 1 : 1}
-              </Text>
+              <Text style={{color: 'white'}}>{index}</Text>
             </View>
           }
           scrollEnabled={false}>
@@ -135,8 +143,14 @@ const EmailModal = ({show, onClick, setShow, onRecord, uploading}) => {
             />
             <SubmitButton
               label={'Record'}
-              onClick={onRecord}
+              onClick={() =>
+                onRecord(visible, () => {
+                  setIndex(3);
+                  swiper_ref.current.scrollBy(1);
+                })
+              }
               loading={uploading}
+              style={{marginTop: '40%'}}
             />
             {/* <TouchableOpacity
               style={styles.skip}
@@ -145,6 +159,23 @@ const EmailModal = ({show, onClick, setShow, onRecord, uploading}) => {
               <AntDesign name="right" color={colors.border} size={12} />
             </TouchableOpacity> */}
           </Card>
+          {index === 3 && (
+            <Card style={styles.card}>
+              <Title
+                style={{fontWeight: 'bold', marginTop: -5, marginBottom: 15}}>
+                What to expect ...
+              </Title>
+
+              <VideoComponent
+                uri={'http://techslides.com/demos/sample-videos/small.mp4'}
+                style={{width: '100%', height: '77%'}}
+                noControls={true}
+                autoPlay={true}
+                onEndVideo={() => setShow(false)}
+                //repeat={}
+              />
+            </Card>
+          )}
         </Swiper>
       </View>
     </Modal>
@@ -153,7 +184,7 @@ const EmailModal = ({show, onClick, setShow, onRecord, uploading}) => {
 
 const styles = StyleSheet.create({
   modal: {
-    width: '70%',
+    width: '78%',
     height: 400,
     alignSelf: 'center',
   },

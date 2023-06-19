@@ -1,6 +1,13 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
-import {Avatar, Button, Card, useTheme, Text} from 'react-native-paper';
+import {
+  Avatar,
+  Button,
+  Card,
+  useTheme,
+  Text,
+  Tooltip,
+} from 'react-native-paper';
 import {defaultAvatar, width} from '../../Constants';
 import {useContext} from 'react';
 import {GlobalContext} from '../../auth/GlobalProvider';
@@ -36,13 +43,15 @@ const NameCard = ({profile, onConnect, onHire, baseStyle}) => {
                 textColor={colors.primary}>
                 Connect
               </Button>
-              <Button
-                mode="contained"
-                onPress={onHire}
-                buttonColor={colors.button}
-                textColor={'white'}>
-                Hire
-              </Button>
+              <Tooltip title="Coming Soon !!" enterTouchDelay={0}>
+                <Button
+                  mode="contained"
+                  // onPress={onHire}
+                  buttonColor={colors.button}
+                  textColor={'white'}>
+                  Hire
+                </Button>
+              </Tooltip>
             </View>
           )}
         </View>

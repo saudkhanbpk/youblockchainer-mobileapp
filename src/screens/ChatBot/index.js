@@ -771,7 +771,9 @@ const ChatBot = props => {
       if (inputOptions[3] === 'NO')
         initialFire(); //nesting is done so that it does'nt fallback for a Yes
       else if (inputOptions[3] !== 'YES')
-        Linking.openURL('http://www.google.com');
+        Linking.openURL(
+          `https://www.google.com/search?q=Ideas for a ${inputOptions[0]} with genre ${inputOptions[1]} and temporality as ${inputOptions[2]}`,
+        );
     } else if (inputOptions.length === 5) initialFire(inputOptions.slice(-1));
     else if (inputOptions.length > 0) {
       let current = questions[inputOptions.length];

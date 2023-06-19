@@ -12,12 +12,9 @@ export const useWebSockets = ({roomId, enabled, sender}) => {
   const joinRoom = 'Join Room';
   const socket = io(base);
 
-  // socket.on('connect', () => {
-  //   socket.emit(joinRoom, roomId);
-  //   socket.on(output, msg => {
-  //     setMessages(prev => [backendToGifted(msg), ...prev]);
-  //   });
-  // });
+  socket.on('connect', () => {
+    console.log('---Socket Connected to server');
+  });
 
   socket.on('disconnect', () => {
     console.log('---Socket Disconnected from server---');

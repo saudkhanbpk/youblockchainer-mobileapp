@@ -5563,18 +5563,6 @@ glob-parent@^6.0.2:
   dependencies:
     is-glob "^4.0.3"
 
-glob@7.0.6:
-  version "7.0.6"
-  resolved "https://registry.yarnpkg.com/glob/-/glob-7.0.6.tgz#211bafaf49e525b8cd93260d14ab136152b3f57a"
-  integrity sha512-f8c0rE8JiCxpa52kWPAOa3ZaYEnzofDzCQLCn3Vdk0Z5OVLq3BsRFJI4S4ykpeVW6QMGBUkMeUpoEgWnMTnw5Q==
-  dependencies:
-    fs.realpath "^1.0.0"
-    inflight "^1.0.4"
-    inherits "2"
-    minimatch "^3.0.2"
-    once "^1.3.0"
-    path-is-absolute "^1.0.0"
-
 glob@^7.1.3, glob@^7.1.4, glob@^7.2.3:
   version "7.2.3"
   resolved "https://registry.yarnpkg.com/glob/-/glob-7.2.3.tgz#b8df0fb802bbfa8e89bd1d938b4e16578ed44f2b"
@@ -8720,7 +8708,7 @@ prompts@^2.0.1, prompts@^2.4.0:
     kleur "^3.0.3"
     sisteransi "^1.0.5"
 
-prop-types@*, prop-types@^15.5.10, prop-types@^15.7.2, prop-types@^15.7.x, prop-types@^15.8.1:
+prop-types@*, prop-types@^15.5.10, prop-types@^15.6.2, prop-types@^15.7.2, prop-types@^15.7.x, prop-types@^15.8.1:
   version "15.8.1"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.8.1.tgz#67d87bf1a694f48435cf332c24af10214a3140b5"
   integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==
@@ -8979,10 +8967,10 @@ react-native-animatable@^1.2.4:
   dependencies:
     prop-types "^15.7.2"
 
-react-native-blob-util@^0.17.3:
-  version "0.17.3"
-  resolved "https://registry.yarnpkg.com/react-native-blob-util/-/react-native-blob-util-0.17.3.tgz#5dead89807ec176828a91c815c276da2e5c71fea"
-  integrity sha512-nO4VXIPtCrtf3mzCiOkdrXsmc8WmOLNSziS7dCnQ6kSyg4LOLXP4mQOFqfiNxt78n7cZ0QOF5CdUY/sIZZ2aOA==
+react-native-blob-util@^0.18.3:
+  version "0.18.3"
+  resolved "https://registry.yarnpkg.com/react-native-blob-util/-/react-native-blob-util-0.18.3.tgz#e3b408dfdd5b175093bbef23f33811f8ef3407ee"
+  integrity sha512-Gx5n1rxl6OcE+Xvj4vFD03Lyhpt+1BmkwU/lIFjPHAUMbSFBvfsOf0TG1cOjMxhw18cDVW7xgcueYZLRscuKPw==
   dependencies:
     base-64 "0.1.0"
     glob "^7.2.3"
@@ -9172,6 +9160,13 @@ react-native-safe-area-context@^4.5.2:
   resolved "https://registry.yarnpkg.com/react-native-safe-area-context/-/react-native-safe-area-context-4.5.3.tgz#e98eb1a73a6b3846d296545fe74760754dbaaa69"
   integrity sha512-ihYeGDEBSkYH+1aWnadNhVtclhppVgd/c0tm4mj0+HV11FoiWJ8N6ocnnZnRLvM5Fxc+hUqxR9bm5AXU3rXiyA==
 
+react-native-safearea-height@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/react-native-safearea-height/-/react-native-safearea-height-1.0.6.tgz#ece54ae953ff08efe9eee7aa96581a3a9e76c930"
+  integrity sha512-cO58Ew/NG7XcxwcSMNc0PxKiPEXYt3Fzql9UshXWXmPZ+XFXWEifYwKKqwaKExHvep8mk8wCbY0qy00pmfciIg==
+  dependencies:
+    react "^16.9.0"
+
 react-native-screens@^3.20.0:
   version "3.20.0"
   resolved "https://registry.yarnpkg.com/react-native-screens/-/react-native-screens-3.20.0.tgz#4d154177395e5541387d9a05bc2e12e54d2fb5b1"
@@ -9310,6 +9305,15 @@ react@18.2.0:
   integrity sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==
   dependencies:
     loose-envify "^1.1.0"
+
+react@^16.9.0:
+  version "16.14.0"
+  resolved "https://registry.yarnpkg.com/react/-/react-16.14.0.tgz#94d776ddd0aaa37da3eda8fc5b6b18a4c9a3114d"
+  integrity sha512-0X2CImDkJGApiAlcf0ODKIneSwBPhqJawOa5wCtKbu7ZECrmS26NvtSILynQ66cgkT/RJ4LidJOc3bUESwmU8g==
+  dependencies:
+    loose-envify "^1.1.0"
+    object-assign "^4.1.1"
+    prop-types "^15.6.2"
 
 read-pkg-up@^2.0.0:
   version "2.0.0"
@@ -9616,14 +9620,6 @@ rlp@^2.0.0, rlp@^2.2.3, rlp@^2.2.4:
   integrity sha512-d5gdPmgQ0Z+AklL2NVXr/IoSjNZFfTVvQWzL/AM2AOcSzYP2xjlb0AC8YyCLc41MSNf6P6QVtjgPdmVtzb+4lQ==
   dependencies:
     bn.js "^5.2.0"
-
-rn-fetch-blob@^0.12.0:
-  version "0.12.0"
-  resolved "https://registry.yarnpkg.com/rn-fetch-blob/-/rn-fetch-blob-0.12.0.tgz#ec610d2f9b3f1065556b58ab9c106eeb256f3cba"
-  integrity sha512-+QnR7AsJ14zqpVVUbzbtAjq0iI8c9tCg49tIoKO2ezjzRunN7YL6zFSFSWZm6d+mE/l9r+OeDM3jmb2tBb2WbA==
-  dependencies:
-    base-64 "0.1.0"
-    glob "7.0.6"
 
 rn-nodeify@^10.3.0:
   version "10.3.0"

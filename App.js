@@ -1,6 +1,6 @@
 import './shim';
 import React, {useEffect} from 'react';
-import {LogBox, StatusBar} from 'react-native';
+import {LogBox, Platform, SafeAreaView, StatusBar, View} from 'react-native';
 import GlobalProvider from './src/auth/GlobalProvider';
 import {
   Provider as PaperProvider,
@@ -16,7 +16,8 @@ import {NavigationContainer} from '@react-navigation/native';
 import WalletConnectProvider from '@walletconnect/react-native-dapp';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {appLogo} from './src/Constants';
+import {appLogo, height} from './src/Constants';
+import {getStatusBarHeight} from 'react-native-safearea-height';
 
 const fontConfig = {
   default: {
@@ -108,12 +109,22 @@ const App = () => {
       }}
       clientMeta={{
         description: 'Connect to MyReelDreams App',
-        url: 'http://app.myreeldream.ai',
+        url: 'https://app.myreeldream.ai',
         icons: [appLogo],
         name: 'MyReelDreams',
       }}>
       <GlobalProvider>
-        <StatusBar backgroundColor={theme.colors.primary} />
+        {Platform.OS === 'ios' ? (
+          <View
+            style={{
+              height: getStatusBarHeight(),
+              width: '100%',
+              backgroundColor: theme.colors.primary,
+            }}
+          />
+        ) : (
+          <StatusBar backgroundColor={theme.colors.primary} />
+        )}
         <PaperProvider theme={theme}>
           <NavigationContainer
           // linking={{
@@ -126,7 +137,9 @@ const App = () => {
           // }}
           // fallback={<Loading />}
           >
+            {/* <SafeAreaView style={{flex: 1}}> */}
             <Navigator />
+            {/* </SafeAreaView> */}
           </NavigationContainer>
         </PaperProvider>
       </GlobalProvider>

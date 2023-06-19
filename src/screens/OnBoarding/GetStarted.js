@@ -17,12 +17,14 @@ import {AnimatedCircularProgress} from 'react-native-circular-progress';
 import {GlobalContext} from '../../auth/GlobalProvider';
 import {useEffect} from 'react';
 import {Platform} from 'react-native';
+import MetamaskIntroModal from '../../components/OnBoarding/MetamaskIntroModal';
 
 const GetStarted = ({navigation}) => {
   const {colors} = useTheme();
   const {connect} = useContext(GlobalContext);
   const swiper_ = useRef(null);
   const [index, setIndex] = useState(0);
+  const [show, setShow] = useState(false);
   const asset_dir = '../../assets/img/';
   const bullet = '➢';
   const media = [
@@ -112,7 +114,7 @@ const GetStarted = ({navigation}) => {
           <View
             style={{
               position: 'absolute',
-              bottom: width / 12,
+              bottom: Platform.OS === 'ios' ? '11%' : 0,
               alignSelf: 'center',
             }}>
             <TouchableOpacity style={{flex: 1}} onPress={connect}>
@@ -150,6 +152,21 @@ const GetStarted = ({navigation}) => {
               onPress={() => navigation.replace('MainDrawer')}>
               <Paragraph style={{marginRight: 2, fontSize: 14}}>Skip</Paragraph>
               <AntDesign name="right" color={colors.border} size={14} />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                alignSelf: 'center',
+                marginTop: 10,
+              }}
+              onPress={() => setShow(true)}>
+              <Paragraph
+                style={{
+                  marginRight: 2,
+                  fontSize: 12,
+                  textDecorationLine: 'underline',
+                }}>
+                New to Metamask?
+              </Paragraph>
             </TouchableOpacity>
           </View>
         </OnBoard>
@@ -224,6 +241,7 @@ const GetStarted = ({navigation}) => {
         //     </TouchableOpacity>
         //   </View> )
       )}
+      <MetamaskIntroModal show={show} setShow={setShow} />
     </View>
   );
 };

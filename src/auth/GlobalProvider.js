@@ -153,7 +153,7 @@ const GlobalProvider = ({children}) => {
       console.log('---Forwarder Instance Created');
 
       let contract2 = new res.eth.Contract(AskGPT, cd.contractAddress);
-      console.log(await contract2.methods.marketFee().call());
+      //console.log(await contract2.methods.marketFee().call());
       setMainContract(contract2);
       console.log('---MainContract Instance Created');
 

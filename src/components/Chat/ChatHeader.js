@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
-import {Avatar, Button, Text, useTheme} from 'react-native-paper';
+import {Avatar, Button, Text, Tooltip, useTheme} from 'react-native-paper';
 import {defaultAvatar, width} from '../../Constants';
 
 const ChatHeader = ({user, onHire}) => {
@@ -23,13 +23,17 @@ const ChatHeader = ({user, onHire}) => {
         </View>
       </View>
       {user.isExpert ? (
-        <Button
-          mode="contained"
-          onPress={onHire}
-          buttonColor={colors.button}
-          textColor={'white'}>
-          Hire
-        </Button>
+        <View>
+          <Tooltip title="Coming Soon !!" enterTouchDelay={0}>
+            <Button
+              mode="contained"
+              //onPress={onHire}
+              buttonColor={colors.button}
+              textColor={'white'}>
+              Hire
+            </Button>
+          </Tooltip>
+        </View>
       ) : (
         <View />
       )}
