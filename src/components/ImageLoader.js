@@ -53,7 +53,7 @@ const ImageLoader = ({
     );
   };
 
-  console.log(resize, uri);
+  //console.log(resize, uri);
 
   return wait ? (
     <View style={style}>

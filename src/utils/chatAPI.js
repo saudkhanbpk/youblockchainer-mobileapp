@@ -1,7 +1,7 @@
 import shorthash from 'shorthash';
 import API, {ENDPOINTS} from '../api/apiService';
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
-import {PermissionsAndroid, ToastAndroid} from 'react-native';
+import {PermissionsAndroid, Platform, ToastAndroid} from 'react-native';
 import {updateUser, uploadPics} from './userAPI';
 import RNFetchBlob from 'react-native-blob-util';
 
@@ -31,7 +31,7 @@ export const saveInDevice = async url => {
     await getStoragePermission();
     const {dirs} = RNFetchBlob.fs;
     const fileName = url.substring(url.lastIndexOf('/') + 1);
-    const path = `${dirs.DownloadDir}/${fileName}.pdf`;
+    const path = `${dirs.LegacyDownloadDir}/${fileName}.pdf`;
 
     let res = await RNFetchBlob.config({
       fileCache: true,
@@ -49,22 +49,23 @@ export const saveInDevice = async url => {
 };
 
 export const saveAsPdf = async (html, inDevice, prevScripts, setUser) => {
+  console.log('here');
   try {
     let options = {
       html,
       fileName: `Script_${shorthash.unique(html)}`,
       base64: true,
     };
-
     //if (inDevice) options['directory'] = 'Downloads';
 
     let file = await RNHTMLtoPDF.convert(options);
     console.log(`---Converted To PDF (${file.filePath})`);
     if (inDevice) {
-      if (await getStoragePermission()) {
+      if (Platform.OS === 'android' ? await getStoragePermission() : true) {
+        console.log(RNFetchBlob.fs.dirs.LegacyDownloadDir);
         await RNFetchBlob.fs.cp(
           file.filePath,
-          `${RNFetchBlob.fs.dirs.DownloadDir}/${options.fileName}.pdf`,
+          `${RNFetchBlob.fs.dirs.LegacyDownloadDir}/${options.fileName}.pdf`,
         );
         return ToastAndroid.show(
           `${options.fileName} saved in Downloads Folder`,
@@ -81,7 +82,7 @@ export const saveAsPdf = async (html, inDevice, prevScripts, setUser) => {
 
     let urls = await uploadPics([
       {
-        uri: 'file://' + file.filePath,
+        uri: (Platform.OS === 'android' ? 'file://' : '') + file.filePath,
         type: 'application/pdf',
         name: options.fileName,
       },

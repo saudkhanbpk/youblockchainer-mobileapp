@@ -24,15 +24,15 @@ const ChatHeader = ({user, onHire}) => {
       </View>
       {user.isExpert ? (
         <View>
-          <Tooltip title="Coming Soon !!" enterTouchDelay={0}>
-            <Button
-              mode="contained"
-              //onPress={onHire}
-              buttonColor={colors.button}
-              textColor={'white'}>
-              Hire
-            </Button>
-          </Tooltip>
+          {/* <Tooltip title="Coming Soon !!" enterTouchDelay={0}> */}
+          <Button
+            mode="contained"
+            onPress={onHire}
+            buttonColor={colors.button}
+            textColor={'white'}>
+            Hire
+          </Button>
+          {/* </Tooltip> */}
         </View>
       ) : (
         <View />

@@ -706,11 +706,12 @@ const ChatBot = props => {
       options,
     );
 
-    // console.log(screenplay);
     let html =
       screenplay.title_page_html +
       screenplay.script_pages.map(i => i.html).join('');
-    await saveAsPdf(html, inDevice, user.scripts || [], setUser);
+    //console.log(html);
+    await saveAsPdf(html, inDevice, user ? user.scripts : [], setUser);
+    console.log('done');
   };
 
   // const askGPTinLoop = async initPrompt => {

@@ -105,7 +105,7 @@ const CustomDrawerContent = props => {
 
       <View style={{marginTop: '100%'}}>
         <DrawerRow
-          label={connector.connected ? 'Disconnect\nWallet' : 'Connect\nWallet'}
+          label={connector.connected ? 'LogOut' : 'SignIn/SignUp'}
           icon={connector.connected ? 'logout' : 'login'}
           inactive={colors.textAfter}
           onClick={

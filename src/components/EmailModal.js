@@ -26,7 +26,7 @@ import VideoComponent from './VideoPlayer/VideoComponent';
 
 const EmailModal = ({show, onClick, setShow, onRecord, uploading}) => {
   const {colors} = useTheme();
-  const {user} = useContext(GlobalContext);
+  const {user, videos} = useContext(GlobalContext);
   const [email, setEmail] = useState('');
   const [country, setCountry] = useState('');
   const [setting, setSetting] = useState(false);
@@ -163,15 +163,18 @@ const EmailModal = ({show, onClick, setShow, onRecord, uploading}) => {
             <Card style={styles.card}>
               <Title
                 style={{fontWeight: 'bold', marginTop: -5, marginBottom: 15}}>
-                What to expect ...
+                What to Expect ...
               </Title>
 
               <VideoComponent
-                uri={'http://techslides.com/demos/sample-videos/small.mp4'}
+                uri={videos.video3}
                 style={{width: '100%', height: '77%'}}
                 noControls={true}
                 autoPlay={true}
-                onEndVideo={() => setShow(false)}
+                onEndVideo={() => {
+                  setShow(false);
+                  setIndex(1);
+                }}
                 //repeat={}
               />
             </Card>

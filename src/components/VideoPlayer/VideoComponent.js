@@ -29,6 +29,7 @@ const VideoComponent = ({
   onEndVideo,
   muted = false,
   repeat,
+  resize,
 }) => {
   const videoRef = React.createRef();
   const {colors} = useTheme();
@@ -86,12 +87,12 @@ const VideoComponent = ({
           controls={false}
           onBuffer={() => setLoading(true)}
           onVideoLoadStart={() => setLoading(true)}
-          resizeMode={'contain'}
+          resizeMode={resize || 'contain'}
           onLoadStart={() => setLoading(true)}
           onLoad={onLoadEnd}
           onProgress={onProgress}
           onEnd={onEnd}
-          paused={playing ? !playing : !state.play}
+          paused={playing !== undefined ? !playing : !state.play}
         />
         <IconButton
           icon={mute ? 'volume-mute' : 'volume-high'}
@@ -219,6 +220,7 @@ const VideoComponent = ({
   }
 
   function onProgress(data) {
+    setLoading(false);
     setState(s => ({
       ...s,
       currentTime: data.currentTime,

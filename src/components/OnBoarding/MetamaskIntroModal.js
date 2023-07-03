@@ -1,11 +1,14 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {useTheme, Card, Title, Modal, Button} from 'react-native-paper';
 import {StyleSheet, View} from 'react-native';
 import VideoComponent from '../VideoPlayer/VideoComponent';
 import {width} from '../../Constants';
+import {GlobalContext} from '../../auth/GlobalProvider';
+import Loading from '../Loading';
 
 const MetamaskIntroModal = ({show, setShow}) => {
   const {colors} = useTheme();
+  const {videos} = useContext(GlobalContext);
   return (
     <Modal visible={show} onDismiss={() => setShow(false)}>
       <View style={styles.modal}>
@@ -20,13 +23,18 @@ const MetamaskIntroModal = ({show, setShow}) => {
             Introduction to Metamask
           </Title>
 
-          <VideoComponent
-            uri={'http://techslides.com/demos/sample-videos/small.mp4'}
-            style={{width: '100%', height: '80%'}}
-            noControls={true}
-            autoPlay={true}
-            onEndVideo={() => setShow(false)}
-          />
+          {!videos ? (
+            <Loading />
+          ) : (
+            <VideoComponent
+              uri={videos.video2}
+              style={{width: '100%', height: '80%'}}
+              noControls={true}
+              autoPlay={true}
+              onEndVideo={() => setShow(false)}
+              resize={'cover'}
+            />
+          )}
 
           <Button
             uppercase={false}

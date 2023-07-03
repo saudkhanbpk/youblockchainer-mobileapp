@@ -1,6 +1,6 @@
 import './shim';
 import React, {useEffect} from 'react';
-import {LogBox, Platform, SafeAreaView, StatusBar, View} from 'react-native';
+import {LogBox, Platform, StatusBar, View} from 'react-native';
 import GlobalProvider from './src/auth/GlobalProvider';
 import {
   Provider as PaperProvider,
@@ -14,9 +14,8 @@ import {
 import Navigator from './src/controllers/Navigator';
 import {NavigationContainer} from '@react-navigation/native';
 import WalletConnectProvider from '@walletconnect/react-native-dapp';
-
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {appLogo, height} from './src/Constants';
+import {appLogo} from './src/Constants';
 import {getStatusBarHeight} from 'react-native-safearea-height';
 
 const fontConfig = {

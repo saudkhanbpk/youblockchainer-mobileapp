@@ -34,6 +34,7 @@ const GlobalProvider = ({children}) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
   const [showAgreement, setShowAgreement] = useState(null);
+  const [videos, setVideos] = useState(null);
 
   const addChain = async res => {
     try {
@@ -246,6 +247,8 @@ const GlobalProvider = ({children}) => {
         setShowAgreement,
         signedIn,
         contractAddress,
+        videos,
+        setVideos,
 
         connect: async () => {
           setLoading(true);

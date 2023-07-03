@@ -1,6 +1,7 @@
 {
   "name": "myreeldreams",
   "version": "0.0.1",
+  "build": "2",
   "private": true,
   "scripts": {
     "android": "react-native run-android --active-arch-only",

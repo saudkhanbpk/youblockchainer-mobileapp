@@ -43,15 +43,15 @@ const NameCard = ({profile, onConnect, onHire, baseStyle}) => {
                 textColor={colors.primary}>
                 Connect
               </Button>
-              <Tooltip title="Coming Soon !!" enterTouchDelay={0}>
-                <Button
-                  mode="contained"
-                  // onPress={onHire}
-                  buttonColor={colors.button}
-                  textColor={'white'}>
-                  Hire
-                </Button>
-              </Tooltip>
+              {/* <Tooltip title="Coming Soon !!" enterTouchDelay={0}> */}
+              <Button
+                mode="contained"
+                onPress={onHire}
+                buttonColor={colors.button}
+                textColor={'white'}>
+                Hire
+              </Button>
+              {/* </Tooltip> */}
             </View>
           )}
         </View>

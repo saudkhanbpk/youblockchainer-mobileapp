@@ -35,4 +35,5 @@ export const ENDPOINTS = {
   ...BRAND,
   ...CHAT,
   ASK_GPT: '/gpt/ask',
+  GET_VIDEOS: '/admin',
 };

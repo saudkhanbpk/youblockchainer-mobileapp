@@ -98,7 +98,7 @@ const BrandModal = ({show, setShow, isEditing, profile, setProfile}) => {
   };
 
   return (
-    <Modal visible={show} onDismiss={() => (isEditing ? setShow(false) : {})}>
+    <Modal visible={show} onDismiss={() => setShow(false)}>
       <View style={styles.modal}>
         <Card style={styles.card}>
           <Title style={{fontWeight: 'bold', marginTop: -5, marginBottom: 15}}>
