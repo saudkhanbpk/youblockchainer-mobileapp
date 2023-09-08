@@ -1,6 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {useWalletConnect} from '@walletconnect/react-native-dapp';
 import GetStarted from '../screens/OnBoarding/GetStarted';
 import Loading from '../components/Loading';
 // import StorageManager from '../storage/StorageManager';
@@ -9,13 +8,12 @@ import {GlobalContext} from '../auth/GlobalProvider';
 
 const RootStackScreen = ({navigation}) => {
   const Stack = createNativeStackNavigator();
-  const connector = useWalletConnect();
   const [loading, setLoading] = useState(true);
   const {signedIn} = useContext(GlobalContext);
 
   const postConnection = async () => {
     setLoading(true);
-    if (signedIn || connector.connected) {
+    if (signedIn) {
       navigation.replace('MainDrawer');
     }
     setLoading(false);
@@ -23,7 +21,7 @@ const RootStackScreen = ({navigation}) => {
 
   useEffect(() => {
     postConnection();
-  }, [connector]);
+  }, [signedIn]);
 
   return loading ? (
     <Loading />

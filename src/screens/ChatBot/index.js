@@ -20,6 +20,8 @@ const ChatBot = props => {
   const [loading, setLoading] = useState(false);
   const [stopped, setStopped] = useState(false);
   const [finalScript, setFinalScript] = useState('');
+  const [gptIdeas, setGptIdeas] = useState([]);
+  const [synopsis, setSynopsis] = useState([]);
   const topics = [
     'Opening Image',
     'Theme Stated',
@@ -126,9 +128,31 @@ const ChatBot = props => {
     );
   };
 
-  const onSelectOption = reply => {
+  const onSelectOption = (reply, add) => {
     setLoading(true);
     setStopped(false);
+    if (add) {
+      setMessages(m => [
+        {
+          _id: m.length,
+          text: reply[0].title,
+          createdAt: new Date(),
+          user: currentUser,
+        },
+        ...m,
+      ]);
+      setInputOptions(i => [...i, reply[0].title]);
+      return;
+    }
+    if (inputOptions.length == 4 && inputOptions[3] === 'NO' && !add) {
+      setText(gptIdeas[reply[0].title - 1]);
+      return;
+    }
+
+    if (inputOptions.length == 5 && !add) {
+      setText(synopsis[reply[0].title - 1]);
+      return;
+    }
 
     setMessages(m => [
       {
@@ -171,22 +195,24 @@ const ChatBot = props => {
         onChangeText={setText}
         onSend={() => {
           if (!text) return;
-          onSelectOption([{title: text}]);
+          onSelectOption([{title: text}], true);
           setText('');
         }}
-        disabled={!(inputOptions.length === 4 && inputOptions[3] !== 'NO')}
+        disabled={!(inputOptions.length === 4 || inputOptions.length === 5)} //&& inputOptions[3] !== 'NO')}
         props={props}
       />
     );
   };
 
-  const initialFire = async idea => {
+  const initialFire = async () => {
+    let idea = inputOptions[4];
+    let synopsis = inputOptions[5];
     console.log('Idea:- ', idea);
     let template = `Write title, character profiles for a ${inputOptions[0]} ${
       inputOptions[1]
     } with temporality as ${inputOptions[2]}. ${
-      !!idea ? (!!idea[0] ? `The idea is ${idea[0]}.` : '') : ''
-    } Also give the outline for this story using the Save the cat story structure.`;
+      !!idea ? (!!idea ? `The idea is ${idea}.` : '') : ''
+    }. The synopis is ${synopsis}. Also give the outline for this story using the Save the cat story structure.`;
     setLoading(true);
     console.log('---Asking:- ' + template);
     let reply = await askGPT(template);
@@ -767,15 +793,84 @@ const ChatBot = props => {
   //   // await Promise.all(requests);
   // };
 
+  const handleNoIdea = async () => {
+    try {
+      let template = `Write three ideas of one minute pitch for a ${inputOptions[0]} ${inputOptions[1]} with temporality as ${inputOptions[2]}.`;
+      // console.log(template, 'template')
+      let reply = await askGPT(template);
+      const splits = reply
+        .split('\n')
+        .map(line => line.trim())
+        .filter(line => line !== '');
+      setGptIdeas(splits);
+      let options = [];
+      for (let i = 1; i <= splits.length; i++) {
+        options.push(i);
+      }
+      setMessages(m => [
+        {
+          _id: m.length,
+          text: `**Select any one idea**\n${splits.join('\n')}`,
+          createdAt: new Date(),
+          user: backend,
+          quickReplies: {
+            type: 'radio', // or 'checkbox',
+            keepIt: false,
+            values: arraytoQuickReply(options),
+          },
+        },
+        ...m,
+      ]);
+    } catch (error) {
+      console.log('Error on no', error.message);
+    }
+  };
+
+  const handleSynopsis = async () => {
+    try {
+      let template = `Write three synopsis of one minute pitch for a ${inputOptions[0]} ${inputOptions[1]} with temporality as ${inputOptions[2]} and idea as ${inputOptions[4]}.`;
+      // console.log(template, 'template')
+      let reply = await askGPT(template);
+      const splits = reply
+        .split('\n')
+        .map(line => line.trim())
+        .filter(line => line !== '');
+      setSynopsis(splits);
+      let options = [];
+      for (let i = 1; i <= splits.length; i++) {
+        options.push(i);
+      }
+      setMessages(m => [
+        {
+          _id: m.length,
+          text: `**Select any one synopsis**\n${splits.join('\n')}`,
+          createdAt: new Date(),
+          user: backend,
+          quickReplies: {
+            type: 'radio', // or 'checkbox',
+            keepIt: false,
+            values: arraytoQuickReply(options),
+          },
+        },
+        ...m,
+      ]);
+    } catch (error) {
+      console.log('Error on no', error.message);
+    }
+  };
+
   useEffect(() => {
     if (inputOptions.length === 4) {
-      if (inputOptions[3] === 'NO')
-        initialFire(); //nesting is done so that it does'nt fallback for a Yes
+      if (inputOptions[3] === 'NO') {
+        handleNoIdea();
+      }
+      //initialFire(); //nesting is done so that it does'nt fallback for a Yes
       else if (inputOptions[3] !== 'YES')
         Linking.openURL(
           `https://www.google.com/search?q=Ideas for a ${inputOptions[0]} with genre ${inputOptions[1]} and temporality as ${inputOptions[2]}`,
         );
-    } else if (inputOptions.length === 5) initialFire(inputOptions.slice(-1));
+    } else if (inputOptions.length === 5) handleSynopsis();
+    else if (inputOptions.length === 6) initialFire();
     else if (inputOptions.length > 0) {
       let current = questions[inputOptions.length];
       let options = OptionMap[current].options;

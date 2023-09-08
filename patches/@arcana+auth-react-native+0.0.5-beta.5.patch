@@ -1,0 +1,23 @@
+diff --git a/node_modules/@arcana/auth-react-native/index.js b/node_modules/@arcana/auth-react-native/index.js
+index 400d92f..3e2b1d6 100644
+--- a/node_modules/@arcana/auth-react-native/index.js
++++ b/node_modules/@arcana/auth-react-native/index.js
+@@ -80,6 +80,10 @@ const Auth = React.forwardRef((props, ref) => {
+     return loginState;
+   };
+ 
++  const getWalletVisibility = () => {
++    return visible
++  }
++
+   const sendTransaction = (params) => {
+     assertLoggedIn();
+     return new Promise((resolve, reject) => {
+@@ -239,6 +243,7 @@ const Auth = React.forwardRef((props, ref) => {
+     sendTransaction,
+     getAccount,
+     getBalance,
++    getWalletVisibility
+   }));
+ 
+   const visibilityCss = {

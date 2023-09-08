@@ -4,7 +4,6 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import {Text} from 'react-native-paper';
 import {useContext, useMemo} from 'react';
 import {View} from 'react-native';
-import {useWalletConnect} from '@walletconnect/react-native-dapp';
 import {GlobalContext} from '../auth/GlobalProvider';
 import {Alert} from 'react-native';
 import {appLogo} from '../Constants';
@@ -57,7 +56,6 @@ const CustomDrawerContent = props => {
   const {navigation} = props;
   const {colors} = useTheme();
   const {routes, index} = props.state;
-  const connector = useWalletConnect();
   const {connect, disconnect, signedIn} = useContext(GlobalContext);
   const availableRoutes = useMemo(() => {
     return {
@@ -105,11 +103,11 @@ const CustomDrawerContent = props => {
 
       <View style={{marginTop: '100%'}}>
         <DrawerRow
-          label={connector.connected ? 'LogOut' : 'SignIn/SignUp'}
-          icon={connector.connected ? 'logout' : 'login'}
+          label={signedIn ? 'LogOut' : 'SignIn/SignUp'}
+          icon={signedIn ? 'logout' : 'login'}
           inactive={colors.textAfter}
           onClick={
-            connector.connected
+            signedIn
               ? () =>
                   Alert.alert(
                     'Are you sure ?',

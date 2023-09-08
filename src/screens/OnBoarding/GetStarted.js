@@ -78,7 +78,7 @@ const GetStarted = ({navigation}) => {
       },
       title: 'Create an Account or Sign in',
       description:
-        'To login or register you need to connect to Metmask wallet through mobile application', //`Steps:\n\n1. Click "Connect Walllet" Button.\n2. Press connect button on Metamask popup.\n3. Sign the Message for wallet verification on our servers.\n4. Enjoy all functionalities offered by "MyReelDreams" App.`,
+        'To login or register you need to sign in and create a new wallet using Arcana', //`Steps:\n\n1. Click "Connect Walllet" Button.\n2. Press connect button on Metamask popup.\n3. Sign the Message for wallet verification on our servers.\n4. Enjoy all functionalities offered by "MyReelDreams" App.`,
       up: true,
     },
   ];
@@ -115,7 +115,7 @@ const GetStarted = ({navigation}) => {
           <View
             style={{
               position: 'absolute',
-              bottom: Platform.OS === 'ios' ? '10%' : 0,
+              bottom: Platform.OS === 'ios' ? '10%' : '5%',
               alignSelf: 'center',
             }}>
             <TouchableOpacity style={{flex: 1}} onPress={connect}>
@@ -124,10 +124,10 @@ const GetStarted = ({navigation}) => {
                 start={{x: 0, y: 1}}
                 end={{x: 1, y: 0}}
                 style={styles.big_button}>
-                <Text style={styles.label}>Already a Metamask user ?</Text>
+                <Text style={styles.label}>Sign In / Sign Up</Text>
               </LinearGradient>
             </TouchableOpacity>
-            <View
+            {/* <View
               style={{
                 flexDirection: 'row',
                 justifyContent: 'space-between',
@@ -169,7 +169,7 @@ const GetStarted = ({navigation}) => {
                   New to Metamask?
                 </Paragraph>
               </TouchableOpacity>
-            </View>
+            </View> */}
 
             <TouchableOpacity
               style={styles.skipButton}

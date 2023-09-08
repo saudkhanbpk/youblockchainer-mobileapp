@@ -26,7 +26,7 @@ import VideoComponent from './VideoPlayer/VideoComponent';
 
 const EmailModal = ({show, onClick, setShow, onRecord, uploading}) => {
   const {colors} = useTheme();
-  const {user, videos} = useContext(GlobalContext);
+  const {user, videos, arcanaUser} = useContext(GlobalContext);
   const [email, setEmail] = useState('');
   const [country, setCountry] = useState('');
   const [setting, setSetting] = useState(false);
@@ -47,6 +47,10 @@ const EmailModal = ({show, onClick, setShow, onRecord, uploading}) => {
   useEffect(() => {
     setIndex(1);
   }, []);
+
+  useEffect(() => {
+    if (!!arcanaUser) setEmail(arcanaUser.email);
+  }, [arcanaUser]);
 
   // useEffect(() => {
   //   // if (user && user.email && user.country && !!swiper_ref.current)
@@ -152,12 +156,15 @@ const EmailModal = ({show, onClick, setShow, onRecord, uploading}) => {
               loading={uploading}
               style={{marginTop: '40%'}}
             />
-            {/* <TouchableOpacity
+            <TouchableOpacity
               style={styles.skip}
-              onPress={() => setShow(false)}>
+              onPress={() => {
+                setIndex(3);
+                swiper_ref.current.scrollBy(1);
+              }}>
               <Text style={{marginRight: 2, fontSize: 12}}>Skip</Text>
               <AntDesign name="right" color={colors.border} size={12} />
-            </TouchableOpacity> */}
+            </TouchableOpacity>
           </Card>
           {index === 3 && (
             <Card style={styles.card}>

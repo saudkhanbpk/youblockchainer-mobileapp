@@ -13,9 +13,6 @@ import {
 } from 'react-native-paper';
 import Navigator from './src/controllers/Navigator';
 import {NavigationContainer} from '@react-navigation/native';
-import WalletConnectProvider from '@walletconnect/react-native-dapp';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {appLogo} from './src/Constants';
 import {getStatusBarHeight} from 'react-native-safearea-height';
 
 const fontConfig = {
@@ -98,51 +95,51 @@ const App = () => {
     };
   }, []);
   return (
-    <WalletConnectProvider
-      //uri="wc:00e46b69-d0cc-4b3e-b6a2-cee442f97188@1?bridge=https%3A%2F%2Fbridge.walletconnect.orgkey=91303dedf64285cbbaf9120f6e9d160a5c8aa3deb67017a3874cd272323f48ae"
-      // redirectUrl={
-      //   'wc://wc?uri=wc:00e46b69-d0cc-4b3e-b6a2-cee442f97188@1?bridge=https%3A%2F%2Fbridge.walletconnect.org&key=91303dedf64285cbbaf9120f6e9d160a5c8aa3deb67017a3874cd272323f48ae'
-      // }
-      storageOptions={{
-        asyncStorage: AsyncStorage,
-      }}
-      clientMeta={{
-        description: 'Connect to MyReelDreams App',
-        url: 'https://app.myreeldream.ai',
-        icons: [appLogo],
-        name: 'MyReelDreams',
-      }}>
-      <GlobalProvider>
-        {Platform.OS === 'ios' ? (
-          <View
-            style={{
-              height: getStatusBarHeight(),
-              width: '100%',
-              backgroundColor: theme.colors.primary,
-            }}
-          />
-        ) : (
-          <StatusBar backgroundColor={theme.colors.primary} />
-        )}
-        <PaperProvider theme={theme}>
-          <NavigationContainer
-          // linking={{
-          //   prefixes: [
-          //     'nfthodlr://',
-          //     'https://app.nfthodlr.xyz',
-          //     'http://app.nfthodlr.xyz',
-          //   ],
-          //   config,
-          // }}
-          // fallback={<Loading />}
-          >
-            {/* <SafeAreaView style={{flex: 1}}> */}
-            <Navigator />
-            {/* </SafeAreaView> */}
-          </NavigationContainer>
-        </PaperProvider>
-      </GlobalProvider>
-    </WalletConnectProvider>
+    // <WalletConnectProvider
+    //   //uri="wc:00e46b69-d0cc-4b3e-b6a2-cee442f97188@1?bridge=https%3A%2F%2Fbridge.walletconnect.orgkey=91303dedf64285cbbaf9120f6e9d160a5c8aa3deb67017a3874cd272323f48ae"
+    //   // redirectUrl={
+    //   //   'wc://wc?uri=wc:00e46b69-d0cc-4b3e-b6a2-cee442f97188@1?bridge=https%3A%2F%2Fbridge.walletconnect.org&key=91303dedf64285cbbaf9120f6e9d160a5c8aa3deb67017a3874cd272323f48ae'
+    //   // }
+    //   storageOptions={{
+    //     asyncStorage: AsyncStorage,
+    //   }}
+    //   clientMeta={{
+    //     description: 'Connect to MyReelDreams App',
+    //     url: 'https://app.myreeldream.ai',
+    //     icons: [appLogo],
+    //     name: 'MyReelDreams',
+    //   }}>
+    <GlobalProvider>
+      {Platform.OS === 'ios' ? (
+        <View
+          style={{
+            height: getStatusBarHeight(),
+            width: '100%',
+            backgroundColor: theme.colors.primary,
+          }}
+        />
+      ) : (
+        <StatusBar backgroundColor={theme.colors.primary} />
+      )}
+      <PaperProvider theme={theme}>
+        <NavigationContainer
+        // linking={{
+        //   prefixes: [
+        //     'nfthodlr://',
+        //     'https://app.nfthodlr.xyz',
+        //     'http://app.nfthodlr.xyz',
+        //   ],
+        //   config,
+        // }}
+        // fallback={<Loading />}
+        >
+          {/* <SafeAreaView style={{flex: 1}}> */}
+          <Navigator />
+          {/* </SafeAreaView> */}
+        </NavigationContainer>
+      </PaperProvider>
+    </GlobalProvider>
+    // </WalletConnectProvider>
   );
 };
 

@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import {useTheme, IconButton} from 'react-native-paper';
 import Feather from 'react-native-vector-icons/Feather';
-import {width} from '../Constants';
+import {height, width} from '../Constants';
 
 const ChatComposer = ({
   value,
@@ -67,7 +67,8 @@ const styles = StyleSheet.create({
     marginVertical: -5,
   },
   input: {
-    height: 45,
+    maxHeight: height / 8,
+    minHeight: 45,
     width: width / 1.3,
     paddingRight: 50,
   },

@@ -142,14 +142,18 @@ const Profile = ({navigation}) => {
       </View>
       <View style={{paddingHorizontal: 20, marginTop: 20}}>
         <Dashboard profile={user} />
-        <Text style={styles.title}>Your Introduction Video</Text>
-        <VideoComponent
-          uri={user.videoIntro}
-          style={{
-            width: '90%',
-            height: width * 0.5,
-          }}
-        />
+        {!!user.videoIntro && (
+          <View>
+            <Text style={styles.title}>Your Introduction Video</Text>
+            <VideoComponent
+              uri={user.videoIntro}
+              style={{
+                width: '90%',
+                height: width * 0.5,
+              }}
+            />
+          </View>
+        )}
         {/* <Video
           source={{uri: user.videoIntro}}
           controls

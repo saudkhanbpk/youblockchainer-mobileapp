@@ -92,13 +92,20 @@ export const fundMilestone = async (
   agreementContract,
   walletAddress,
   value,
+  authRef,
+  address,
 ) => {
   try {
     console.log(value);
-    let hash = await agreementContract.methods.fundMilestone(id).send({
-      from: walletAddress,
-      value,
-    });
+    // let hash = await agreementContract.methods.fundMilestone(id).send({
+    //   from: walletAddress,
+    //   value,
+    // });
+    let transaction = await agreementContract.methods
+      .fundMilestone(id)
+      .encodeABI();
+    let data = {from: walletAddress, to: address, value, data: transaction};
+    let hash = await authRef.current.sendTransaction(data);
     console.log(hash);
     return true;
   } catch (error) {

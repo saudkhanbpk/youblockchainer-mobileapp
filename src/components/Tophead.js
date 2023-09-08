@@ -1,26 +1,13 @@
-import {useWalletConnect} from '@walletconnect/react-native-dapp';
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {useContext} from 'react';
-import {View, StyleSheet, Image, TouchableOpacity, Alert} from 'react-native';
-import {Avatar, IconButton, Text, useTheme} from 'react-native-paper';
+import {View, StyleSheet, TouchableOpacity} from 'react-native';
+import {Avatar, IconButton, useTheme} from 'react-native-paper';
 import {GlobalContext} from '../auth/GlobalProvider';
-import StorageManager from '../storage/StorageManager';
 import {defaultAvatar} from '../Constants';
 
 const Tophead = ({navigation}) => {
-  const connector = useWalletConnect();
   const {colors} = useTheme();
-  const {connect, disconnect, user} = useContext(GlobalContext);
-  const [connection, setConnection] = useState(null);
-
-  const getConnection = async () => {
-    let val = await StorageManager.get('connection');
-    setConnection(val);
-  };
-
-  useEffect(() => {
-    getConnection();
-  }, [connector]);
+  const {user, authRef, signedIn} = useContext(GlobalContext);
 
   return (
     <View style={styles.container}>
@@ -56,13 +43,24 @@ const Tophead = ({navigation}) => {
                         onPress: disconnect,
                       },
                     ],
-                  )
+                  ) 
               : connect
           }>
           <Text style={{color: 'white', fontWeight: 'bold', fontSize: 10}}>
             {connector.connected ? 'Disconnect' : 'Connect'} wallet
           </Text>
         </TouchableOpacity> */}
+        {signedIn && (
+          <IconButton
+            icon={'wallet'}
+            onPress={() =>
+              authRef.current.getWalletVisibility()
+                ? authRef.current.hideWallet()
+                : authRef.current.showWallet()
+            }
+            iconColor={colors.primary}
+          />
+        )}
         <TouchableOpacity
           disabled={!user}
           style={{

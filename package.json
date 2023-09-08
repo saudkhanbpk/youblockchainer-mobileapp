@@ -14,13 +14,13 @@
     "test": "jest"
   },
   "dependencies": {
+    "@arcana/auth-react-native": "^0.0.5-beta.5",
     "@react-native-async-storage/async-storage": "^1.18.1",
+    "@react-native-community/netinfo": "^9.4.1",
     "@react-native-community/slider": "^4.4.2",
     "@react-navigation/drawer": "^6.6.2",
     "@react-navigation/native": "^6.1.6",
     "@react-navigation/native-stack": "^6.9.12",
-    "@walletconnect/react-native-dapp": "^1.8.0",
-    "@walletconnect/web3-provider": "^1.8.0",
     "axios": "^1.4.0",
     "base-64": "^1.0.0",
     "fuzzy-search": "^3.2.1",
@@ -55,6 +55,7 @@
     "react-native-tag-input": "^0.0.21",
     "react-native-vector-icons": "^9.2.0",
     "react-native-video": "^5.2.1",
+    "react-native-webview": "^11.26.1",
     "readable-stream": "^1.0.33",
     "screenplay-js": "^0.0.18",
     "shorthash": "^0.0.2",

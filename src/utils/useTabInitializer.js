@@ -1,35 +1,39 @@
 import {useContext, useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {GlobalContext} from '../auth/GlobalProvider';
-import {useWalletConnect} from '@walletconnect/react-native-dapp';
 import {updateUser, uploadPics} from './userAPI';
 import ImageCropPicker from 'react-native-image-crop-picker';
 import shorthash from 'shorthash';
 
 const useTabInitializer = props => {
-  const connector = useWalletConnect();
   const [showMail, setShowMail] = useState(false);
-  const {getCreateUser, user, setUser, loading, initializeWeb3, web3} =
-    useContext(GlobalContext);
+  const {
+    getCreateUser,
+    user,
+    setUser,
+    loading,
+    initializeWeb3,
+    web3,
+    signedIn,
+  } = useContext(GlobalContext);
   const [uploading, setUploading] = useState(false);
 
   const getUser = async () => {
-    if (connector.connected) {
-      if (connector.accounts[0] === undefined) return;
-      await getCreateUser(connector.accounts[0]);
+    if (signedIn) {
+      await getCreateUser();
     }
   };
 
   useEffect(() => {
-    if (connector.connected && web3 === null) {
+    if (signedIn && web3 === null) {
       initializeWeb3();
     }
     if (user === null) getUser();
-  }, [connector]);
+  }, [signedIn]);
 
   useEffect(() => {
     if (user) {
-      if (!user.email || !user.videoIntro || !user.country) setShowMail(true);
+      if (!user.email || !user.country) setShowMail(true); //|| !user.videoIntro
     }
   }, [user]);
 

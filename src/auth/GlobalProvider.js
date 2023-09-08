@@ -1,32 +1,26 @@
-import {useWalletConnect} from '@walletconnect/react-native-dapp';
-import WalletConnectProvider from '@walletconnect/web3-provider';
-import React, {createContext, useMemo, useState} from 'react';
+import React, {createContext, useRef, useState, useEffect} from 'react';
 import {ToastAndroid} from 'react-native';
 import API, {ENDPOINTS} from '../api/apiService';
 import Web3 from 'web3';
 import StorageManager from '../storage/StorageManager';
-import {
-  MetaMaskNetworkObject,
-  // contractAddress as ca,
-  // forwarderAddress as fa,
-  rpcConfig,
-} from '../Constants';
+import {ARCANA_KEY, WALLET_STATES, http_provider} from '../Constants';
 import {API_TOKEN, ONBOARDED, USER} from '../storage/StorageKeys';
-import {useEffect} from 'react';
-import {getMe, getUserNFTs} from '../utils/userAPI';
+import {getMe} from '../utils/userAPI';
 import Forwarder from '../abis/Forwarder.json';
 import AskGPT from '../abis/AskGPT.json';
+import Auth from '@arcana/auth-react-native';
 
 export const GlobalContext = createContext();
 
 const GlobalProvider = ({children}) => {
-  const connector = useWalletConnect();
-  const [chainId, setChainId] = useState(0);
+  // const [chainId, setChainId] = useState(0);
   const [signedIn, setSignedIn] = useState(false);
-  const [web3Provider, setWeb3Provider] = useState(null);
+  const [arcanaUser, setArcanaUser] = useState(null);
+  //const [isOpened, setIsOpened] = useState(false); //const [web3Provider, setWeb3Provider] = useState(null);
   const [web3, setWeb3] = useState(null);
   const [contractAddress, setContractAddress] = useState('');
   const [forwarderAddress, setForwarderAddress] = useState('');
+  //const [showAuth, setShowAuth] = useState(false);
   //const [containsNetwork, setContainsNetwork] = useState(true);
   const [forwarderC, setForwarderC] = useState(null);
   const [mainContract, setMainContract] = useState(null);
@@ -35,65 +29,73 @@ const GlobalProvider = ({children}) => {
   const [loading, setLoading] = useState(false);
   const [showAgreement, setShowAgreement] = useState(null);
   const [videos, setVideos] = useState(null);
+  const authRef = useRef(null);
 
-  const addChain = async res => {
-    try {
-      await res.request({
-        method: 'wallet_addEthereumChain',
-        params: [MetaMaskNetworkObject],
-      });
-      // setContainsNetwork(true);
-    } catch (addError) {
-      console.error('Adding Error:- ', addError);
-    }
+  // const addChain = async res => {
+  //   try {
+  //     await res.request({
+  //       method: 'wallet_addEthereumChain',
+  //       params: [MetaMaskNetworkObject],
+  //     });
+  //     // setContainsNetwork(true);
+  //   } catch (addError) {
+  //     console.error('Adding Error:- ', addError);
+  //   }
+  // };
+
+  // const onChainChanged = async chainId => {
+  //   console.log(chainId);
+  //   if (!!chainId && chainId !== rpcConfig.chainId) {
+  //     let res = web3Provider;
+  //     // let w3 = web3;
+  //     if (!res) {
+  //       res = new WalletConnectProvider({
+  //         ...rpcConfig,
+  //         connector,
+  //       });
+  //       await res.enable();
+  //     }
+
+  //     // if (!w3) {
+  //     //   w3 = new Web3(res);
+  //     // }
+  //     try {
+  //       //if (!containsNetwork) return await addChain(res);
+  //       await res.request({
+  //         method: 'wallet_switchEthereumChain',
+  //         params: [{chainId: Web3.utils.toHex(rpcConfig.chainId)}],
+  //       });
+  //     } catch (error) {
+  //       console.log('Switching Error:- ', error);
+
+  //       if (error.message.includes('Unrecognized chain ID')) {
+  //         return await addChain(res);
+  //       }
+  //     }
+  //   }
+  // };
+
+  const getCreateUser = async () => {
+    // if (signedIn) {
+    //   // let res = await StorageManager.get(USER);
+    //   // if (res) return setUser(res);
+    //   //console.log('---Call User API:- ', address);
+    //   // if (address === null || address === undefined) {
+    //   //   //await connector.killSession("Wallet did'nt connect properly");
+    //   //   throw new Error("Wallet did'nt connect properly");
+    //   // }
+    //   await getMe(setUser);
+    //   return;
+    // }
+    //await loginAccount();
+    await arcanaLoginAccount();
   };
 
-  const onChainChanged = async chainId => {
-    console.log(chainId);
-    if (!!chainId && chainId !== rpcConfig.chainId) {
-      let res = web3Provider;
-      // let w3 = web3;
-      if (!res) {
-        res = new WalletConnectProvider({
-          ...rpcConfig,
-          connector,
-        });
-        await res.enable();
-      }
-
-      // if (!w3) {
-      //   w3 = new Web3(res);
-      // }
-      try {
-        //if (!containsNetwork) return await addChain(res);
-        await res.request({
-          method: 'wallet_switchEthereumChain',
-          params: [{chainId: Web3.utils.toHex(rpcConfig.chainId)}],
-        });
-      } catch (error) {
-        console.log('Switching Error:- ', error);
-
-        if (error.message.includes('Unrecognized chain ID')) {
-          return await addChain(res);
-        }
-      }
-    }
-  };
-
-  const getCreateUser = async address => {
-    if (signedIn) {
-      // let res = await StorageManager.get(USER);
-      // if (res) return setUser(res);
-      console.log('---Call User API:- ', address);
-      if (address === null || address === undefined) {
-        await connector.killSession("Wallet did'nt connect properly");
-        throw new Error("Wallet did'nt connect properly");
-      }
-      await getMe(setUser);
-      return;
-    }
-    await loginAccount();
-  };
+  // const toggleWallet = () => {
+  //   if (isOpened) authRef.current.hideWallet();
+  //   else authRef.current.showWallet();
+  //   setIsOpened(o => !o);
+  // };
 
   const executeMetaTx = async (data, targetAddress) => {
     try {
@@ -112,7 +114,11 @@ const GlobalProvider = ({children}) => {
         .getDigest(tx.from, tx.to, tx.value, tx.nonce, tx.data)
         .call();
       console.log('---Got digest from Forwarder:- ', digest);
-      const signature = await web3.eth.personal.sign(digest, from);
+      // const signature = await web3.eth.personal.sign(digest, from);
+      const signature = await authRef.current.request({
+        method: 'personal_sign',
+        params: [digest, user.walletAddress],
+      });
       console.log('---Transaction Signed');
       const res = await API.post(ENDPOINTS.META_TX, {
         tx,
@@ -131,20 +137,20 @@ const GlobalProvider = ({children}) => {
     try {
       let res = w3;
       if (res === undefined || res === null) {
-        const provider = new WalletConnectProvider({
-          ...rpcConfig,
-          connector,
-        });
-        await provider.enable();
-        provider.chainId = rpcConfig.chainId;
-
-        res = new Web3(provider);
+        let res = new Web3(new Web3.providers.HttpProvider(http_provider));
         setWeb3(res);
-        setWeb3Provider(provider);
+        // const provider = new WalletConnectProvider({
+        //   ...rpcConfig,
+        //   connector,
+        // });
+        // await provider.enable();
+        // provider.chainId = rpcConfig.chainId;
+
+        // res = new Web3(provider);
+        // setWeb3(res);
+        // setWeb3Provider(provider);
         console.log('---Created Web3');
       }
-      const accounts = await res.eth.getAccounts();
-      console.log('---EthAccounts:-', accounts);
       let cd = await API.get(ENDPOINTS.GET_LATEST_CONTRACTADDRESS);
       setContractAddress(cd.contractAddress);
       setForwarderAddress(cd.contractAddressF);
@@ -166,69 +172,115 @@ const GlobalProvider = ({children}) => {
     }
   };
 
-  const loginAccount = async () => {
-    try {
-      const provider = new WalletConnectProvider({
-        ...rpcConfig,
-        connector,
-      });
-      await provider.enable();
-      provider.chainId = rpcConfig.chainId;
+  // const loginAccount = async () => {
+  //   try {
+  //     const provider = new WalletConnectProvider({
+  //       ...rpcConfig,
+  //       connector,
+  //     });
+  //     await provider.enable();
+  //     provider.chainId = rpcConfig.chainId;
 
-      // provider.on('chainChanged', onChainChanged);
-      const res = new Web3(provider);
+  //     // provider.on('chainChanged', onChainChanged);
+  //     const res = new Web3(provider);
+  //     setWeb3(res);
+  //     setWeb3Provider(provider);
+  //     initializeWeb3(res);
+  //     //console.log(res);
+  //     let userAddress = connector.accounts[0].toLowerCase();
+  //     let signature = await res.eth.personal.sign(
+  //       `Purpose:\nSign to verify wallet ownership.\n\nWallet address:\n${userAddress}\n\nHash:\n${Web3.utils.keccak256(
+  //         userAddress,
+  //       )}`,
+  //       userAddress,
+  //     );
+  //     // console.log(
+  //     //   ENDPOINTS.LOGIN_SIGNUP +
+  //     //     `?signature=${signature}&address=${userAddress}`,
+  //     // );
+  //     let resp = await API.get(
+  //       ENDPOINTS.LOGIN_SIGNUP +
+  //         `?signature=${signature}&address=${userAddress}`,
+  //       false,
+  //     );
+  //     console.log(resp);
+  //     await StorageManager.put(USER, resp.user);
+  //     await StorageManager.put(API_TOKEN, resp.token);
+  //     setUser(resp.user);
+  //     setSignedIn(true);
+  //     ToastAndroid.show('Wallet connected successfully 🎉', ToastAndroid.SHORT);
+  //   } catch (error) {
+  //     console.log(error);
+  //     await connector.killSession();
+  //   }
+  // };
+
+  const arcanaLoginAccount = async () => {
+    try {
+      let res = new Web3(new Web3.providers.HttpProvider(http_provider));
       setWeb3(res);
-      setWeb3Provider(provider);
-      initializeWeb3(res);
-      //console.log(res);
-      let userAddress = connector.accounts[0].toLowerCase();
-      let signature = await res.eth.personal.sign(
-        `Purpose:\nSign to verify wallet ownership.\n\nWallet address:\n${userAddress}\n\nHash:\n${Web3.utils.keccak256(
+      await initializeWeb3(res);
+      let accounts = await authRef?.current.getAccount();
+      console.log('---User Accounts:- ', accounts);
+      let userAddress = accounts[0];
+      const signature = await authRef.current.request({
+        method: 'personal_sign',
+        params: [
+          `Purpose:\nSign to verify wallet ownership.\n\nWallet address:\n${userAddress}\n\nHash:\n${Web3.utils.keccak256(
+            userAddress,
+          )}`,
+
           userAddress,
-        )}`,
-        userAddress,
-      );
-      // console.log(
-      //   ENDPOINTS.LOGIN_SIGNUP +
-      //     `?signature=${signature}&address=${userAddress}`,
-      // );
+        ],
+      });
       let resp = await API.get(
         ENDPOINTS.LOGIN_SIGNUP +
-          `?signature=${signature}&address=${userAddress}`,
+          `?signature=${signature}&address=${accounts[0]}`,
         false,
       );
+
       console.log(resp);
       await StorageManager.put(USER, resp.user);
       await StorageManager.put(API_TOKEN, resp.token);
       setUser(resp.user);
+      let acuser = authRef.current.getUserInfo();
+      console.log('---Arcana User:- ', acuser);
+      setArcanaUser(acuser);
       setSignedIn(true);
       ToastAndroid.show('Wallet connected successfully 🎉', ToastAndroid.SHORT);
     } catch (error) {
-      console.log(error);
-      await connector.killSession();
+      console.log('Arcana Login Error:- ', error.message);
     }
   };
 
   useEffect(() => {
-    const checkSignInStatus = async () => {
-      if (await StorageManager.get(USER)) setSignedIn(true);
-    };
-    checkSignInStatus();
-  }, []);
+    // const checkSignInStatus = async () => {
+    //   if (await StorageManager.get(USER)) setSignedIn(true);
+    // };
+    // checkSignInStatus();
 
-  useEffect(() => {
-    if (connector.connected)
-      if (chainId === connector.chainId) onChainChanged(chainId);
-      else setChainId(connector.chainId);
-  }, [signedIn]);
+    if (
+      !!authRef.current &&
+      authRef.current.getLoginState() === WALLET_STATES.CONNECTED
+    ) {
+      setSignedIn(true);
+      setArcanaUser(authRef.current.getUserInfo());
+    } else setSignedIn(false);
+  }, [authRef]);
 
-  useEffect(() => {
-    if (web3Provider) web3Provider.on('chainChanged', setChainId);
-  }, [web3Provider]);
+  // useEffect(() => {
+  //   if (connector.connected)
+  //     if (chainId === connector.chainId) onChainChanged(chainId);
+  //     else setChainId(connector.chainId);
+  // }, [signedIn]);
 
-  useEffect(() => {
-    onChainChanged(chainId);
-  }, [chainId]);
+  // useEffect(() => {
+  //   if (web3Provider) web3Provider.on('chainChanged', setChainId);
+  // }, [web3Provider]);
+
+  // useEffect(() => {
+  //   onChainChanged(chainId);
+  // }, [chainId]);
 
   return (
     <GlobalContext.Provider
@@ -249,6 +301,10 @@ const GlobalProvider = ({children}) => {
         contractAddress,
         videos,
         setVideos,
+        authRef,
+        arcanaUser,
+        // toggleWallet,
+        // isOpened,
 
         connect: async () => {
           setLoading(true);
@@ -257,7 +313,13 @@ const GlobalProvider = ({children}) => {
             setTimeout(() => {
               setLoading(false);
             }, 10000);
-            const res = await connector.connect();
+            await authRef.current.loginWithSocial('google');
+            if (authRef.current.getLoginState() === WALLET_STATES.CONNECTED) {
+              setSignedIn(true);
+              setArcanaUser(authRef.current.getUserInfo());
+            }
+
+            //const res = await connector.connect();
             //await new Promise(resolve => setTimeout(resolve, 1000));
             //await getCreateUser(res.accounts[0]);
             //await initializeWeb3();
@@ -277,7 +339,8 @@ const GlobalProvider = ({children}) => {
         disconnect: async () => {
           setLoading(true);
           try {
-            await connector.killSession();
+            //await connector.killSession();
+            await authRef.current.logout();
             await StorageManager.clearStore();
             await StorageManager.put(ONBOARDED, 'true');
             setSignedIn(false);
@@ -293,6 +356,7 @@ const GlobalProvider = ({children}) => {
         },
       }}>
       {children}
+      <Auth clientId={ARCANA_KEY} theme="light" ref={authRef} />
     </GlobalContext.Provider>
   );
 };

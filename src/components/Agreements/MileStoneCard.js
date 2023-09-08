@@ -56,7 +56,7 @@ const MileStoneCard = ({
   const [generating, setGenerating] = useState(false);
   const [refundAmt, setRefundAmt] = useState('');
   const [totalRequested, setTotalRequested] = useState(0);
-  const {executeMetaTx, web3, user} = useContext(GlobalContext);
+  const {executeMetaTx, web3, user, authRef} = useContext(GlobalContext);
   const feeAmount = (amount * feeRate) / 1000;
 
   const togglePlans = () => {
@@ -96,7 +96,7 @@ const MileStoneCard = ({
           setDeleting(true);
           await deleteMilestone(id, contract, executeMetaTx, contractAddr);
           setDeleting(false);
-          getMilestone();
+          await getMilestone();
         },
       },
     ]);
@@ -112,6 +112,8 @@ const MileStoneCard = ({
             contract,
             user.walletAddress,
             Number(amount) + feeAmount,
+            authRef,
+            contractAddr,
           )
         : await payMilestone(id, contract, executeMetaTx, contractAddr)
     ) {

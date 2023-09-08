@@ -22,7 +22,7 @@ const OnBoard = ({page, children, isComing}) => {
           <Text style={{fontFamily: 'Poppins-Bold', fontSize: 24}}>
             {title}
           </Text>
-          {isComing && (
+          {/* {isComing && (
             <Chip
               compact
               disabled
@@ -30,7 +30,7 @@ const OnBoard = ({page, children, isComing}) => {
               textStyle={{fontSize: 12, color: colors.text}}>
               Coming Soon
             </Chip>
-          )}
+          )} */}
         </View>
         <Text
           style={{
