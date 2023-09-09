@@ -9,6 +9,7 @@ import {getMe} from '../utils/userAPI';
 import Forwarder from '../abis/Forwarder.json';
 import AskGPT from '../abis/AskGPT.json';
 import Auth from '@arcana/auth-react-native';
+import AuthOptionModal from '../components/AuthOptionModal';
 
 export const GlobalContext = createContext();
 
@@ -16,6 +17,7 @@ const GlobalProvider = ({children}) => {
   // const [chainId, setChainId] = useState(0);
   const [signedIn, setSignedIn] = useState(false);
   const [arcanaUser, setArcanaUser] = useState(null);
+  const [showAuthOptions, setShowAuthOptions] = useState(false);
   //const [isOpened, setIsOpened] = useState(false); //const [web3Provider, setWeb3Provider] = useState(null);
   const [web3, setWeb3] = useState(null);
   const [contractAddress, setContractAddress] = useState('');
@@ -219,7 +221,6 @@ const GlobalProvider = ({children}) => {
     try {
       let res = new Web3(new Web3.providers.HttpProvider(http_provider));
       setWeb3(res);
-      await initializeWeb3(res);
       let accounts = await authRef?.current.getAccount();
       console.log('---User Accounts:- ', accounts);
       let userAddress = accounts[0];
@@ -242,6 +243,7 @@ const GlobalProvider = ({children}) => {
       console.log(resp);
       await StorageManager.put(USER, resp.user);
       await StorageManager.put(API_TOKEN, resp.token);
+      await initializeWeb3(res);
       setUser(resp.user);
       let acuser = authRef.current.getUserInfo();
       console.log('---Arcana User:- ', acuser);
@@ -303,17 +305,22 @@ const GlobalProvider = ({children}) => {
         setVideos,
         authRef,
         arcanaUser,
+        setShowAuthOptions,
         // toggleWallet,
         // isOpened,
 
-        connect: async () => {
+        connect: async (method, email) => {
           setLoading(true);
           try {
             console.log('Connecting');
             setTimeout(() => {
               setLoading(false);
             }, 10000);
-            await authRef.current.loginWithSocial('google');
+            console.log(method, email);
+            if (email) {
+              //console.log('Here');
+              await authRef.current.loginWithOtp(email);
+            } else await authRef.current.loginWithSocial(method);
             if (authRef.current.getLoginState() === WALLET_STATES.CONNECTED) {
               setSignedIn(true);
               setArcanaUser(authRef.current.getUserInfo());
@@ -357,6 +364,7 @@ const GlobalProvider = ({children}) => {
       }}>
       {children}
       <Auth clientId={ARCANA_KEY} theme="light" ref={authRef} />
+      <AuthOptionModal show={showAuthOptions} setShow={setShowAuthOptions} />
     </GlobalContext.Provider>
   );
 };

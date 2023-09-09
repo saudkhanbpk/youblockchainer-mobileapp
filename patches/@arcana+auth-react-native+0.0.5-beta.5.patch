@@ -1,8 +1,16 @@
 diff --git a/node_modules/@arcana/auth-react-native/index.js b/node_modules/@arcana/auth-react-native/index.js
-index 400d92f..3e2b1d6 100644
+index 400d92f..9787af0 100644
 --- a/node_modules/@arcana/auth-react-native/index.js
 +++ b/node_modules/@arcana/auth-react-native/index.js
-@@ -80,6 +80,10 @@ const Auth = React.forwardRef((props, ref) => {
+@@ -4,6 +4,7 @@ import {
+   StyleSheet,
+   Keyboard,
+   View,
++  Platform,
+ } from "react-native";
+ import { randomNumber, createLoginUrl } from "./utils";
+ import React, { useRef, useState, useEffect } from "react";
+@@ -80,6 +81,10 @@ const Auth = React.forwardRef((props, ref) => {
      return loginState;
    };
  
@@ -13,7 +21,7 @@ index 400d92f..3e2b1d6 100644
    const sendTransaction = (params) => {
      assertLoggedIn();
      return new Promise((resolve, reject) => {
-@@ -239,6 +243,7 @@ const Auth = React.forwardRef((props, ref) => {
+@@ -239,15 +244,17 @@ const Auth = React.forwardRef((props, ref) => {
      sendTransaction,
      getAccount,
      getBalance,
@@ -21,3 +29,24 @@ index 400d92f..3e2b1d6 100644
    }));
  
    const visibilityCss = {
+     ...styles.modalContainer,
+     maxHeight: "100%",
+     height: deviceHeight - keyboardHeight,
+-    bottom: 0,
++    //bottom: 0,
+     // top: 0,
+-    translateY: bottom,
++    transform:[{translateY:bottom}]
++    //translateY: bottom,
+   };
+   
+   return (
+@@ -340,7 +347,7 @@ const styles = StyleSheet.create({
+     left: 0,
+     right: 0,
+     bottom: 0,
+-    backgroundColor: "transparent",
++    backgroundColor:"transparent",
+   },
+   modalContent: {
+     height: "100%",

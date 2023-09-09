@@ -14,6 +14,7 @@ import {
 import Navigator from './src/controllers/Navigator';
 import {NavigationContainer} from '@react-navigation/native';
 import {getStatusBarHeight} from 'react-native-safearea-height';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
 
 const fontConfig = {
   default: {
@@ -109,36 +110,39 @@ const App = () => {
     //     icons: [appLogo],
     //     name: 'MyReelDreams',
     //   }}>
-    <GlobalProvider>
-      {Platform.OS === 'ios' ? (
-        <View
-          style={{
-            height: getStatusBarHeight(),
-            width: '100%',
-            backgroundColor: theme.colors.primary,
-          }}
-        />
-      ) : (
-        <StatusBar backgroundColor={theme.colors.primary} />
-      )}
+    <SafeAreaProvider>
       <PaperProvider theme={theme}>
-        <NavigationContainer
-        // linking={{
-        //   prefixes: [
-        //     'nfthodlr://',
-        //     'https://app.nfthodlr.xyz',
-        //     'http://app.nfthodlr.xyz',
-        //   ],
-        //   config,
-        // }}
-        // fallback={<Loading />}
-        >
-          {/* <SafeAreaView style={{flex: 1}}> */}
-          <Navigator />
-          {/* </SafeAreaView> */}
-        </NavigationContainer>
+        <GlobalProvider>
+          {Platform.OS === 'ios' ? (
+            <View
+              style={{
+                height: getStatusBarHeight(),
+                width: '100%',
+                backgroundColor: theme.colors.primary,
+              }}
+            />
+          ) : (
+            <StatusBar backgroundColor={theme.colors.primary} />
+          )}
+
+          <NavigationContainer
+          // linking={{
+          //   prefixes: [
+          //     'nfthodlr://',
+          //     'https://app.nfthodlr.xyz',
+          //     'http://app.nfthodlr.xyz',
+          //   ],
+          //   config,
+          // }}
+          // fallback={<Loading />}
+          >
+            {/* <SafeAreaView style={{flex: 1}}> */}
+            <Navigator />
+            {/* </SafeAreaView> */}
+          </NavigationContainer>
+        </GlobalProvider>
       </PaperProvider>
-    </GlobalProvider>
+    </SafeAreaProvider>
     // </WalletConnectProvider>
   );
 };

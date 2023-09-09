@@ -6,7 +6,7 @@ import {useContext, useMemo} from 'react';
 import {View} from 'react-native';
 import {GlobalContext} from '../auth/GlobalProvider';
 import {Alert} from 'react-native';
-import {appLogo} from '../Constants';
+import {appLogo, height} from '../Constants';
 import {Image} from 'react-native';
 
 const DrawerRow = ({
@@ -56,7 +56,7 @@ const CustomDrawerContent = props => {
   const {navigation} = props;
   const {colors} = useTheme();
   const {routes, index} = props.state;
-  const {connect, disconnect, signedIn} = useContext(GlobalContext);
+  const {disconnect, signedIn, setShowAuthOptions} = useContext(GlobalContext);
   const availableRoutes = useMemo(() => {
     return {
       ChatBot: {
@@ -123,7 +123,7 @@ const CustomDrawerContent = props => {
                       },
                     ],
                   )
-              : connect
+              : () => setShowAuthOptions(true)
           }
         />
       </View>

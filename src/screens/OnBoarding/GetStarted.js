@@ -21,7 +21,7 @@ import MetamaskIntroModal from '../../components/OnBoarding/MetamaskIntroModal';
 
 const GetStarted = ({navigation}) => {
   const {colors} = useTheme();
-  const {connect} = useContext(GlobalContext);
+  const {setShowAuthOptions} = useContext(GlobalContext);
   const swiper_ = useRef(null);
   const [index, setIndex] = useState(0);
   const [show, setShow] = useState(false);
@@ -118,7 +118,9 @@ const GetStarted = ({navigation}) => {
               bottom: Platform.OS === 'ios' ? '10%' : '5%',
               alignSelf: 'center',
             }}>
-            <TouchableOpacity style={{flex: 1}} onPress={connect}>
+            <TouchableOpacity
+              style={{flex: 1}}
+              onPress={() => setShowAuthOptions(true)}>
               <LinearGradient
                 colors={[colors.secondary, colors.primary]}
                 start={{x: 0, y: 1}}
