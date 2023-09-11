@@ -138,7 +138,7 @@ const GlobalProvider = ({children}) => {
   const initializeWeb3 = async w3 => {
     try {
       let res = w3;
-      if (res === undefined || res === null) {
+      if (!res) {
         let res = new Web3(new Web3.providers.HttpProvider(http_provider));
         setWeb3(res);
         // const provider = new WalletConnectProvider({

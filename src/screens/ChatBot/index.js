@@ -14,7 +14,7 @@ import InstructionCard from '../../components/ChatBot.js/InstructionCard';
 
 const ChatBot = props => {
   const {colors} = useTheme();
-  const {user, setUser} = useContext(GlobalContext);
+  const {user, setUser, signedIn} = useContext(GlobalContext);
   const [text, setText] = useState('');
   const [inputOptions, setInputOptions] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -61,17 +61,24 @@ const ChatBot = props => {
 
   const questions = Object.keys(OptionMap);
   const [messages, setMessages] = useState([
-    {
-      _id: 0,
-      text: 'Start with any of the options below',
-      createdAt: new Date(),
-      quickReplies: {
-        type: 'radio', // or 'checkbox',
-        keepIt: false,
-        values: arraytoQuickReply(OptionMap[questions[0]].options),
-      },
-      user: backend,
-    },
+    signedIn
+      ? {
+          _id: 0,
+          text: 'Start with any of the options below',
+          createdAt: new Date(),
+          quickReplies: {
+            type: 'radio', // or 'checkbox',
+            keepIt: false,
+            values: arraytoQuickReply(OptionMap[questions[0]].options),
+          },
+          user: backend,
+        }
+      : {
+          _id: 0,
+          text: 'SignIn/SignUp to use this script generation service',
+          createdAt: new Date(),
+          user: backend,
+        },
   ]);
 
   const renderTime = props => {
@@ -169,17 +176,24 @@ const ChatBot = props => {
   const clearChat = () => {
     console.log('---Chat Cleared');
     setMessages([
-      {
-        _id: 0,
-        text: 'Start with any of the options below',
-        createdAt: new Date(),
-        quickReplies: {
-          type: 'radio', // or 'checkbox',
-          keepIt: false,
-          values: arraytoQuickReply(OptionMap[questions[0]].options),
-        },
-        user: backend,
-      },
+      signedIn
+        ? {
+            _id: 0,
+            text: 'Start with any of the options below',
+            createdAt: new Date(),
+            quickReplies: {
+              type: 'radio', // or 'checkbox',
+              keepIt: false,
+              values: arraytoQuickReply(OptionMap[questions[0]].options),
+            },
+            user: backend,
+          }
+        : {
+            _id: 0,
+            text: 'SignIn/SignUp to use this script generation service',
+            createdAt: new Date(),
+            user: backend,
+          },
     ]);
     setInputOptions([]);
   };

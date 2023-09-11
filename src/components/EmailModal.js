@@ -23,6 +23,7 @@ import {GlobalContext} from '../auth/GlobalProvider';
 import SubmitButton from './SubmitButton';
 import {validateEmail} from '../utils/helper';
 import VideoComponent from './VideoPlayer/VideoComponent';
+import {useNavigation} from '@react-navigation/native';
 
 const EmailModal = ({show, onClick, setShow, onRecord, uploading}) => {
   const {colors} = useTheme();
@@ -32,6 +33,7 @@ const EmailModal = ({show, onClick, setShow, onRecord, uploading}) => {
   const [setting, setSetting] = useState(false);
   const [visible, setVisible] = useState(true);
   const [index, setIndex] = useState(1);
+  const navigation = useNavigation();
 
   const swiper_ref = useRef(null);
 
@@ -182,8 +184,48 @@ const EmailModal = ({show, onClick, setShow, onRecord, uploading}) => {
                   setShow(false);
                   setIndex(1);
                 }}
-                //repeat={}
               />
+              <TouchableOpacity
+                style={styles.skip}
+                onPress={() => {
+                  setIndex(4);
+                  swiper_ref.current.scrollBy(1);
+                }}>
+                <Text style={{marginRight: 2, fontSize: 12}}>Skip</Text>
+                <AntDesign name="right" color={colors.border} size={12} />
+              </TouchableOpacity>
+            </Card>
+          )}
+
+          {index === 4 && (
+            <Card style={styles.card}>
+              <Title
+                style={{fontWeight: 'bold', marginTop: -5, marginBottom: 15}}>
+                Complete your profile ...
+              </Title>
+              <TouchableOpacity
+                onPress={() => {
+                  setShow(false);
+                  navigation.navigate('Profile', {screen: 'EditProfile'});
+                }}
+                style={{marginTop: '10%'}}>
+                <LinearGradient
+                  colors={[colors.secondary, colors.primary]}
+                  start={{x: 0, y: 1}}
+                  end={{x: 1, y: 0}}
+                  style={styles.button}>
+                  <Text style={styles.label}>Complete Profile</Text>
+                  <AntDesign style={styles.label} name={'arrowright'} />
+                </LinearGradient>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.skip}
+                onPress={() => {
+                  setShow(false);
+                }}>
+                <Text style={{marginRight: 2, fontSize: 12}}>Skip</Text>
+                <AntDesign name="right" color={colors.border} size={12} />
+              </TouchableOpacity>
             </Card>
           )}
         </Swiper>
@@ -232,7 +274,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
   },
   button: {
-    width: '60%',
+    width: '70%',
     height: 50,
     justifyContent: 'center',
     alignItems: 'center',
