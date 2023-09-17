@@ -842,7 +842,7 @@ const ChatBot = props => {
 
   const handleSynopsis = async () => {
     try {
-      let template = `Write three synopsis of one minute pitch for a ${inputOptions[0]} ${inputOptions[1]} with temporality as ${inputOptions[2]} and idea as ${inputOptions[4]}.`;
+      let template = `Write three synopsis of one minute pitch for a ${inputOptions[0]} ${inputOptions[1]} with temporality as ${inputOptions[2]}.`;
       // console.log(template, 'template')
       let reply = await askGPT(template);
       const splits = reply

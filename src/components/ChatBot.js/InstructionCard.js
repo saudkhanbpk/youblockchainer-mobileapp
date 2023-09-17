@@ -51,7 +51,7 @@ const InstructionCard = props => {
       </Text> */}
       <View style={{flexDirection: 'row', alignItems: 'center'}}>
         <AnimatedTyping
-          text={['MyReelDreams']}
+          text={['myreeldream']}
           repeat={false}
           textStyle={{
             fontSize: 26,

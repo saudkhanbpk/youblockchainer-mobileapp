@@ -140,7 +140,7 @@ const EmailModal = ({show, onClick, setShow, onRecord, uploading}) => {
           <Card style={styles.card}>
             <Title
               style={{fontWeight: 'bold', marginTop: -5, marginBottom: 15}}>
-              Record a Video (Introduce Yourself)
+              Record a 30 sec video selfie to participate in auditions
             </Title>
             <Checkbox.Item
               label={'Show Intro Clip on your Public Profile'}
