@@ -6,17 +6,20 @@ import {GiftedChat, Bubble, Time} from 'react-native-gifted-chat';
 import ChatComposer from '../../components/ChatComposer';
 import OptionMap from './OptionMap.json';
 import {arraytoQuickReply} from '../../utils/helper';
-import {askGPT, saveAsPdf} from '../../utils/chatAPI';
+import {askGPT, getScriptRemaining, saveAsPdf} from '../../utils/chatAPI';
 import {appLogo, defaultAvatar} from '../../Constants';
-import BotHeader from '../../components/ChatBot.js/BotHeader';
+import BotHeader from '../../components/ChatBot/BotHeader';
 import {FountainParser} from 'screenplay-js';
-import InstructionCard from '../../components/ChatBot.js/InstructionCard';
+import InstructionCard from '../../components/ChatBot/InstructionCard';
+import BuyScriptModal from '../../components/ChatBot/BuyScriptModal';
 
 const ChatBot = props => {
   const {colors} = useTheme();
-  const {user, setUser, signedIn} = useContext(GlobalContext);
+  const {user, setUser, signedIn, mainContract} = useContext(GlobalContext);
   const [text, setText] = useState('');
+  const [showBuy, setShowBuy] = useState(false);
   const [inputOptions, setInputOptions] = useState([]);
+  const [balance, setBalance] = useState(0);
   const [loading, setLoading] = useState(false);
   const [stopped, setStopped] = useState(false);
   const [finalScript, setFinalScript] = useState('');
@@ -62,17 +65,24 @@ const ChatBot = props => {
   const questions = Object.keys(OptionMap);
   const [messages, setMessages] = useState([
     signedIn
-      ? {
-          _id: 0,
-          text: 'Start with any of the options below',
-          createdAt: new Date(),
-          quickReplies: {
-            type: 'radio', // or 'checkbox',
-            keepIt: false,
-            values: arraytoQuickReply(OptionMap[questions[0]].options),
-          },
-          user: backend,
-        }
+      ? !!balance
+        ? {
+            _id: 0,
+            text: 'Start with any of the options below',
+            createdAt: new Date(),
+            quickReplies: {
+              type: 'radio', // or 'checkbox',
+              keepIt: false,
+              values: arraytoQuickReply(OptionMap[questions[0]].options),
+            },
+            user: backend,
+          }
+        : {
+            _id: 0,
+            text: 'Purchase script generations to use this service',
+            createdAt: new Date(),
+            user: backend,
+          }
       : {
           _id: 0,
           text: 'SignIn/SignUp to use this script generation service',
@@ -177,17 +187,24 @@ const ChatBot = props => {
     console.log('---Chat Cleared');
     setMessages([
       signedIn
-        ? {
-            _id: 0,
-            text: 'Start with any of the options below',
-            createdAt: new Date(),
-            quickReplies: {
-              type: 'radio', // or 'checkbox',
-              keepIt: false,
-              values: arraytoQuickReply(OptionMap[questions[0]].options),
-            },
-            user: backend,
-          }
+        ? !!balance
+          ? {
+              _id: 0,
+              text: 'Start with any of the options below',
+              createdAt: new Date(),
+              quickReplies: {
+                type: 'radio', // or 'checkbox',
+                keepIt: false,
+                values: arraytoQuickReply(OptionMap[questions[0]].options),
+              },
+              user: backend,
+            }
+          : {
+              _id: 0,
+              text: 'Purchase script generations to use this service',
+              createdAt: new Date(),
+              user: backend,
+            }
         : {
             _id: 0,
             text: 'SignIn/SignUp to use this script generation service',
@@ -200,7 +217,13 @@ const ChatBot = props => {
 
   useEffect(() => {
     clearChat();
-  }, [user]);
+    if (!!user && !!mainContract)
+      getScriptRemaining(mainContract, user.walletAddress, setBalance);
+  }, [user, mainContract]);
+
+  useEffect(() => {
+    clearChat();
+  }, [balance]);
 
   const renderInputToolbar = props => {
     return (
@@ -263,6 +286,7 @@ const ChatBot = props => {
     let r = await askGPT(
       currentTemplate +
         `\nWrite ${topics[index]} in a screenplay format. The length should be atleast one page. Give the response in Fountain Markdown format.`,
+      index === topics.length - 1 ? true : false,
     );
     if (!!r) {
       //temp += '\n' + r;
@@ -887,7 +911,10 @@ const ChatBot = props => {
     else if (inputOptions.length === 6) initialFire();
     else if (inputOptions.length > 0) {
       let current = questions[inputOptions.length];
-      let options = OptionMap[current].options;
+      let options =
+        inputOptions.length === 1
+          ? OptionMap[current].options[inputOptions[0]]
+          : OptionMap[current].options;
       setLoading(false);
       setMessages(m => [
         {
@@ -914,14 +941,21 @@ const ChatBot = props => {
     <View style={styles.container}>
       <BotHeader
         showClear={messages.length > 1}
-        onClear={() => {
+        open={() => setShowBuy(true)}
+        onClear={async () => {
           setStopped(true);
           setLoading(false);
           setFinalScript('');
           clearChat();
+          await getScriptRemaining(
+            mainContract,
+            user.walletAddress,
+            setBalance,
+          );
         }}
         generating={loading}
         downloadDisabled={!finalScript}
+        balance={balance}
         onSave={() => {
           saveDownloadScript(false);
         }}
@@ -929,7 +963,7 @@ const ChatBot = props => {
           saveDownloadScript(true);
         }}
       />
-      {messages.length === 1 && <InstructionCard />}
+      {messages.length === 1 && !showBuy && <InstructionCard />}
       <GiftedChat
         messages={messages}
         renderAvatarOnTop={true}
@@ -942,6 +976,13 @@ const ChatBot = props => {
         user={currentUser}
         renderBubble={renderBubble}
         multiline={true}
+      />
+      <BuyScriptModal
+        show={showBuy}
+        setShow={setShowBuy}
+        getBalance={() =>
+          getScriptRemaining(mainContract, user.walletAddress, setBalance)
+        }
       />
     </View>
   );

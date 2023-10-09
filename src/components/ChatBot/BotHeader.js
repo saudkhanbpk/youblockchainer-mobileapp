@@ -1,6 +1,6 @@
 import React, {useState, useContext} from 'react';
 import {View, StyleSheet} from 'react-native';
-import {Button, Divider, IconButton, Menu} from 'react-native-paper';
+import {Button, Divider, IconButton, Menu, Text} from 'react-native-paper';
 import {GlobalContext} from '../../auth/GlobalProvider';
 
 const BotHeader = ({
@@ -10,11 +10,23 @@ const BotHeader = ({
   onDownload,
   onSave,
   generating,
+  balance,
+  open,
 }) => {
   const [show, setShow] = useState(false);
   const {signedIn} = useContext(GlobalContext);
   return (
     <View style={styles.container}>
+      {signedIn && (
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}>
+          <Text style={{fontSize: 12}}>Generation Balance : {balance}</Text>
+          <IconButton icon={'plus'} onPress={open} />
+        </View>
+      )}
       {!generating && (
         <Button mode="contained" disabled={!showClear} onPress={onClear}>
           {generating ? 'Stop Generation' : 'Clear Chat'}

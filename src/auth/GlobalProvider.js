@@ -5,7 +5,6 @@ import Web3 from 'web3';
 import StorageManager from '../storage/StorageManager';
 import {ARCANA_KEY, WALLET_STATES, http_provider} from '../Constants';
 import {API_TOKEN, ONBOARDED, USER} from '../storage/StorageKeys';
-import {getMe} from '../utils/userAPI';
 import Forwarder from '../abis/Forwarder.json';
 import AskGPT from '../abis/AskGPT.json';
 import Auth from '@arcana/auth-react-native';

@@ -33,7 +33,7 @@ const useTabInitializer = props => {
 
   useEffect(() => {
     if (user) {
-      if (!user.email || !user.country || !user.videoIntro) setShowMail(true); //|| !user.videoIntro
+      if (!user.email || !user.country) setShowMail(true); //|| !user.videoIntro
     }
   }, [user]);
 

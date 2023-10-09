@@ -4,6 +4,7 @@ import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import {PermissionsAndroid, Platform, ToastAndroid} from 'react-native';
 import {updateUser, uploadPics} from './userAPI';
 import RNFetchBlob from 'react-native-blob-util';
+import {notifyEVMError} from './helper';
 
 export const getAllRooms = async () => {
   try {
@@ -129,11 +130,58 @@ export const getAllChats = async id => {
   }
 };
 
-export const askGPT = async prompt => {
+export const askGPT = async (prompt, isLast) => {
   try {
-    return await API.post(ENDPOINTS.ASK_GPT, {prompt});
+    return await API.post(ENDPOINTS.ASK_GPT, {prompt, isLast});
   } catch (error) {
     console.log('Ask GPT Error:- ', error.message);
     return '';
+  }
+};
+
+export const getScriptPrice = async mainContract => {
+  try {
+    let res = await mainContract.methods.pricePerScript().call();
+    console.log('--Price:- ', res);
+    return res;
+  } catch (error) {
+    console.log('Script Price Error:- ', error.message);
+  }
+};
+
+export const getScriptRemaining = async (
+  mainContract,
+  address,
+  setScriptCount,
+) => {
+  try {
+    let res = await mainContract.methods.getPendingScripts(address).call();
+    console.log('---Balance:- ' + res);
+    setScriptCount(res);
+  } catch (error) {
+    console.log('Script Price Error:- ', error.message);
+  }
+};
+
+export const buyScriptFromContract = async (
+  amount,
+  mainContract,
+  walletAddress,
+  value,
+  authRef,
+  address,
+) => {
+  try {
+    let transaction = await mainContract.methods.buyScripts(amount).encodeABI();
+    console.log('---Encoded ABI');
+    let data = {from: walletAddress, to: address, value, data: transaction};
+    let hash = await authRef.current.sendTransaction(data);
+    console.log('---TX success');
+    console.log(hash);
+    return true;
+  } catch (error) {
+    notifyEVMError(error);
+    console.log('Error in funding:- ', error);
+    return false;
   }
 };
