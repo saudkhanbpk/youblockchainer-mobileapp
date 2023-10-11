@@ -139,15 +139,15 @@ export const askGPT = async (prompt, isLast) => {
   }
 };
 
-export const getScriptPrice = async mainContract => {
-  try {
-    let res = await mainContract.methods.pricePerScript().call();
-    console.log('--Price:- ', res);
-    return res;
-  } catch (error) {
-    console.log('Script Price Error:- ', error.message);
-  }
-};
+// export const getScriptPrice = async mainContract => {
+//   try {
+//     let res = await mainContract.methods.pricePerScript().call();
+//     console.log('--Price:- ', res);
+//     return res;
+//   } catch (error) {
+//     console.log('Script Price Error:- ', error.message);
+//   }
+// };
 
 export const getScriptRemaining = async (
   mainContract,
@@ -159,12 +159,22 @@ export const getScriptRemaining = async (
     console.log('---Balance:- ' + res);
     setScriptCount(res);
   } catch (error) {
-    console.log('Script Price Error:- ', error.message);
+    console.log('Script get remaining Error:- ', error.message);
   }
 };
 
-export const buyScriptFromContract = async (
-  amount,
+export const getScriptPackages = async mainContract => {
+  try {
+    let pkgs = await mainContract.methods.getPackages().call();
+    console.log('Packages:- ', pkgs);
+    return pkgs;
+  } catch (error) {
+    console.log('Pkg get error:- ', error.message);
+  }
+};
+
+export const buyScriptsFromContract = async (
+  pkgId,
   mainContract,
   walletAddress,
   value,
@@ -172,7 +182,7 @@ export const buyScriptFromContract = async (
   address,
 ) => {
   try {
-    let transaction = await mainContract.methods.buyScripts(amount).encodeABI();
+    let transaction = await mainContract.methods.buyScripts(pkgId).encodeABI();
     console.log('---Encoded ABI');
     let data = {from: walletAddress, to: address, value, data: transaction};
     let hash = await authRef.current.sendTransaction(data);
@@ -181,7 +191,7 @@ export const buyScriptFromContract = async (
     return true;
   } catch (error) {
     notifyEVMError(error);
-    console.log('Error in funding:- ', error);
+    console.log('Error in buying script:- ', error);
     return false;
   }
 };

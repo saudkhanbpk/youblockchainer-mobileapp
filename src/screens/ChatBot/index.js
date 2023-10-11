@@ -980,8 +980,8 @@ const ChatBot = props => {
       <BuyScriptModal
         show={showBuy}
         setShow={setShowBuy}
-        getBalance={() =>
-          getScriptRemaining(mainContract, user.walletAddress, setBalance)
+        getBalance={async () =>
+          await getScriptRemaining(mainContract, user.walletAddress, setBalance)
         }
       />
     </View>

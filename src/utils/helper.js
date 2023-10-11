@@ -212,6 +212,8 @@ export function convertToCSV(array) {
 
 export function notifyEVMError(error) {
   alert(
-    error.message.includes('EVM') ? error.message.split(':')[0] : error.message,
+    !!error && !!error.message && error.message.includes('EVM')
+      ? error.message.split(':')[0]
+      : JSON.stringify(error),
   );
 }
