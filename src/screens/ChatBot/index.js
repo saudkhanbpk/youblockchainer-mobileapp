@@ -187,7 +187,7 @@ const ChatBot = props => {
     console.log('---Chat Cleared');
     setMessages([
       signedIn
-        ? !!balance
+        ? balance > 0
           ? {
               _id: 0,
               text: 'Start with any of the options below',

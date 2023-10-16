@@ -16,6 +16,7 @@ const BuyScriptModal = ({show, setShow, getBalance}) => {
   const {mainContract, web3} = useContext(GlobalContext);
   const [pkgs, setPkgs] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [etherPrice, setEtherPrice] = useState(0);
 
   const getPackages = async () => {
     setLoading(true);
@@ -27,8 +28,22 @@ const BuyScriptModal = ({show, setShow, getBalance}) => {
     setLoading(false);
   };
 
+  const getDollarValues = () => {
+    fetch(
+      `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin%2Cethereum&order=market_cap_desc&per_page=100&page=1&sparkline=false`,
+    )
+      .then(r => r.json())
+      .then(response => {
+        setEtherPrice(response[1].current_price);
+      })
+      .catch(error =>
+        console.log('Error in getting dollar price:- ', error.message),
+      );
+  };
+
   useEffect(() => {
     getPackages();
+    getDollarValues();
   }, [web3, mainContract]);
 
   return (
@@ -46,7 +61,12 @@ const BuyScriptModal = ({show, setShow, getBalance}) => {
               keyExtractor={(x, i) => i.toString()}
               horizontal
               renderItem={({item, index}) => (
-                <PlanCard data={item} index={index} getBalance={getBalance} />
+                <PlanCard
+                  data={item}
+                  index={index}
+                  getBalance={getBalance}
+                  etherPrice={etherPrice}
+                />
               )}
             />
           )}

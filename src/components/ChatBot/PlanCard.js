@@ -6,11 +6,10 @@ import SubmitButton from '../SubmitButton';
 import {GlobalContext} from '../../auth/GlobalProvider';
 import axios from 'axios';
 
-const PlanCard = ({data, index, getBalance}) => {
+const PlanCard = ({data, index, getBalance, etherPrice}) => {
   const {colors} = useTheme();
   const [name, price, numScripts] = data;
   const [purchasing, setPurchasing] = useState(false);
-  const [etherPrice, setEtherPrice] = useState(0);
   const {mainContract, contractAddress, authRef, user, web3} =
     useContext(GlobalContext);
 
@@ -37,21 +36,6 @@ const PlanCard = ({data, index, getBalance}) => {
     setPurchasing(false);
   };
 
-  const getDollarValues = () => {
-    axios
-      .get(
-        `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin%2Cethereum&order=market_cap_desc&per_page=100&page=1&sparkline=false`,
-      )
-      .then(response => {
-        setEtherPrice(response.data[1].current_price);
-      })
-      .catch(error => console.log(error));
-  };
-
-  useEffect(() => {
-    getDollarValues();
-  }, [price]);
-
   return (
     <View style={styles.container}>
       <View
@@ -60,7 +44,7 @@ const PlanCard = ({data, index, getBalance}) => {
         <Text style={styles.priceText}>{web3.utils.fromWei(price)} ETH</Text>
         {!!etherPrice && (
           <Text style={{color: 'white', fontSize: 12}}>
-            (${parseInt(web3.utils.fromWei(price)) * etherPrice})
+            (${(web3.utils.fromWei(price) * etherPrice).toFixed(2)})
           </Text>
         )}
       </View>
